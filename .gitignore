@@ -35,3 +35,7 @@ yarn-error.log
 
 # ── Logs ───────────────────────────────────────────
 *.log
+
+# ── Local-only (not for repo) ─────────────────────
+_backups/
+Videos/
