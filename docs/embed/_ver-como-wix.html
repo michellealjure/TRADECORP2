@@ -48,7 +48,18 @@
   if (m) caja.height = m[1];
   // El src se pone desde JS y con marca de tiempo: con el src escrito en el HTML
   // el navegador reutilizaba una copia vieja del embed y se probaba lo que no era.
-  caja.src = 'home-entero.html?cb=' + Date.now();
+  // ?p= elige la pagina: home-entero.html (por defecto), about.html,
+  // ingredients.html o contact.html. Alturas reales medidas a 1440:
+  // home 2543 · about 1288 · ingredients 8308 · contact 597.
+  var q = /[?&]p=([\w.-]+)/.exec(location.search);
+  var pag = q ? q[1] : 'home-entero.html';
+  if (!m) {
+    var ALTOS = {'home-entero.html':2543,'about.html':1288,
+                 'ingredients.html':8308,'contact.html':597};
+    if (ALTOS[pag]) caja.height = ALTOS[pag];
+  }
+  document.title = pag + ' — como se vera en Wix';
+  caja.src = pag + '?cb=' + Date.now();
 </script>
 </body>
 </html>

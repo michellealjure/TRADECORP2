@@ -848,6 +848,7 @@ html:not(.dir-a) #ship-tog{display:none}
   <button type="button" data-d="dir-c" aria-pressed="false">C &middot; Modular</button>
 </div>
 </div>
+<script src="../assets/tcscroll.js"></script>
 <script>
 (function(){var d=document.documentElement,bs=document.querySelectorAll('#ab-tog button');
  function set(v){d.classList.remove('dir-a','dir-b','dir-c');d.classList.add(v);
@@ -880,12 +881,17 @@ html:not(.dir-a) #ship-tog{display:none}
    },{threshold:umbral}).observe(el);
    var red=function(forzar){
      if(el.classList.contains('in')) return;
-     var vh=window.innerHeight||document.documentElement.clientHeight||0;
-     var r=el.getBoundingClientRect();
-     if(forzar || !vh || (r.top<vh && r.bottom>0)) marcar();
+     var vh=TCScroll.vh();
+     var t=TCScroll.top(el), alto=el.getBoundingClientRect().height;
+     if(forzar || !vh || (t<vh && t+alto>0)) marcar();
    };
-   setTimeout(function(){ red(false); },2500);
-   setTimeout(function(){ red(true);  },6000);
+   // 12s y 40s, no 2,5 y 6. Dentro del iframe estas redes median contra el alto
+   // del EMBED (1.860px), asi que "esta en pantalla" era cierto para casi todo y
+   // los reveals se disparaban solos a los 2,5s — el mismo fallo que en el home.
+   // Con el motor la medida ya es correcta y estas dos solo son el ultimo
+   // recurso: nunca dejar el contenido invisible.
+   setTimeout(function(){ red(false); },12000);
+   setTimeout(function(){ red(true);  },40000);
  }
  // Repetir: quitar y reponer la clase en el mismo frame no anima, el navegador
  // agrupa los dos cambios. Hay que forzar un reflow en medio.
@@ -946,12 +952,16 @@ html:not(.dir-a) #ship-tog{display:none}
  function scrub(){
    pend=false;
    if(!grid||!d.classList.contains('hm-2')) return;
-   var vh=window.innerHeight||document.documentElement.clientHeight||0;
+   // TCScroll y no innerHeight/scroll: dentro del iframe de Wix innerHeight es
+   // el alto del EMBED y el evento `scroll` no se dispara nunca, asi que esto se
+   // quedaba congelado en el primer fotograma. El motor lee la franja que se ve
+   // de verdad. Fuera del iframe devuelve exactamente lo de antes.
+   var vh=TCScroll.vh();
    if(!vh) return;
    // Recorrido corto a proposito: de 0.90vh a 0.45vh. Con uno mas largo el giro
    // de la ultima tarjeta terminaba tan abajo que la pagina se quedaba sin
    // scroll antes de completarlo — esta seccion esta cerca del final.
-   var top=grid.getBoundingClientRect().top;
+   var top=TCScroll.top(grid);
    var p=(0.90*vh - top)/(0.45*vh);
    p=p<0?0:(p>1?1:p);
    if(p>maxP) maxP=p; else p=maxP;      // no rebobina, igual que el home
@@ -959,7 +969,7 @@ html:not(.dir-a) #ship-tog{display:none}
      f.style.setProperty('--rot',(easeInOutCubic(tramo(p,i*0.15,0.55+i*0.15))*180).toFixed(1));
    });
  }
- addEventListener('scroll',function(){ if(!pend){ pend=true; requestAnimationFrame(scrub); } },{passive:true});
+ TCScroll.on(function(){ if(!pend){ pend=true; requestAnimationFrame(scrub); } });
  addEventListener('resize',scrub);
  var vb=document.querySelectorAll('#vid-tog button');
  vb.forEach(function(b){b.addEventListener('click',function(){
@@ -977,7 +987,8 @@ html:not(.dir-a) #ship-tog{display:none}
    },{threshold:.15}).observe(row);
    // Red de seguridad: si el observador no llega a dispararse por lo que sea, el
    // contenido aparece igual. Nunca se queda invisible.
-   setTimeout(go,1600);
+   // 12s y no 1,6: con 1,6 entraba antes de que nadie hubiera bajado a verlo.
+   setTimeout(go,12000);
  }
 })();
 
