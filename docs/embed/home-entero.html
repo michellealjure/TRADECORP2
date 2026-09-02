@@ -1239,19 +1239,20 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
    ───────────────────────────────────────────────────────────────────────────── */
 window.TCScroll=(function(){
   var doc=document.documentElement;
-  var VENTANA=800;    // alto supuesto de la ventana del visitante (solo en embed)
-  var CABECERA=110;   // lo que la cabecera de Wix tapa por encima del embed
-  var RENDIRSE=45000; // sin NINGUNA senal en 45s: se da todo por visto (ver abajo)
-  // 45 y no 10. Con 10 la red saltaba mientras Michelle miraba el hero, antes
-  // de que llegara a bajar, y se comia las dos animaciones (medido el 2026-09-02:
-  // a los 4s el estado era correcto, a los 14s estaba todo consumido sin tocar
-  // nada). Un visitante real baja mucho antes de 45s; quien lleva 45s quieto ya
-  // se fue. No hay numero perfecto: es un plazo, no una medida.
+  var subs=[], pend=false, embed=false;
 
-  var embed=false, virt=0, tope=0, subs=[], pend=false, hubo=false;
+  /* ── Que se ve de verdad ─────────────────────────────────────────────────
+     visTop y visH describen QUE FRANJA del embed esta ahora mismo a la vista
+     en la ventana del visitante, en coordenadas del propio embed. Las escribe
+     el faro (mas abajo) y son una MEDIDA, no una estimacion.
+     virt es el acumulador de rueda de la version anterior; solo se usa si el
+     faro no llega a funcionar. */
+  var visTop=0, visH=0, hayFaro=false;
+  var virt=0, tope=0, hubo=false;
+
+  var VENTANA=800, CABECERA=110, RENDIRSE=45000;   // solo para el plan B
 
   function medir(){
-    // "El documento no puede desplazarse por si mismo" es la firma del embed.
     embed = doc.scrollHeight <= window.innerHeight + 4;
     tope  = Math.max(0, doc.scrollHeight - VENTANA + CABECERA);
   }
@@ -1260,22 +1261,64 @@ window.TCScroll=(function(){
     requestAnimationFrame(function(){ pend=false;
       for(var i=0;i<subs.length;i++){ try{ subs[i](); }catch(e){} } });
   }
-  function mover(d){
-    if(!embed) return;
-    hubo=true;
-    var v=virt+d; virt = v<0?0:(v>tope?tope:v);
-    avisar();
-  }
 
   medir();
 
-  // Red de seguridad para el unico caso que no podemos observar: alguien que
-  // baja ARRASTRANDO LA BARRA de desplazamiento. Eso no genera rueda ni tecla y
-  // desde dentro del iframe es indetectable, asi que veria las tarjetas
-  // recortadas a cero. Pasado el plazo se da todo por visto.
-  // La cuenta se cancela para siempre en cuanto llega cualquier senal (`hubo`):
-  // si el visitante usa rueda, trackpad, dedo o teclado, la red nunca salta.
-  if(embed) setTimeout(function(){ if(!hubo){ virt=tope; avisar(); } }, RENDIRSE);
+  /* ── El faro ─────────────────────────────────────────────────────────────
+     Aqui esta la clave de todo. Dentro de un iframe de Wix no hay scroll ni
+     alto de ventana fiables, pero SI hay una cosa que el navegador calcula
+     bien: la interseccion de un elemento con el area visible de VERDAD, ya
+     recortada por el viewport de la pagina de arriba. Comprobado el 2026-09-02
+     en el banco de pruebas: el hero daba visible=true ratio=0.61 y las
+     secciones de mas abajo visible=false, con la pagina padre sin desplazar.
+
+     Observando el propio <body>, `intersectionRect` viene en coordenadas del
+     embed: su borde superior ES la posicion del scroll y su alto ES el alto
+     real de la ventana. Las dos incognitas que antes tenia que suponer
+     (VENTANA=800, CABECERA=110) dejan de hacer falta.
+
+     Los umbrales densos son para que avise a menudo: IntersectionObserver solo
+     habla cuando se cruza uno. Entre aviso y aviso interpola la rueda, y el
+     siguiente aviso corrige — asi no hay deriva acumulada, que es lo que hacia
+     que la animacion fuese bien en un sentido y se quedase pegada en el otro. */
+  function encenderFaro(){
+    if(!window.IntersectionObserver) return;
+    var u=[]; for(var i=0;i<=500;i++) u.push(i/500);
+    try{
+      new IntersectionObserver(function(es){
+        var e=es[es.length-1];
+        if(!e.isIntersecting) return;
+        var r=e.intersectionRect;
+        if(!r || r.height<40) return;      // franja absurda: no fiarse
+        hayFaro=true; visTop=r.top; visH=r.height;
+        avisar();
+      },{threshold:u}).observe(document.body);
+    }catch(err){}
+  }
+  if(embed) encenderFaro();
+
+  /* ── Entradas ────────────────────────────────────────────────────────────
+     La rueda, el dedo y el teclado llegan al iframe. Con el faro encendido su
+     unico papel es suavizar el tramo entre dos avisos; sin faro son la unica
+     fuente y hay que fiarse de ellas. */
+  function mover(d){
+    if(!embed) return;
+    hubo=true;
+    if(hayFaro){
+      var m=Math.max(0, doc.scrollHeight - visH);
+      visTop = visTop+d < 0 ? 0 : (visTop+d > m ? m : visTop+d);
+    }else{
+      virt = virt+d < 0 ? 0 : (virt+d > tope ? tope : virt+d);
+    }
+    avisar();
+  }
+
+  // Plan B: sin faro, alguien que baje ARRASTRANDO LA BARRA no genera ninguna
+  // senal y veria las tarjetas recortadas a cero. Con faro esto sobra, porque
+  // el navegador nos dice la verdad haga lo que haga el visitante.
+  if(embed) setTimeout(function(){
+    if(!hubo && !hayFaro){ virt=tope; avisar(); }
+  }, RENDIRSE);
 
   addEventListener('resize', function(){ medir(); avisar(); }, {passive:true});
   addEventListener('scroll', function(){ if(!embed) avisar(); }, {passive:true});
@@ -1283,9 +1326,6 @@ window.TCScroll=(function(){
     mover(e.deltaMode===1 ? e.deltaY*16 : e.deltaY);
   }, {passive:true});
 
-  // El teclado desplaza la pagina sin generar rueda. Solo llega si el iframe
-  // tiene el foco, asi que no cubre todos los casos, pero los que cubre son
-  // gratis y evitan que la red salte con alguien que si esta navegando.
   var TECLAS={ArrowDown:120,ArrowUp:-120,PageDown:600,PageUp:-600,
               ' ':600,Spacebar:600,End:99999,Home:-99999};
   addEventListener('keydown', function(e){
@@ -1301,16 +1341,14 @@ window.TCScroll=(function(){
     var y=e.touches[0].clientY; mover(ty-y); ty=y;
   }, {passive:true});
 
-  /* ── Aviso de altura a Wix ────────────────────────────────────────────────
-     El contenido NO mide lo mismo en cada ancho (medido 2026-09-02: 2.639px a
-     1920, 2.606 a 1440, 2.537 a 1280, 2.346 a 1024), asi que ningun alto fijo
-     sirve. Si la caja de Wix se queda corta el iframe pasa a tener barra propia
-     — dos barras, tirones y el motor cambia de modo a media pagina. Si sobra,
-     queda crema muerta al final.
-     Aqui se publica la altura real; del otro lado, Velo la recoge con
-     onMessage y ajusta la caja. Si nadie escucha no pasa nada. */
+  /* ── Aviso de altura a Wix ───────────────────────────────────────────────
+     El contenido no mide lo mismo en cada ancho (2.576px a 1920, 2.543 a 1440,
+     2.290 a 1024), asi que ningun alto fijo de caja sirve: si se queda corta
+     el iframe crea barra propia y hay dos barras peleando; si sobra, queda
+     crema muerta. Aqui se publica la altura real y Velo la recoge con
+     onMessage. Si nadie escucha, no pasa nada. */
   function avisarAltura(){
-    if(window.self===window.top) return;          // fuera de un iframe no aplica
+    if(window.self===window.top) return;
     var h=Math.ceil(document.body.getBoundingClientRect().height);
     try{ parent.postMessage({tcAlto:h}, '*'); }catch(e){}
   }
@@ -1321,17 +1359,28 @@ window.TCScroll=(function(){
   }
 
   return {
-    // Alto de ventana contra el que medir el progreso.
-    vh:  function(){ return embed ? VENTANA : window.innerHeight; },
-    // Distancia del elemento al borde superior de la ventana del VISITANTE.
-    // Fuera del embed es literalmente eso; dentro se reconstruye, porque
-    // getBoundingClientRect().top ahi es una constante que nunca cambia.
+    // Alto de la ventana del visitante contra el que medir el progreso.
+    vh: function(){
+      if(!embed) return window.innerHeight;
+      return hayFaro ? visH : VENTANA;
+    },
+    // Distancia del elemento al borde superior de lo que se ve.
+    // Fuera del embed es literalmente rect.top. Dentro, rect.top es una
+    // constante (el iframe no se desplaza) y hay que restarle donde empieza
+    // la franja visible.
     top: function(el){
       var t=el.getBoundingClientRect().top;
-      return embed ? (t + CABECERA - virt) : t;
+      if(!embed) return t;
+      return hayFaro ? (t - visTop) : (t + CABECERA - virt);
     },
-    on:  function(fn){ subs.push(fn); fn(); },
-    esEmbed: function(){ return embed; }
+    on: function(fn){ subs.push(fn); fn(); },
+    esEmbed: function(){ return embed; },
+    // Para poder mirar por dentro sin adivinar.
+    diagnostico: function(){
+      return {modo: !embed ? 'pagina' : (hayFaro ? 'embed+faro' : 'embed+rueda'),
+              visTop: Math.round(visTop), visH: Math.round(visH),
+              virt: Math.round(virt), hubo: hubo};
+    }
   };
 })();
 </script>
