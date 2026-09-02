@@ -37,14 +37,18 @@
   y la seccion verde debe desplegarse a medida que aparece.
 </p>
 
-<iframe class="caja" id="caja" src="home-entero.html" height="3092" title="Home"></iframe>
+<iframe class="caja" id="caja" height="3092" title="Home"></iframe>
 
 <p class="pie">fin — aqui seguiria el pie de pagina de Wix</p>
 
 <script>
+  var caja = document.getElementById('caja');
   // El alto lo fija Michelle en Wix; aqui se lee de ?alto= para poder probar otros.
   var m = /[?&]alto=(\d+)/.exec(location.search);
-  if (m) document.getElementById('caja').height = m[1];
+  if (m) caja.height = m[1];
+  // El src se pone desde JS y con marca de tiempo: con el src escrito en el HTML
+  // el navegador reutilizaba una copia vieja del embed y se probaba lo que no era.
+  caja.src = 'home-entero.html?cb=' + Date.now();
 </script>
 </body>
 </html>

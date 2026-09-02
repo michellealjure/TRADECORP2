@@ -734,7 +734,12 @@ window.TCScroll=(function(){
   var doc=document.documentElement;
   var VENTANA=800;    // alto supuesto de la ventana del visitante (solo en embed)
   var CABECERA=110;   // lo que la cabecera de Wix tapa por encima del embed
-  var RENDIRSE=10000; // sin rueda en 10s: se da todo por visto (ver abajo)
+  var RENDIRSE=45000; // sin NINGUNA senal en 45s: se da todo por visto (ver abajo)
+  // 45 y no 10. Con 10 la red saltaba mientras Michelle miraba el hero, antes
+  // de que llegara a bajar, y se comia las dos animaciones (medido el 2026-09-02:
+  // a los 4s el estado era correcto, a los 14s estaba todo consumido sin tocar
+  // nada). Un visitante real baja mucho antes de 45s; quien lleva 45s quieto ya
+  // se fue. No hay numero perfecto: es un plazo, no una medida.
 
   var embed=false, virt=0, tope=0, subs=[], pend=false, hubo=false;
 
@@ -757,16 +762,27 @@ window.TCScroll=(function(){
 
   medir();
 
-  // Red de seguridad: si la rueda nunca llega (barra de desplazamiento, teclado,
-  // un navegador que no la propague), se salta al final en vez de dejar las
-  // tarjetas recortadas a cero y el titulo encogido. Peor animacion, nunca
-  // contenido invisible.
+  // Red de seguridad para el unico caso que no podemos observar: alguien que
+  // baja ARRASTRANDO LA BARRA de desplazamiento. Eso no genera rueda ni tecla y
+  // desde dentro del iframe es indetectable, asi que veria las tarjetas
+  // recortadas a cero. Pasado el plazo se da todo por visto.
+  // La cuenta se cancela para siempre en cuanto llega cualquier senal (`hubo`):
+  // si el visitante usa rueda, trackpad, dedo o teclado, la red nunca salta.
   if(embed) setTimeout(function(){ if(!hubo){ virt=tope; avisar(); } }, RENDIRSE);
 
   addEventListener('resize', function(){ medir(); avisar(); }, {passive:true});
   addEventListener('scroll', function(){ if(!embed) avisar(); }, {passive:true});
   addEventListener('wheel',  function(e){
     mover(e.deltaMode===1 ? e.deltaY*16 : e.deltaY);
+  }, {passive:true});
+
+  // El teclado desplaza la pagina sin generar rueda. Solo llega si el iframe
+  // tiene el foco, asi que no cubre todos los casos, pero los que cubre son
+  // gratis y evitan que la red salte con alguien que si esta navegando.
+  var TECLAS={ArrowDown:120,ArrowUp:-120,PageDown:600,PageUp:-600,
+              ' ':600,Spacebar:600,End:99999,Home:-99999};
+  addEventListener('keydown', function(e){
+    var d=TECLAS[e.key]; if(d!==undefined) mover(d);
   }, {passive:true});
 
   var ty=0;
