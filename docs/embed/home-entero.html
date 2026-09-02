@@ -1366,23 +1366,36 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
   car.addEventListener('scroll',function(){ if(!drag) wrap(); },{passive:true});
 
   var sx=0, sl=0, moved=0, pid=null;
+  // UMBRAL antes de capturar el puntero, y no al apoyar el raton.
+  // Con la captura activa el navegador dispara el `click` sobre el elemento que
+  // captura —el carril— y NO sobre el <a> que hay debajo: los cinco enlaces
+  // «Explore» no llevaban a ninguna parte. Comprobado el 2026-09-02: el click
+  // salia con target=DIV.ing-carousel.
+  // Capturando solo cuando el arrastre ya empezo, un clic normal no llega a
+  // involucrar captura y el enlace funciona como cualquier enlace.
+  var UMBRAL=6, capturado=false;
   car.addEventListener('pointerdown',function(e){
     if(e.pointerType!=='mouse' || e.button!==0) return;  // en táctil manda el scroll nativo
-    drag=true; moved=0; pid=e.pointerId; sx=e.clientX; sl=car.scrollLeft;
-    car.classList.add('is-drag');
-    try{ car.setPointerCapture(pid); }catch(err){}
+    drag=true; moved=0; capturado=false; pid=e.pointerId; sx=e.clientX; sl=car.scrollLeft;
   });
   car.addEventListener('pointermove',function(e){
     if(!drag || e.pointerId!==pid) return;
     var d=e.clientX-sx;
     if(Math.abs(d)>moved) moved=Math.abs(d);
+    if(!capturado){
+      if(moved<=UMBRAL) return;                   // todavia puede ser un clic
+      capturado=true;
+      car.classList.add('is-drag');
+      try{ car.setPointerCapture(pid); }catch(err){}
+    }
     car.scrollLeft=sl-d;
     sl+=wrap();                                   // el salto del bucle también corre el origen
   });
   function endDrag(e){
     if(!drag || (e && e.pointerId!==pid)) return;
     drag=false; car.classList.remove('is-drag');
-    try{ car.releasePointerCapture(pid); }catch(err){}
+    if(capturado){ try{ car.releasePointerCapture(pid); }catch(err){} }
+    capturado=false;
     // si hubo desplazamiento real fue un arrastre, no un clic: se traga el click
     if(moved>6) car.addEventListener('click',function(ev){
       ev.preventDefault(); ev.stopPropagation();
