@@ -156,6 +156,35 @@ window.TCScroll=(function(){
   // segundo no cuesta nada, y solo se publica cuando cambia de verdad.
   setInterval(avisarAltura, 500);
 
+  /* ── Puente para las ventanas emergentes de Wix ──────────────────────────
+     Michelle incrusto los formularios en lightboxes de Wix. Un boton que vive
+     DENTRO de este iframe no puede abrirlos: el lightbox lo dibuja la pagina de
+     Wix y desde aqui no hay forma de pedirselo. Lo unico que cruza la frontera
+     es postMessage, asi que va por el mismo canal que la altura.
+
+     El plan B es lo importante: si Velo no esta puesto en esa pagina, o falla,
+     el <a> conserva su href al formulario en wixforms.com y el visitante llega
+     igual. Nunca un boton muerto.
+
+     Por eso NO se intercepta el clic a ciegas: Velo avisa al cargar con
+     {tcVelo:1} y solo a partir de ahi se abre el lightbox. Sin ese saludo, el
+     enlace se comporta como un enlace normal. */
+  var veloListo=false;
+  addEventListener('message', function(e){
+    if(e && e.data && e.data.tcVelo) veloListo=true;
+  });
+
+  addEventListener('click', function(e){
+    if(!veloListo) return;                       // sin Velo, manda el href
+    var a=e.target && e.target.closest && e.target.closest('a[data-tc-form]');
+    if(!a) return;
+    // Respetar los gestos de "abrir en otra parte": si el visitante pide una
+    // pestaña nueva a proposito, no se le roba el clic.
+    if(e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||e.button!==0) return;
+    e.preventDefault();
+    try{ parent.postMessage({tcAbrir:a.getAttribute('data-tc-form')}, '*'); }catch(err){}
+  });
+
   return {
     // Alto de la ventana del visitante contra el que medir el progreso.
     vh: function(){

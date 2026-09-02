@@ -212,18 +212,18 @@ _F_PREGUNTA = 'https://sebastian3428.wixforms.com/f/7500968954295223311'
 _F_COTIZACION = 'https://sebastian3428.wixforms.com/f/7500994361040045086'
 
 FORMULARIOS = {
-    'Quote today': (_F_COTIZACION, _NUEVA_PESTANA),
-    'Request a FREE sample': (_F_MUESTRA, _NUEVA_PESTANA),
-    'Ask us anything': (_F_PREGUNTA, _NUEVA_PESTANA),
+    'Quote today': (_F_COTIZACION, _NUEVA_PESTANA, 'cotizacion'),
+    'Request a FREE sample': (_F_MUESTRA, _NUEVA_PESTANA, 'muestra'),
+    'Ask us anything': (_F_PREGUNTA, _NUEVA_PESTANA, 'pregunta'),
     # About: «...have a question? Send us an email or fill out the form.»
     # La frase pregunta, asi que el formulario que toca es el de preguntas.
-    'fill out the form': (_F_PREGUNTA, _NUEVA_PESTANA),
+    'fill out the form': (_F_PREGUNTA, _NUEVA_PESTANA, 'pregunta'),
     # Catalogo: quien pulsa esto ya vio los 39 ingredientes y quiere hablar.
-    'Get in touch': (_F_PREGUNTA, _NUEVA_PESTANA),
+    'Get in touch': (_F_PREGUNTA, _NUEVA_PESTANA, 'pregunta'),
     # Mismo formulario que 'Ask us anything', con otro texto: en el catalogo el
     # boton dice «Can't find it?» porque la persona acaba de buscar algo que no
     # esta. Como el mapa reescribe por TEXTO, necesita su propia entrada.
-    "Can't find it? Ask us": (_F_PREGUNTA, _NUEVA_PESTANA),
+    "Can't find it? Ask us": (_F_PREGUNTA, _NUEVA_PESTANA, 'pregunta'),
 }
 
 
@@ -240,12 +240,19 @@ def enlaces_formularios(html):
         limpio = re.sub(r'\s+', ' ', limpio).strip()
         if limpio not in FORMULARIOS:
             return m.group(0)
-        destino, attrs = FORMULARIOS[limpio]
+        destino, attrs, clave = FORMULARIOS[limpio]
         tag = re.sub(r'\s*target="[^"]*"', '', tag)
         tag = re.sub(r'\s*rel="[^"]*"', '', tag)
+        tag = re.sub(r'\s*data-tc-form="[^"]*"', '', tag)
         tag = re.sub(r'href="[^"]*"', 'href="' + destino + '"', tag)
+        # El href se queda SIEMPRE, aunque Michelle abra el formulario en una
+        # ventana emergente de Wix: es el plan B si Velo no esta puesto en esa
+        # pagina, y ademas es lo que hace que el enlace se comporte como un
+        # enlace (clic central, «abrir en pestaña nueva», teclado).
+        # data-tc-form es lo que lee tcscroll.js para pedirle a Velo el lightbox.
         cuenta[0] += 1
-        return '<a ' + attrs + tag[2:] + dentro + '</a>'
+        return ('<a ' + attrs + ' data-tc-form="' + clave + '"' + tag[2:]
+                + dentro + '</a>')
     cuenta = [0]
     html = re.sub(r'(<a\b[^>]*>)(.*?)</a>', uno, html, flags=re.S)
     return html, cuenta[0]
