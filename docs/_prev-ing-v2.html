@@ -890,7 +890,12 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
     if(innerWidth<=900){ root.style.setProperty('--o-h','auto'); lensExtra=0;
       root.style.setProperty('--extra','0px'); return; }
     var bot=bandGap;
-    var avail=innerHeight - 2*INSET - bot;
+    // stageH y NO innerHeight. Fuera del embed son el mismo numero (.stage mide
+    // 100vh), pero dentro de un iframe de Wix innerHeight es el alto del EMBED
+    // entero — 3.092px medidos el 2026-09-02 — y no el del lienzo del hero.
+    // Con 3.092 el sobrante salia 2.486px y el recorte de la tarjeta
+    // (inset(... 2576px ...), linea ~1053) se comia el hero completo.
+    var avail=(stageH||innerHeight) - 2*INSET - bot;
     var padX=Math.min(Math.max(20, innerWidth*0.046), 76);
     var gutter=Math.max(padX, (innerWidth-1180)/2);
     var contentW=innerWidth - 2*gutter;
@@ -1208,6 +1213,91 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
 </script>
 
 <script>
+/* ─────────────────────────────────────────────────────────────────────────────
+   TCScroll — motor de desplazamiento que funciona DENTRO y FUERA de un iframe.
+
+   El problema (medido en el Wix real el 2026-09-02): dentro de un embed la
+   pagina no se desplaza. Wix crea un iframe tan alto como TODO el contenido
+   (3.092px), asi que su scrollY es siempre 0, `scroll` no se dispara nunca y
+   `window.innerHeight` devuelve el alto del EMBED, no el de la ventana del
+   visitante. Las dos animaciones de esta pagina leian las dos cosas, calculaban
+   un progreso >= 1 y se quedaban congeladas en el ultimo fotograma: por eso en
+   Wix se veian estaticas.
+
+   La solucion: la rueda del raton y el gesto tactil SI llegan al iframe — el
+   navegador los entrega al elemento bajo el cursor ANTES de desplazar la pagina
+   de arriba. Se acumulan y sirven de posicion aproximada. Es una estimacion, no
+   una medida: arrastrar la barra de desplazamiento o pulsar AvPag no generan
+   rueda, y ahi la animacion no avanza. Por eso hay una red de seguridad abajo.
+
+   Fuera del iframe (el preview, y cualquier pagina que se desplace de verdad)
+   no se toca nada: devuelve pageYOffset e innerHeight igual que siempre.
+   ───────────────────────────────────────────────────────────────────────────── */
+window.TCScroll=(function(){
+  var doc=document.documentElement;
+  var VENTANA=800;    // alto supuesto de la ventana del visitante (solo en embed)
+  var CABECERA=110;   // lo que la cabecera de Wix tapa por encima del embed
+  var RENDIRSE=10000; // sin rueda en 10s: se da todo por visto (ver abajo)
+
+  var embed=false, virt=0, tope=0, subs=[], pend=false, hubo=false;
+
+  function medir(){
+    // "El documento no puede desplazarse por si mismo" es la firma del embed.
+    embed = doc.scrollHeight <= window.innerHeight + 4;
+    tope  = Math.max(0, doc.scrollHeight - VENTANA + CABECERA);
+  }
+  function avisar(){
+    if(pend) return; pend=true;
+    requestAnimationFrame(function(){ pend=false;
+      for(var i=0;i<subs.length;i++){ try{ subs[i](); }catch(e){} } });
+  }
+  function mover(d){
+    if(!embed) return;
+    hubo=true;
+    var v=virt+d; virt = v<0?0:(v>tope?tope:v);
+    avisar();
+  }
+
+  medir();
+
+  // Red de seguridad: si la rueda nunca llega (barra de desplazamiento, teclado,
+  // un navegador que no la propague), se salta al final en vez de dejar las
+  // tarjetas recortadas a cero y el titulo encogido. Peor animacion, nunca
+  // contenido invisible.
+  if(embed) setTimeout(function(){ if(!hubo){ virt=tope; avisar(); } }, RENDIRSE);
+
+  addEventListener('resize', function(){ medir(); avisar(); }, {passive:true});
+  addEventListener('scroll', function(){ if(!embed) avisar(); }, {passive:true});
+  addEventListener('wheel',  function(e){
+    mover(e.deltaMode===1 ? e.deltaY*16 : e.deltaY);
+  }, {passive:true});
+
+  var ty=0;
+  addEventListener('touchstart', function(e){
+    if(e.touches[0]) ty=e.touches[0].clientY;
+  }, {passive:true});
+  addEventListener('touchmove', function(e){
+    if(!e.touches[0]) return;
+    var y=e.touches[0].clientY; mover(ty-y); ty=y;
+  }, {passive:true});
+
+  return {
+    // Alto de ventana contra el que medir el progreso.
+    vh:  function(){ return embed ? VENTANA : window.innerHeight; },
+    // Distancia del elemento al borde superior de la ventana del VISITANTE.
+    // Fuera del embed es literalmente eso; dentro se reconstruye, porque
+    // getBoundingClientRect().top ahi es una constante que nunca cambia.
+    top: function(el){
+      var t=el.getBoundingClientRect().top;
+      return embed ? (t + CABECERA - virt) : t;
+    },
+    on:  function(fn){ subs.push(fn); fn(); },
+    esEmbed: function(){ return embed; }
+  };
+})();
+</script>
+
+<script>
 /* Why TradeCorp? — scroll-driven curved reveal + card entrance.
    This SCRUBS: every scroll frame recomputes the clip and the colour, so the
    unfold follows the scroll wheel instead of firing a fixed-length animation at
@@ -1232,19 +1322,19 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
   var ticking=false, maxCardP=[0,0,0];
   function read(){
     ticking=false;
-    var r=sec.getBoundingClientRect(), vh=window.innerHeight;
-    applyFrame((vh-r.top)/(vh*0.5));                 // section colour + curve
+    var rt=TCScroll.top(sec), vh=TCScroll.vh();
+    applyFrame((vh-rt)/(vh*0.5));                    // section colour + curve
     // cards unfold top->down as they scroll up; sticky (does not re-fold)
     var start=vh*0.92, end=vh*0.45;
     cards.forEach(function(c,i){
-      var t=c.getBoundingClientRect().top;
+      var t=TCScroll.top(c);
       var cp=cl((start - i*70 - t)/(start-end));     // slight left-to-right stagger
       if(cp>maxCardP[i]) maxCardP[i]=cp;
       c.style.clipPath='inset(0 0 '+((1-maxCardP[i])*100).toFixed(2)+'% 0 round 24px)';
     });
   }
   function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(read); } }
-  window.addEventListener('scroll',onScroll,{passive:true});
+  TCScroll.on(onScroll);                             // rueda dentro del embed, scroll fuera
   window.addEventListener('resize',onScroll,{passive:true});
   window.addEventListener('tc:intro-done',onScroll);   // track collapse moves positions
   read();
@@ -1264,8 +1354,8 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
   var tick=false;
   function readTitle(){
     tick=false;
-    var r=title.getBoundingClientRect(), vh=window.innerHeight;
-    var p=(vh*0.94-r.top)/(vh*0.42);              // 0 al asomar, 1 ya asentado
+    var rt=TCScroll.top(title), vh=TCScroll.vh();
+    var p=(vh*0.94-rt)/(vh*0.42);                 // 0 al asomar, 1 ya asentado
     p=p<0?0:p>1?1:p;
     p=1-Math.pow(1-p,3);                          // ease-out cúbico
     title.style.setProperty('--tsc',(0.74+0.26*p).toFixed(4));
@@ -1273,7 +1363,7 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
   function onScroll(){ if(!tick){ tick=true; requestAnimationFrame(readTitle); } }
   if(slow){ title.style.setProperty('--tsc','1'); }
   else{
-    window.addEventListener('scroll',onScroll,{passive:true});
+    TCScroll.on(onScroll);                        // rueda dentro del embed, scroll fuera
     window.addEventListener('resize',onScroll,{passive:true});
     window.addEventListener('tc:intro-done',onScroll);   // el track colapsa y todo sube
     readTitle();

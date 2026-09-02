@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ver como se vera en Wix — TradeCorp</title>
+<!--
+  Banco de pruebas. Reproduce la condicion que rompe las animaciones: un iframe
+  tan alto como TODO el contenido, metido en una pagina que si se desplaza.
+  Dentro de ese iframe `100vh` son 3.092px y `scroll` no se dispara nunca.
+  Abrir esta pagina es la unica forma de ver en local lo que vera el visitante.
+-->
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#eae4d1;font:400 14px/1.5 system-ui,sans-serif;color:#382915}
+  /* Cabecera falsa, del alto de la de Wix (medido: ~110px). */
+  .cab{position:sticky;top:0;z-index:9;height:110px;display:flex;align-items:center;
+    justify-content:space-between;padding:0 40px;background:#eae4d1;
+    box-shadow:0 1px 0 rgba(56,41,21,.12)}
+  .cab b{font-size:17px;letter-spacing:-.3px}
+  .cab span{font-size:12.5px;opacity:.65}
+  .caja{width:100%;border:0;display:block}
+  .pie{padding:40px;text-align:center;font-size:12.5px;opacity:.6}
+  .aviso{max-width:760px;margin:0 auto;padding:14px 40px;font-size:13px;opacity:.75}
+</style>
+</head>
+<body>
+
+<div class="cab">
+  <b>cabecera falsa de Wix</b>
+  <span>110&nbsp;px — igual que la real</span>
+</div>
+
+<p class="aviso">
+  Debajo va el embed dentro de un iframe del alto exacto que le da Wix.
+  <b>Baja con la rueda o el trackpad</b>: el titulo de los ingredientes debe crecer
+  y la seccion verde debe desplegarse a medida que aparece.
+</p>
+
+<iframe class="caja" id="caja" src="home-entero.html" height="3092" title="Home"></iframe>
+
+<p class="pie">fin — aqui seguiria el pie de pagina de Wix</p>
+
+<script>
+  // El alto lo fija Michelle en Wix; aqui se lee de ?alto= para poder probar otros.
+  var m = /[?&]alto=(\d+)/.exec(location.search);
+  if (m) document.getElementById('caja').height = m[1];
+</script>
+</body>
+</html>

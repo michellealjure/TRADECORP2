@@ -468,11 +468,21 @@ def build_home_entero():
     # alto en px. No se pierde nada frente a las tres cajas: alli `100vh`
     # tampoco seguia la pantalla del visitante, seguia el alto que Michelle le
     # daba a la seccion — este es el mismo numero, escrito de forma explicita.
-    h = sin_costura(h, '.track,html.intro-auto .track,html.intro-collapsed .track,'
-                       'html:not(.intro-armed) .track{height:900px}\n'
-                       '@media (max-width:640px){.track,html.intro-auto .track,'
-                       'html.intro-collapsed .track,html:not(.intro-armed) .track'
-                       '{height:760px}}')
+    # OJO: no basta con fijar .track. El lienzo del intro es .stage, que lleva
+    # `height:100vh` propio, y dentro del iframe eso son 3.092px: .zoom (el SVG
+    # del logo) y .card (la caja verde del hero) heredan ese alto por `inset:0`.
+    # Resultado medido el 2026-09-02: el logo se dibujaba a 3,4x su tamano y el
+    # verde llenaba la pantalla entera. Se fijan LOS DOS al mismo numero.
+    # 780 y no 900: el contenido del hero termina en 719px (copy + banda de
+    # valores), asi que 900 dejaba 180px de crema muerta antes de
+    # "Our most requested ingredients" — el hueco que reporto Michelle.
+    ALTO, ALTO_MOVIL = 780, 760
+    _t = ('.track,html.intro-auto .track,html.intro-collapsed .track,'
+          'html:not(.intro-armed) .track')
+    h = sin_costura(h, '%s{height:%dpx}\n.stage{height:%dpx}\n'
+                       '@media (max-width:640px){%s{height:%dpx}\n'
+                       '.stage{height:%dpx}}'
+                       % (_t, ALTO, ALTO, _t, ALTO_MOVIL, ALTO_MOVIL))
     h, _n = enlaces_wix(h); h = enlaces_externos(h)
     h = rutas(h, 'raiz'); h = fuente_externa(h)
     h = titulo(h, 'TradeCorp')
