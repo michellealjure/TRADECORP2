@@ -193,6 +193,49 @@ def enlaces_wix(html):
     return html, len(re.findall(re.escape(WIX), html))
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Formularios de Wix
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Wix distingue dos tipos y se enlazan distinto:
+#   «Independiente» — tiene URL propia en wixforms.com, se enlaza a esa URL.
+#   «Sitio web»     — vive dentro de una pagina del sitio y NO tiene URL propia:
+#                     se enlaza a la pagina que lo contiene.
+# Se abre en pestaña nueva porque wixforms.com es otro dominio: el visitante
+# rellena, envia y vuelve al sitio sin haberlo perdido.
+FORMULARIOS = {
+    'Request a FREE sample': ('https://sebastian3428.wixforms.com/f/7500962626122286101',
+                              'target="_blank" rel="noopener"'),
+    # Pendientes de Michelle:
+    #   'Quote today'      -> es de tipo «Sitio web»: falta saber en que pagina esta
+    #   'Ask us anything'  -> es «Independiente»: falta su URL de wixforms.com
+}
+
+
+def enlaces_formularios(html):
+    """Reescribe los botones buscando por su TEXTO, no por su destino.
+
+    Los nueve botones de llamada a la accion del sitio apuntaban todos a
+    /contact, asi que el href no sirve para distinguir cual es cual. El texto
+    puede llevar etiquetas dentro (<b>FREE</b>), asi que se compara en limpio."""
+    n = 0
+    def uno(m):
+        tag, dentro = m.group(1), m.group(2)
+        limpio = re.sub(r'<[^>]+>', '', dentro)
+        limpio = re.sub(r'\s+', ' ', limpio).strip()
+        if limpio not in FORMULARIOS:
+            return m.group(0)
+        destino, attrs = FORMULARIOS[limpio]
+        tag = re.sub(r'\s*target="[^"]*"', '', tag)
+        tag = re.sub(r'\s*rel="[^"]*"', '', tag)
+        tag = re.sub(r'href="[^"]*"', 'href="' + destino + '"', tag)
+        cuenta[0] += 1
+        return '<a ' + attrs + tag[2:] + dentro + '</a>'
+    cuenta = [0]
+    html = re.sub(r'(<a\b[^>]*>)(.*?)</a>', uno, html, flags=re.S)
+    return html, cuenta[0]
+
+
 def enlaces_externos(html):
     """WhatsApp abre en pestaña nueva; no tiene sentido sacar al visitante del
     sitio. mailto: y sms: van con _top porque desde un iframe pueden quedar
@@ -302,7 +345,7 @@ def build_contact():
     # El titulo y los dos botones los pone Michelle en Wix.
     h = quitar(h, '<header class="head">', 'header')
     h = rutas(h, 'sub'); h = fuente_externa(h)
-    h, _n = enlaces_wix(h); h = enlaces_externos(h)
+    h, _n = enlaces_wix(h); h, _f = enlaces_formularios(h); h = enlaces_externos(h)
     h = titulo(h, 'Contact — TradeCorp')
     return cabecera(h, 'contact')
 
@@ -313,7 +356,7 @@ def build_ingredients():
     # El titulo lo pone Michelle en Wix.
     h = quitar(h, '<h1 class="title">', 'h1')
     h = rutas(h, 'sub'); h = fuente_externa(h)
-    h, _n = enlaces_wix(h); h = enlaces_externos(h)
+    h, _n = enlaces_wix(h); h, _f = enlaces_formularios(h); h = enlaces_externos(h)
     h = titulo(h, 'Ingredients — TradeCorp')
     return cabecera(h, 'ingredients')
 
@@ -364,7 +407,7 @@ def build_about():
     h = quitar(h, '<div class="abA-end">', 'div')
     h = sin_listeners_muertos(h); h = sin_css_conmutadores(h)
     h = rutas(h, 'about'); h = fuente_externa(h)
-    h, _n = enlaces_wix(h); h = enlaces_externos(h)
+    h, _n = enlaces_wix(h); h, _f = enlaces_formularios(h); h = enlaces_externos(h)
     h = titulo(h, 'Who we are — TradeCorp')
     return cabecera(h, 'about')
 
@@ -408,7 +451,7 @@ def build_home_1():
     h = quitar(h, '<section class="why"', 'section')
     h = sin_costura(h, '.track{padding-bottom:0}')
     h = rutas(h, 'raiz'); h = fuente_externa(h)
-    h, _n = enlaces_wix(h); h = enlaces_externos(h)
+    h, _n = enlaces_wix(h); h, _f = enlaces_formularios(h); h = enlaces_externos(h)
     h = titulo(h, 'TradeCorp')
     return cabecera(h, 'home-1')
 
@@ -425,7 +468,7 @@ def build_home_2():
     h = sin_costura(h, '.ingredients{padding-top:0}\n.why{padding-bottom:0}')
     h = autoplay_home2(h)
     h = rutas(h, 'raiz'); h = fuente_externa(h)
-    h, _n = enlaces_wix(h); h = enlaces_externos(h)
+    h, _n = enlaces_wix(h); h, _f = enlaces_formularios(h); h = enlaces_externos(h)
     h = titulo(h, 'Our ingredients — TradeCorp')
     return cabecera(h, 'home-2')
 
@@ -449,7 +492,7 @@ def build_home_3():
     h = sin_guion(h, GUION_INTRO)          # aqui no hay hero que animar
     h = sin_costura(h, '.why{padding-top:0}')
     h = rutas(h, 'raiz'); h = fuente_externa(h)
-    h, _n = enlaces_wix(h); h = enlaces_externos(h)
+    h, _n = enlaces_wix(h); h, _f = enlaces_formularios(h); h = enlaces_externos(h)
     h = titulo(h, 'Trusted partners — TradeCorp')
     return cabecera(h, 'home-3')
 
@@ -485,7 +528,7 @@ def build_home_entero():
                        '@media (max-width:640px){%s{height:%dpx}\n'
                        '.stage{height:%dpx}}'
                        % (_t, ALTO, ALTO, _t, ALTO_MOVIL, ALTO_MOVIL))
-    h, _n = enlaces_wix(h); h = enlaces_externos(h)
+    h, _n = enlaces_wix(h); h, _f = enlaces_formularios(h); h = enlaces_externos(h)
     h = rutas(h, 'raiz'); h = fuente_externa(h)
     h = titulo(h, 'TradeCorp')
     return cabecera(h, 'home-entero')
