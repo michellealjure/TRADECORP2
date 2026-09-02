@@ -225,8 +225,9 @@ FORMULARIOS = {
     # About: «...have a question? Send us an email or fill out the form.»
     # La frase pregunta, asi que el formulario que toca es el de preguntas.
     'fill out the form': (_F_PREGUNTA, _NUEVA_PESTANA, 'pregunta'),
-    # Catalogo: quien pulsa esto ya vio los 39 ingredientes y quiere hablar.
-    'Get in touch': (_F_PREGUNTA, _NUEVA_PESTANA, 'pregunta'),
+    # 'Get in touch' NO va aqui a proposito (decision de Michelle, 2026-09-02):
+    # lleva a la seccion de Contact, no a un formulario. Su href original ya
+    # apunta a la pagina de contacto, asi que basta con no mapearlo.
     # Mismo formulario que 'Ask us anything', con otro texto: en el catalogo el
     # boton dice «Can't find it?» porque la persona acaba de buscar algo que no
     # esta. Como el mapa reescribe por TEXTO, necesita su propia entrada.
