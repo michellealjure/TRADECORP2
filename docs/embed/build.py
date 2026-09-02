@@ -203,12 +203,27 @@ def enlaces_wix(html):
 #                     se enlaza a la pagina que lo contiene.
 # Se abre en pestaña nueva porque wixforms.com es otro dominio: el visitante
 # rellena, envia y vuelve al sitio sin haberlo perdido.
+_NUEVA_PESTANA = 'target="_blank" rel="noopener"'
+
+# URL de cada formulario, verificada abriendola: el <title> de la pagina es el
+# nombre del formulario en Wix («Free Sample v1», «Ask us anything», «Quote today»).
+_F_MUESTRA = 'https://sebastian3428.wixforms.com/f/7500962626122286101'
+_F_PREGUNTA = 'https://sebastian3428.wixforms.com/f/7500968954295223311'
+_F_COTIZACION = 'https://sebastian3428.wixforms.com/f/7500994361040045086'
+
 FORMULARIOS = {
-    'Request a FREE sample': ('https://sebastian3428.wixforms.com/f/7500962626122286101',
-                              'target="_blank" rel="noopener"'),
-    # Pendientes de Michelle:
-    #   'Quote today'      -> es de tipo «Sitio web»: falta saber en que pagina esta
-    #   'Ask us anything'  -> es «Independiente»: falta su URL de wixforms.com
+    'Quote today': (_F_COTIZACION, _NUEVA_PESTANA),
+    'Request a FREE sample': (_F_MUESTRA, _NUEVA_PESTANA),
+    'Ask us anything': (_F_PREGUNTA, _NUEVA_PESTANA),
+    # About: «...have a question? Send us an email or fill out the form.»
+    # La frase pregunta, asi que el formulario que toca es el de preguntas.
+    'fill out the form': (_F_PREGUNTA, _NUEVA_PESTANA),
+    # Catalogo: quien pulsa esto ya vio los 39 ingredientes y quiere hablar.
+    'Get in touch': (_F_PREGUNTA, _NUEVA_PESTANA),
+    # Mismo formulario que 'Ask us anything', con otro texto: en el catalogo el
+    # boton dice «Can't find it?» porque la persona acaba de buscar algo que no
+    # esta. Como el mapa reescribe por TEXTO, necesita su propia entrada.
+    "Can't find it? Ask us": (_F_PREGUNTA, _NUEVA_PESTANA),
 }
 
 
