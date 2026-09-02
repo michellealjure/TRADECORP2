@@ -1,7 +1,7 @@
 {
  "Ashwagandha": {
   "descripcion": "Brown colored powder",
-  "secado": "Not more than 6.0% w/w (dried at 105 C)",
+  "secado": "Not more than 6.0% w/w (dried at 105 °C)",
   "densidad": null,
   "cenizas": "Not more than 20.0% w/w",
   "solubilidad": "Not less than 80%w/w",
@@ -16,7 +16,7 @@
  },
  "Bacopa Monnieri": {
   "descripcion": "Brown colored powder",
-  "secado": "Not more than 6.0% w/w (dried at 105°C)",
+  "secado": "Not more than 6.0% w/w (dried at 105 °C)",
   "densidad": "Between 0.40 g/ml and 0.80 g/ml",
   "cenizas": "Not more than 20.0% w/w",
   "solubilidad": "Not less than 80.0% w/w",
@@ -31,7 +31,7 @@
  },
  "Berberis Aristata": {
   "descripcion": "Yellow colored powder",
-  "secado": "Not more than 8.0% w/w (dried at 105\\272C)",
+  "secado": "Not more than 8.0% w/w (dried at 105 °C)",
   "densidad": "Between 0.40 g/ml and 0.80 g/ml",
   "cenizas": "Not more than 10.0% w/w",
   "solubilidad": null,
@@ -46,7 +46,7 @@
  },
  "Boswellia Serrata": {
   "descripcion": "Off white color powder",
-  "secado": "Not more than 6% w/w (dried at 105\\272C)",
+  "secado": "Not more than 6% w/w (dried at 105 °C)",
   "densidad": "Between 0.40 g/ml and 0.80 g/ml",
   "cenizas": "Not more than 20% w/w",
   "solubilidad": null,
@@ -61,7 +61,7 @@
  },
  "Green Tea": {
   "descripcion": "Reddish brown colored powder",
-  "secado": "Not more than 6.0% w/w (dried at 105\\272C)",
+  "secado": "Not more than 6.0% w/w (dried at 105 °C)",
   "densidad": "Between 0.40 g/ml and 0.80 g/ml",
   "cenizas": "Not more than 20.0% w/w",
   "solubilidad": "Not less than 80.0% w/w",
@@ -76,7 +76,7 @@
  },
  "Centella Asiatica": {
   "descripcion": "Brown colored powder",
-  "secado": "Not more than 6.0% w/w (dried at 105\\272C)",
+  "secado": "Not more than 6.0% w/w (dried at 105 °C)",
   "densidad": "Between 0.40 g/ml and 0.80 g/ml",
   "cenizas": "Not more than 20.0% w/w",
   "solubilidad": "Not less than 80.0% w/w",
@@ -91,7 +91,7 @@
  },
  "Cissus Quadrangularis": {
   "descripcion": "Brown colored powder",
-  "secado": "Not more than 6.0% w/w (dried at 105\\272C)",
+  "secado": "Not more than 6.0% w/w (dried at 105 °C)",
   "densidad": "Between 0.40 g/ml and 0.80 g/ml",
   "cenizas": "Not more than 20.0% w/w",
   "solubilidad": "Not less than 80.0% w/w",
@@ -106,7 +106,7 @@
  },
  "Guggul": {
   "descripcion": "Creamish colored powder",
-  "secado": "Not more than 6.0% w/w (dried at 105\\272C)",
+  "secado": "Not more than 6.0% w/w (dried at 105 °C)",
   "densidad": "Between 0.40 g/ml and 0.80 g/ml",
   "cenizas": null,
   "solubilidad": null,
@@ -121,7 +121,7 @@
  },
  "Fenugreek": {
   "descripcion": "Brown colored powder",
-  "secado": "Not more than 6.0% w/w (dried at 105\\272C)",
+  "secado": "Not more than 6.0% w/w (dried at 105 °C)",
   "densidad": "Between 0.40 g/ml and 0.80 g/ml",
   "cenizas": "Not more than 20.0% w/w",
   "solubilidad": "Not less than 80.0% w/w",
@@ -136,7 +136,7 @@
  },
  "Garcinia Cambogia": {
   "descripcion": "Off white colored powder",
-  "secado": "Not more than 6.0% w/w (dried at 105\\272C)",
+  "secado": "Not more than 6.0% w/w (dried at 105 °C)",
   "densidad": "Between 0.40 g/ml and 0.80 g/ml",
   "cenizas": "Not more than 20.0% w/w",
   "solubilidad": null,
@@ -151,7 +151,7 @@
  },
  "Licorice": {
   "descripcion": "Brown colored powder",
-  "secado": "Not more than 6.0% w/w (dried at 105\\272C)",
+  "secado": "Not more than 6.0% w/w (dried at 105 °C)",
   "densidad": "Between 0.40 g/ml and 0.80 g/ml",
   "cenizas": "Not more than 20.0% w/w",
   "solubilidad": "Not less than 80.0% w/w",
@@ -166,7 +166,7 @@
  },
  "Karela": {
   "descripcion": "Brown colored powder",
-  "secado": "Not more than 6.0% w/w (dried at 105\\272C)",
+  "secado": "Not more than 6.0% w/w (dried at 105 °C)",
   "densidad": "Between 0.40 g/ml and 0.80 g/ml",
   "cenizas": "Not more than 20.0% w/w",
   "solubilidad": "Not less than 80.0% w/w",
@@ -181,7 +181,7 @@
  },
  "Neem": {
   "descripcion": "Brown colored powder",
-  "secado": "Not more than 6.0% w/w (dried at 105\\272C)",
+  "secado": "Not more than 6.0% w/w (dried at 105 °C)",
   "densidad": "Between 0.40 g/ml and 0.80 g/ml",
   "cenizas": "Not more than 20.0% w/w",
   "solubilidad": "Not less than 80.0% w/w",
@@ -196,7 +196,7 @@
  },
  "Tulsi": {
   "descripcion": "Brown colored powder",
-  "secado": "Not more than 6.0% w/w (dried at 105\\272C)",
+  "secado": "Not more than 6.0% w/w (dried at 105 °C)",
   "densidad": "Between 0.40 g/ml and 0.80 g/ml",
   "cenizas": "Not more than 20.0% w/w",
   "solubilidad": "Not less than 80.0% w/w",
@@ -211,7 +211,7 @@
  },
  "Arjuna": {
   "descripcion": "Brown colored powder",
-  "secado": "Not more than 6.0% w/w (dried at 105\\272C)",
+  "secado": "Not more than 6.0% w/w (dried at 105 °C)",
   "densidad": "Between 0.40 g/ml and 0.80 g/ml",
   "cenizas": "Not more than 20.0% w/w",
   "solubilidad": "Not less than 80.0% w/w",
@@ -226,7 +226,7 @@
  },
  "Tribulus Terrestris": {
   "descripcion": "Brown colored powder",
-  "secado": "Not more than 6.0% w/w (dried at 105\\272C)",
+  "secado": "Not more than 6.0% w/w (dried at 105 °C)",
   "densidad": "Between 0.40 g/ml and 0.80 g/ml",
   "cenizas": "Not more than 20.0% w/w",
   "solubilidad": "Not less than 80.0% w/w",
@@ -241,7 +241,7 @@
  },
  "Triphala": {
   "descripcion": "Brown colored powder",
-  "secado": "Not more than 6.0% w/w (dried at 105\\272C)",
+  "secado": "Not more than 6.0% w/w (dried at 105 °C)",
   "densidad": "Between 0.40 g/ml and 0.80 g/ml",
   "cenizas": "Not more than 20.0% w/w",
   "solubilidad": "Not less than 80.0% w/w",
@@ -256,7 +256,7 @@
  },
  "Shilajit": {
   "descripcion": "Brown colored powder",
-  "secado": "Not more than 6.0% w/w3.96% w/wTapped bulk densityBetween 0.40 g/ml and 0.80 g/ml0.67 g/ mlUSP <616>Sieve Test (Passes through)",
+  "secado": "Not more than 6.0% w/w",
   "densidad": "Between 0.40 g/ml and 0.80 g/ml",
   "cenizas": "Not more than 10.0% w/w",
   "solubilidad": "Not less than 80.0% w/w",

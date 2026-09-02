@@ -19,8 +19,8 @@ _backups/
 # Candidatos de video e imagen descartados (16 MB que no referencia ninguna pagina)
 docs/assets/_prev-*
 
-# Fichas tecnicas del proveedor: 50 MB, y publicarlas es una decision de Michelle
-# (el repo es publico, asi que quedarian descargables por cualquiera).
+# La carpeta de origen de Michelle no viaja: las 26 fichas que SI se publican
+# viven en docs/specs/, ya renombradas y sin duplicados (18,6 MB en vez de 50).
 Technical Sheets/
 
 # Configuracion local de la herramienta

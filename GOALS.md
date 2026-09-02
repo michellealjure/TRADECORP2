@@ -2753,3 +2753,50 @@ en vez de añadir una excepción a `IMG_FIX`: ese mapa es para desajustes reales
 del catálogo, no para los que uno mismo acaba de crear.
 
 Verificado con las 39 tarjetas: 39 fotos distintas, **ningún 404**.
+
+### Las fichas, publicadas en GitHub (2026-08-31)
+
+Michelle eligió publicarlas abiertamente, sabiendo que el repo es público y que
+**quedan descargables por cualquiera, competencia incluida**.
+
+**26 PDF en `docs/specs/`, 18,6 MB** — sólo los que se enlazan: sin duplicados y
+sin los 4 de productos que no están en el catálogo. Nombres limpios derivados del
+producto (`ashwagandha.pdf`, `moringa-10-saponins.pdf`). El mapa vive en
+`docs/data/fichas.py` → `fichas.json`.
+
+**La ficha se busca por VARIANTE y luego por producto.** Colágeno y moringa tienen
+una por graduación; Ashwagandha, Guggul, Karela, Arjuna, Tribulus, Triphala,
+Bromelain y Shilajit comparten una entre sus dos.
+
+**34 de 48 filas con enlace**, 26 PDF distintos, todos `target="_blank"`,
+**ninguno da 404**. Las 14 filas sin ficha **no pintan enlace**: uno muerto es
+peor que ninguno, y el panel de Product info ya ofrece pedirla.
+
+**Sin ficha a propósito:** Amla 30% y Bhumi Amla, porque el único PDF que les
+tocaría es el que se contradice a sí mismo.
+
+### Tres bugs encontrados al conectar las fichas
+
+**1. `FICHAS` llegaba `undefined`.** Se declaraba en un bloque `<script>`
+posterior al que pinta las tarjetas. `var` iza la declaración pero no la
+asignación, y entre bloques distintos ni eso. Movida junto al código que la usa.
+
+**2. El «Loss on drying» del Shilajit arrastraba media tabla.** El patrón exigía
+un paréntesis de cierre que ese COA no trae, así que la captura seguía hasta
+comerse las filas siguientes: se leía «Not more than 6.0% w/w3.96% w/wTapped bulk
+densityBetween 0.40 g/ml…». Corregido en los datos y en el extractor.
+
+**3. Mojibake del grado centígrado.** 16 fichas mostraban `105\272C` — el símbolo
+de grado en latin1 sin convertir. Normalizado a `105 °C`, incluidos los COA que
+lo escribían sin símbolo.
+
+### Erratas del proveedor detectadas en los datos (no corregidas)
+
+Están en los COA, así que corregirlas en la web las desalinearía del documento:
+
+- **Berberis Aristata:** su COA declara el botánico ***Coscinium fenestratum***,
+  que es otra planta. Las dos son fuentes de berberina, pero no son lo mismo.
+- **Karela:** «Momordika charantia» → lo correcto es *Momordi**c**a*.
+- **Bacopa:** «Baccopa monnieri» → *Bacopa*, con una sola c.
+
+Vale la pena reclamárselas junto con la del Amla.

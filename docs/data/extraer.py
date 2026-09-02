@@ -21,13 +21,16 @@ def limpia(v):
     v=v.replace('0C','°C').replace('1050C','105°C')
     # el proveedor escribe en ingles britanico; el sitio es americano
     v=v.replace('coloured','colored')
+    v=re.sub(r'(\d+)\s*[°º]?\s*C\b', r'\1 °C', v)   # 105C / 105 C / 105ºC -> 105 °C
     v=re.sub(r'\s+',' ',v).strip(' .,')
     return v or None
 
 def parse(t):
     d={}
     d['descripcion']  = limpia(uno(r'Description([A-Za-z ]+?powder)', t))
-    d['secado']       = limpia(uno(r'Loss on drying(Not more than [\d.]+ ?% ?w/w[^)]*\))', t))
+    # El patron antiguo exigia un parentesis de cierre. El COA del Shilajit no
+    # lo trae, asi que la captura se comia las filas siguientes de la tabla.
+    d['secado']       = limpia(uno(r'Loss on drying(Not more than [\d.]+ ?% ?w/w(?: \(dried at [^)]*\))?)', t))
     d['densidad']     = limpia(uno(r'Tapped bulk density(Between [\d.]+ ?g/ ?ml and [\d.]+ ?g/ ?ml)', t))
     d['cenizas']      = limpia(uno(r'Ash Content(Not more than [\d.]+ ?% ?w/w)', t))
     d['solubilidad']  = limpia(uno(r'Water soluble \([^)]*\)(Not less than [\d.]+ ?% ?w/w)', t))
