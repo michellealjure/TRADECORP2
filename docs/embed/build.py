@@ -103,8 +103,15 @@ def sin_andamiaje(html):
                    ('<div id="ship-tog"', 'div'),
                    ('<div id="ab-tog"', 'div')]:
         html = quitar(html, ap, et, obligatorio=False)
-    # el <style> suelto del sello
-    html = re.sub(r'<style>#prev-badge\{[^<]*</style>\s*', '', html)
+    # El <style> suelto del sello.
+    # OJO: antes esto borraba de '<style>#prev-badge{' hasta el primer '</style>',
+    # y en ingredients/_prev.html ese <style> NO cierra tras la regla del sello:
+    # sigue con todo el CSS del panel de «Product info». Se llevaba 19 reglas por
+    # delante, entre ellas los dos `position:absolute` de .pf-panel y .pf-scrim,
+    # asi que en Wix el panel caia al final del catalogo — a 8.155px, invisible.
+    # Ahora se borra SOLO la regla del sello, y despues el <style> si quedo vacio.
+    html = re.sub(r'<style>#prev-badge\{[^}]*\}', '<style>', html)
+    html = re.sub(r'<style>\s*</style>\s*', '', html)
     return html
 
 

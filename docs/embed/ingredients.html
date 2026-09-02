@@ -844,6 +844,59 @@ var SPECS = {"Ashwagandha":{"descripcion":"Brown colored powder","secado":"Not m
 })();
 </script>
 
+<style>
+/* ═════ Panel de "Product info" ═════
+   Se abre DEBAJO de la fila de tarjetas, a todo el ancho, empujando las filas
+   siguientes. Va en el flujo del documento a proposito: un modal con
+   position:fixed se ancla al IFRAME, no a la ventana, y dentro de un embed de
+   Wix de varios miles de pixeles de alto se dibujaria fuera de la vista.
+   `grid-row:auto/span 1` + `align-self:start` lo saca del igualado de
+   grid-auto-rows:1fr, que si no lo estiraria al alto de una tarjeta. */
+/* Flota sobre la reja, anclado con `absolute` a la propia reja — NO con
+   `fixed`. Dentro de un iframe `fixed` se ancla al iframe entero, asi que en un
+   embed de Wix de varios miles de pixeles el panel se dibujaria fuera de la
+   vista. Y `scrollIntoView` tampoco vale: haria scroll DEL IFRAME, no de la
+   pagina de Wix, que es la que de verdad se desplaza.
+   Se abre a la altura de la tarjeta pulsada, asi que siempre nace en pantalla. */
+.pf-scrim{position:absolute;inset:0;z-index:30;background:rgba(48,34,16,.22);
+  opacity:0;transition:opacity .3s var(--ease-out);cursor:pointer}
+.pf-scrim.abierto{opacity:1}
+.pf-panel{position:absolute;left:0;right:0;z-index:40;
+  opacity:0;transform:translateY(-8px) scale(.985);transform-origin:50% 0;
+  transition:opacity .26s var(--ease-out),transform .32s var(--ease-out)}
+.pf-panel.abierto{opacity:1;transform:none}
+.pf-panel-in{background:#fff;border-radius:14px;
+  box-shadow:0 2px 6px rgba(48,34,16,.10),0 22px 60px rgba(48,34,16,.22);
+  padding:clamp(20px,2.4vw,32px)}
+.pf-panel-top{display:flex;align-items:baseline;gap:16px;margin-bottom:20px}
+.pf-panel-top h3{font-family:var(--font-display);font-weight:500;
+  font-size:var(--t-md);letter-spacing:var(--track-tight);color:var(--cafe);
+  margin:0;flex:1 1 auto}
+.pf-panel-x{border:0;background:transparent;cursor:pointer;padding:6px;
+  font-family:var(--font-body);font-size:var(--t-xs);color:var(--cafe);
+  opacity:.6;text-decoration:underline}
+.pf-panel-x:hover{opacity:1}
+.pf-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:clamp(18px,2.4vw,36px)}
+.pf-grp h4{font-family:var(--font-display);font-weight:500;font-size:var(--t-xs);
+  letter-spacing:.08em;text-transform:uppercase;color:var(--oliva);
+  margin:0 0 10px;padding-bottom:8px;border-bottom:1px solid rgba(48,34,16,.18)}
+.pf-grp dl{margin:0;display:grid;grid-template-columns:auto 1fr;
+  gap:7px clamp(10px,1.2vw,18px);align-items:baseline}
+.pf-grp dt{font-family:var(--font-small);font-size:var(--t-xs);color:var(--gris);
+  white-space:nowrap}
+.pf-grp dd{margin:0;font-family:var(--font-body);font-size:var(--t-xs);
+  color:var(--cafe);line-height:1.4}
+.pf-desc-larga{font-family:var(--font-body);font-weight:300;
+  font-size:var(--t-sm);line-height:1.6;color:var(--cafe);
+  margin:0;max-width:68ch}
+.pf-desc-larga b{font-weight:500}
+.pf-panel-nota{font-family:var(--font-body);font-size:var(--t-xs);color:var(--gris);
+  margin:18px 0 0;padding-top:14px;border-top:1px solid rgba(48,34,16,.12)}
+.pf-panel-nota a{color:var(--oliva)}
+.pf-info[aria-expanded="true"]{opacity:1;font-weight:500}
+@media (max-width:560px){.pf-cols{grid-template-columns:1fr}}
+</style>
 <script src="../assets/tcscroll.js"></script>
 </body>
 </html>
