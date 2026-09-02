@@ -79,7 +79,13 @@ body{font-family:var(--font-body)}
 .track{height:250vh;position:relative}
 .stage{position:sticky;top:0;height:100vh;overflow:hidden;background:var(--crema)}
 
-.zoom{position:absolute;inset:0;z-index:3}
+/* pointer-events:none es OBLIGATORIO, no cosmetico. .zoom es el lienzo del
+   intro y va en z-index:3, encima de .card (z-index:2), que es donde viven
+   los botones del hero. Terminado el intro se queda con opacidad 0 — pero
+   opacidad 0 NO desactiva los clics, asi que seguia tragandoselos todos y
+   ni «Request a FREE sample» ni «Explore our ingredients» hacian nada.
+   .mark ya lo llevaba; esto se habia quedado sin poner. */
+.zoom{position:absolute;inset:0;z-index:3;pointer-events:none}
 .zoom svg{width:100%;height:100%;display:block}
 
 .card{position:absolute;inset:0;background:var(--oliva);overflow:hidden;opacity:0;z-index:2;
