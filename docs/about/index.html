@@ -13,10 +13,29 @@
     --oliva:#424f25;
     --salvia:#a6bf85;
     --crema:#eae4d1;
+    --pin-red:#b0392a;          /* map-pin only — not a brand colour */
+    --pin-red-on-dark:#ff6a4d;  /* same pin, lifted to read against the video scrim */
     --cafe:#382915;
     --font-display:'Poppins',system-ui,sans-serif;
     --font-body:'Kanit','Poppins',system-ui,sans-serif;
     --font-small:'AvenirLight',system-ui,sans-serif;
+
+    /* type scale — 1.25 step; lands on 14/17/21/27/34/50 at 1440px */
+    --t-xs:clamp(13px,.97vw,15px);
+    --t-sm:clamp(15px,1.18vw,19px);
+    --t-base:clamp(17px,1.46vw,23px);
+    --t-md:clamp(20px,1.875vw,30px);
+    --t-lg:clamp(24px,2.36vw,38px);
+    --t-xl:clamp(30px,3.47vw,54px);
+
+    /* motion — art-directed, never the browser default */
+    --ease-out:cubic-bezier(.16,1,.3,1);
+    --ease-io:cubic-bezier(.65,0,.35,1);
+    --ease-hover:cubic-bezier(.3,0,.2,1);
+
+    /* optical tracking */
+    --track-display:-.03em;
+    --track-tight:-.02em;
     --pad-x:clamp(20px,6vw,64px);
   }
   *,*::before,*::after{box-sizing:border-box}
@@ -30,7 +49,7 @@
   .section-title{
     font-family:var(--font-display);
     font-weight:500;
-    font-size:clamp(32px,4vw,50px);
+    letter-spacing:var(--track-display);font-size:var(--t-xl);
     line-height:1.1;
     color:var(--cafe);
     margin:0;
@@ -42,18 +61,18 @@
   /* ═══════════ SECTION 1 — Who we are ═══════════ */
   .who-grid{
     display:grid;
-    grid-template-columns:1.05fr .95fr;
+    grid-template-columns:.86fr 1.14fr;
     column-gap:clamp(32px,5vw,72px);
     align-items:center;
   }
   .who-left{min-width:0}
   .who-media{min-width:0;align-self:center}
 
-  .who-text .section-title{margin-bottom:clamp(14px,1.8vw,22px)}
+  .who-text .section-title{margin-bottom:clamp(16px,1.8vw,24px)}
   .hero-phrase{
     font-family:var(--font-display);
     font-weight:500;
-    font-size:clamp(24px,2.9vw,38px);
+    letter-spacing:var(--track-display);font-size:var(--t-lg);
     line-height:1.15;
     color:var(--cafe);
     margin:0 0 clamp(16px,2vw,24px);
@@ -61,10 +80,10 @@
   .who-body{
     font-family:var(--font-body);
     font-weight:300;
-    font-size:clamp(15px,1.4vw,18px);
+    font-size:var(--t-base);
     line-height:1.6;
     color:var(--cafe);
-    margin:0 0 14px;
+    margin:0 0 16px;
     max-width:46ch;
   }
   .who-body.closing{margin-bottom:0}
@@ -72,31 +91,41 @@
   /* Pillars */
   .who-pillars{
     margin-top:clamp(28px,4vw,44px);
-    padding-top:clamp(22px,3vw,32px);
+    padding-top:clamp(24px,3vw,32px);
     border-top:1px solid var(--salvia);
   }
   .pillars-row{
     display:grid;
     grid-template-columns:repeat(3,1fr);
-    gap:clamp(14px,2vw,28px);
+    gap:clamp(16px,2vw,28px);
   }
   .pillar{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    text-align:center;
-    gap:10px;
+    position:relative;
+    display:block;
+    text-align:left;
+    padding-top:clamp(16px,1.8vw,20px);
     color:var(--oliva);
-    opacity:0;transform:translateY(12px);
-    transition:opacity .55s ease, transform .55s cubic-bezier(.16,1,.3,1);
-    transition-delay:calc(var(--i,0)*.14s);
+    opacity:0;transform:translateY(14px);
+    transition:opacity .6s var(--ease-out), transform .6s var(--ease-out);
+    transition-delay:calc(var(--i,0)*.15s);
   }
+  /* the rule DRAWS in from the left — more presence than a plain fade */
+  .pillar::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:2px;
+    background:var(--oliva);
+    transform:scaleX(0);transform-origin:left center;
+    transition:transform .85s var(--ease-out);
+    transition-delay:calc(var(--i,0)*.15s + .05s);
+  }
+  .who-pillars.in-view .pillar::before{transform:scaleX(1)}
   .who-pillars.in-view .pillar{opacity:1;transform:none}
-  .pillar svg{width:32px;height:32px}
-  .pillar-label{
+    .pillar-label{
+    display:block;
     font-family:var(--font-display);
     font-weight:500;
-    font-size:clamp(13px,1.2vw,16px);
+    font-size:var(--t-md);
+    letter-spacing:-.02em;
+    line-height:1.1;
     color:var(--oliva);
   }
 
@@ -110,33 +139,35 @@
   .who-caption{
     font-family:var(--font-display);
     font-weight:500;
-    font-size:clamp(18px,2vw,26px);
+    letter-spacing:var(--track-tight);font-size:var(--t-md);
     line-height:1.25;
     color:var(--oliva);
-    margin:clamp(16px,1.8vw,22px) 0 0;
-  }
-  .who-loc{
-    display:flex;align-items:center;gap:8px;
-    margin-top:8px;
-  }
-  .who-loc svg{width:24px;height:24px;flex:0 0 auto}
-  .who-loc span{
-    font-family:var(--font-display);
-    font-weight:400;
-    font-size:clamp(18px,2vw,26px);
-    color:var(--cafe);
+    margin:clamp(16px,1.8vw,24px) 0 0;
   }
 
   /* Video (replaces the trucks photo) */
-  .who-vidwrap{position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:var(--salvia)}
-  .who-vidwrap .who-video{width:100%;height:100%;display:block;object-fit:cover;border-radius:0;aspect-ratio:auto;transform:scale(1.16) translateY(3%);transform-origin:center}
+  .who-vidwrap{position:relative;aspect-ratio:4/3;border-radius:16px;overflow:hidden;background:var(--salvia)}
+  /* scrim so the overlaid city labels stay legible over any frame of the clip */
+  .who-vidwrap::after{content:'';position:absolute;inset:auto 0 0 0;height:48%;z-index:1;
+    background:linear-gradient(to top,rgba(24,18,10,.80),rgba(24,18,10,0));pointer-events:none}
+  .who-locs-on{position:absolute;z-index:2;left:clamp(16px,2.4vw,32px);right:clamp(16px,2.4vw,32px);
+    bottom:clamp(16px,2vw,24px);display:flex;gap:clamp(20px,2.6vw,36px);
+    align-items:center;flex-wrap:wrap;justify-content:center}
+  /* Framing is deliberate, not decorative: the source clip is AI-generated and carries
+   a 'KlingAI 3.0 Omni' watermark bottom-right plus a MALFORMED dock number between
+   10 and 12. This crop removes both — it keeps doors 07-10 (all legible) and the full
+   truck. Do not reset it to a neutral scale without re-checking those two artefacts. */
+  .who-vidwrap .who-video{width:100%;height:100%;display:block;object-fit:cover;border-radius:0;aspect-ratio:auto;transform:scale(1.52) translate(17.5%,4%);transform-origin:center}
 
   /* Two location maps (Atlanta + Miami) */
-  .who-maps{display:flex;gap:clamp(10px,1.4vw,16px);margin-top:clamp(14px,1.8vw,20px)}
-  .map-loc{flex:1 1 0;min-width:0;margin:0}
-  .map-embed{display:block;width:100%;height:clamp(150px,19vw,210px);border:0;border-radius:12px;background:var(--salvia)}
-  .map-label{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:10px;font-family:var(--font-small);font-size:clamp(12px,1.15vw,14px);color:var(--cafe)}
-  .map-label .pin-ico{width:15px;height:15px;color:var(--oliva);flex:0 0 auto}
+  
+.who-loc{margin:0;display:flex;align-items:center;gap:8px}
+  .pin-ico{width:clamp(21px,2.1vw,27px);height:clamp(21px,2.1vw,27px);
+    color:var(--pin-red-on-dark);flex:0 0 auto;stroke-width:1.9}
+.who-loc b{font-family:var(--font-display);font-weight:500;font-size:var(--t-lg);
+    letter-spacing:-.02em;color:#fff;line-height:1.15;text-shadow:0 1px 14px rgba(24,18,10,.5)}
+.who-locs-note{margin:clamp(12px,1.6vw,20px) 0 0;font-size:var(--t-sm);
+    color:var(--cafe);opacity:.78;line-height:1.6}
 
   /* ═══════════ SECTION 2 — How we work ═══════════ */
   .how-title{margin-bottom:clamp(28px,4vw,48px)}
@@ -153,7 +184,7 @@
     border-radius:16px;
     outline:none;
     box-shadow:0 4px 20px rgba(56,41,21,.06);
-    transition:box-shadow .2s ease;
+    transition:box-shadow .2s var(--ease-hover);
   }
   .flip-card:hover{box-shadow:0 16px 34px rgba(56,41,21,.13)}
   .flip-card:focus-visible{outline:2px solid var(--oliva);outline-offset:3px}
@@ -193,14 +224,14 @@
   .card-num{
     font-family:var(--font-display);
     font-weight:500;
-    font-size:clamp(18px,2vw,26px);
+    letter-spacing:var(--track-tight);font-size:var(--t-md);
     line-height:1;
-    margin-bottom:10px;
+    margin-bottom:12px;
   }
   .card-title{
     font-family:var(--font-display);
     font-weight:500;
-    font-size:clamp(18px,2vw,26px);
+    letter-spacing:var(--track-tight);font-size:var(--t-md);
     line-height:1.15;
     margin:0;
   }
@@ -208,8 +239,8 @@
   .back-inner .card-title{margin-bottom:16px}
   .card-desc{
     font-family:var(--font-small);
-    font-weight:300;
-    font-size:clamp(13px,1.2vw,15px);
+    font-weight:400;
+    font-size:var(--t-sm);
     line-height:1.5;
   }
   .card-desc p{margin:0}
@@ -233,7 +264,6 @@
   }
   @media (max-width:560px){
     .how-grid{grid-template-columns:1fr}
-    .who-maps{flex-direction:column}
     .flip-card{max-width:360px;margin-inline:auto;width:100%}
   }
 
@@ -247,7 +277,7 @@
   /* ── Reduced motion: cross-fade instead of rotating ── */
   @media (prefers-reduced-motion:reduce){
     .flip-inner{transform:none!important;transition:none}
-    .flip-face{transition:opacity 200ms ease}
+    .flip-face{transition:opacity 200ms var(--ease-out)}
     .flip-back{transform:none;backface-visibility:visible;opacity:0}
     .flip-front{opacity:1}
     .flip-card:hover .flip-back,
@@ -256,33 +286,32 @@
     .flip-card:focus-within .flip-front{opacity:0}
     .pillar,.card-desc a{transition:none}
     .pillar{opacity:1!important;transform:none!important;transition:none}
+  .pillar::before{transform:scaleX(1)!important;transition:none}
   }
   /* ── Site navigation (GitHub Pages) ── */
   .site-nav{position:sticky;top:0;z-index:2000;display:flex;align-items:center;justify-content:space-between;gap:16px;
-    padding:13px clamp(18px,5vw,64px);background:rgba(234,228,209,.9);
+    padding:12px clamp(16px,5vw,64px);background:rgba(234,228,209,.9);
     -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--salvia,#a6bf85)}
-  .site-nav__logo{font-family:var(--font-display,'Poppins',sans-serif);font-weight:700;font-size:clamp(17px,2vw,22px);
-    color:var(--oliva,#424f25);text-decoration:none;letter-spacing:-.01em;line-height:1}
-  .site-nav__logo span{color:var(--cafe,#382915)}
-  .site-nav__links{display:flex;gap:clamp(14px,2.6vw,34px);align-items:center}
-  .site-nav__links a{font-family:var(--font-display,'Poppins',sans-serif);font-weight:500;font-size:clamp(13px,1.35vw,16px);
-    color:var(--cafe,#382915);text-decoration:none;position:relative;padding:4px 0;transition:color .15s ease}
+  .site-nav__logo{display:inline-flex;align-items:center;text-decoration:none;line-height:0}
+  .site-nav__logo img{height:clamp(28px,3.4vw,36px);width:auto;display:block}
+  .site-nav__links{display:flex;gap:clamp(16px,2.6vw,32px);align-items:center}
+  .site-nav__links a{font-family:var(--font-display,'Poppins',sans-serif);font-weight:500;font-size:var(--t-sm);
+    color:var(--cafe,#382915);text-decoration:none;position:relative;padding:4px 0;transition:color .15s var(--ease-hover)}
   .site-nav__links a:hover{color:var(--oliva,#424f25)}
   .site-nav__links a.is-active{color:var(--oliva,#424f25)}
   .site-nav__links a.is-active::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:2px;background:var(--oliva,#424f25);border-radius:2px}
-  @media (max-width:520px){.site-nav{padding:10px 16px}.site-nav__links{gap:15px}}
+  @media (max-width:520px){.site-nav{padding:12px 16px}.site-nav__links{gap:16px}}
 </style>
 </head>
 <body>
 <nav class="site-nav">
-  <a class="site-nav__logo" href="../" aria-label="TradeCorp — home">trade <span>corp.</span></a>
+  <a class="site-nav__logo" href="../" aria-label="TradeCorp — home"><img src="../assets/logo-trade-corp.svg" alt="trade corp. investments"></a>
   <div class="site-nav__links">
     <a href="../ingredients/">Ingredients</a>
     <a href="../about/" class="is-active">About</a>
     <a href="../contact/">Contact</a>
   </div>
 </nav>
-
 
   <!-- ════════ SECTION 1 — Who we are ════════ -->
   <section class="section" aria-labelledby="who-title">
@@ -299,45 +328,29 @@
 
           <div class="who-pillars">
             <div class="pillars-row">
-              <div class="pillar" style="--i:0">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="5.2"/><path d="M12 6.4 12.68 8.07 14.47 8.2 13.09 9.36 13.53 11.1 12 10.15 10.47 11.1 10.91 9.36 9.53 8.2 11.32 8.07Z"/><path d="M9.4 13.6 8.2 21 12 19 15.8 21 14.6 13.6"/></svg>
-                <span class="pillar-label">Quality</span>
+              <div class="pillar" style="--i:0"><span class="pillar-label">Quality</span>
               </div>
-              <div class="pillar" style="--i:1">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.6 5 5.3v4.8c0 4.5 3 8.2 7 9.5 4-1.3 7-5 7-9.5V5.3L12 2.6Z"/><path d="m8.6 11.8 2.4 2.4 4.4-4.8"/></svg>
-                <span class="pillar-label">Reliability</span>
+              <div class="pillar" style="--i:1"><span class="pillar-label">Reliability</span>
               </div>
-              <div class="pillar" style="--i:2">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 16a8 8 0 0 1 16 0"/><path d="M12 16 16.6 10.3"/><circle cx="12" cy="16" r="1.15" fill="currentColor" stroke="none"/><path d="M4.2 15l1.4.5M12 8v1.5M19.8 15l-1.4.5"/></svg>
-                <span class="pillar-label">Speed</span>
+              <div class="pillar" style="--i:2"><span class="pillar-label">Speed</span>
               </div>
             </div>
           </div>
         </div>
 
         <figure class="who-media">
-          <div class="who-vidwrap"><video class="who-img who-video" autoplay muted loop playsinline preload="metadata"
-                 aria-label="TradeCorp logistics trucks on the road">
-            <!-- Wix: swap this src for your hosted video URL (https://...) -->
-            <source src="assets/who-trucks.mp4" type="video/mp4">
-          </video></div>
-          <figcaption class="who-caption">Strategically located warehouses:</figcaption>
-
-          <!-- Two Google Maps: Atlanta + Miami warehouses -->
-          <div class="who-maps">
-            <figure class="map-loc">
-              <iframe class="map-embed" title="TradeCorp warehouse — Atlanta, GA"
-                src="https://maps.google.com/maps?q=Atlanta,+GA&amp;z=10&amp;output=embed"
-                loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-              <figcaption class="map-label"><svg class="pin-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>Atlanta, GA</figcaption>
-            </figure>
-            <figure class="map-loc">
-              <iframe class="map-embed" title="TradeCorp warehouse — Miami, FL"
-                src="https://maps.google.com/maps?q=Miami,+FL&amp;z=10&amp;output=embed"
-                loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-              <figcaption class="map-label"><svg class="pin-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>Miami, FL</figcaption>
-            </figure>
+          <div class="who-vidwrap">
+            <video class="who-img who-video" autoplay muted loop playsinline preload="metadata"
+                   aria-label="TradeCorp logistics trucks on the road">
+              <!-- Wix: swap this src for your hosted video URL (https://...) -->
+              <source src="assets/who-trucks.mp4" type="video/mp4">
+            </video>
+            <div class="who-locs-on">
+              <span class="who-loc"><svg class="pin-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg><b>Miami, FL</b></span>
+              <span class="who-loc"><svg class="pin-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg><b>Atlanta, GA</b></span>
+            </div>
           </div>
+          <p class="who-locs-note">Two US warehouses, so stock ships from whichever sits closer.</p>
         </figure>
 
       </div>

@@ -1,0 +1,833 @@
+<!-- GENERADO por docs/embed/build.py desde el preview.
+     NO editar a mano: los cambios se pierden al regenerar.
+     Embed: ingredients -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ingredients — TradeCorp</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&family=Kanit:wght@300;400&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'AvenirLight';src:url(../assets/avenir-light.otf) format('truetype');font-weight:300;font-style:normal;font-display:swap;}
+  :root{
+    --oliva:#424f25;
+    --salvia:#a6bf85;
+    --crema:#eae4d1;
+    --cafe:#382915;
+    --font-display:'Poppins',system-ui,sans-serif;
+    --font-body:'Kanit','Poppins',system-ui,sans-serif;
+    --font-small:'AvenirLight',system-ui,sans-serif;
+
+    /* type scale — 1.25 step; lands on 14/17/21/27/34/50 at 1440px */
+    --t-xs:clamp(13px,.97vw,15px);
+    --t-sm:clamp(15px,1.18vw,19px);
+    --t-base:clamp(17px,1.46vw,23px);
+    --t-md:clamp(20px,1.875vw,30px);
+    --t-lg:clamp(24px,2.36vw,38px);
+    --t-xl:clamp(30px,3.47vw,54px);
+
+    /* motion — art-directed, never the browser default */
+    --ease-out:cubic-bezier(.16,1,.3,1);
+    --ease-io:cubic-bezier(.65,0,.35,1);
+    --ease-hover:cubic-bezier(.3,0,.2,1);
+
+    /* optical tracking */
+    --track-display:-.03em;
+    --track-tight:-.02em;
+
+    /* ===== Tokens unificados — auditoria del 2026-08-31 =====
+       Antes cada pagina definia los suyos. Los tres fallos que corrige:
+       - --content-max no existia en el About, asi que su contenedor crecia sin
+         tope (1920px de ancho en un monitor de 1920, contra 1180 del home);
+       - --pad-x se cruzaba entre home y About segun el ancho de ventana, asi que
+         el contenido se movia de sitio al navegar, y en direccion distinta segun
+         el tamano de la pantalla;
+       - el ritmo vertical iba en vh en el home y el About y en vw en las otras
+         dos, asi que en una ventana baja unas paginas se comprimian y otras no.
+         La escala --sp-* va toda en vw. */
+    --content-max:1180px;
+    --pad-x:clamp(20px,5vw,72px);
+    --sp-1:clamp(16px,2vw,28px);
+    --sp-2:clamp(28px,4vw,52px);
+    --sp-3:clamp(48px,6vw,80px);
+    --sp-4:clamp(72px,9vw,120px);
+    /* Derivados de marca. Sustituyen a los 20 colores sueltos que habia. */
+    --oliva-dark:#354c1f;
+    --crema-hi:#f3eede;
+    --crema-lo:#dbdcc0;
+    /* Un solo gris calido, 5,6:1 sobre blanco. Reemplaza a #8a7961 (4,21:1),
+       #9a9075 (3,17:1) y #b3ab98 (2,28:1), que no pasaban el minimo AA. */
+    --gris:#6f6252;
+    --pin:#b0392a;
+
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{background:transparent;margin:0}
+  body{font-family:var(--font-body);color:var(--cafe);-webkit-font-smoothing:antialiased}
+
+  .section{background:var(--crema);padding:var(--sp-3) 0}
+  .container{max-width:1200px;margin:0 auto;padding-inline:clamp(20px,5vw,48px)}
+
+  /* ── Header ── */
+  .eyebrow{
+    font-family:var(--font-display);font-weight:500;
+    font-size:var(--t-xs);letter-spacing:.16em;color:var(--oliva);
+    margin:0 0 8px;text-transform:uppercase;
+  }
+  .title{
+    font-family:var(--font-display);font-weight:400;
+    letter-spacing:var(--track-display);font-size:var(--t-xl);line-height:1.1;color:var(--cafe);
+    margin:0 0 clamp(24px,3.5vw,40px);
+  }
+
+  /* ── Filter bar ── */
+  .filter-bar{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:clamp(16px,2.5vw,28px);flex-wrap:wrap;
+  }
+  .search{position:relative;flex:1 1 280px;max-width:360px;min-width:220px}
+  .search svg{
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:18px;height:18px;color:var(--oliva);pointer-events:none;
+  }
+  .search input{
+    width:100%;font-family:var(--font-body);font-weight:400;
+    font-size:var(--t-sm);color:var(--cafe);
+    background:#fff;border:1px solid var(--salvia);border-radius:999px;
+    padding:12px 16px 12px 44px;outline:none;
+  }
+  .search input::placeholder{color:var(--gris)}
+  .search input:focus-visible{outline:2px solid var(--oliva);outline-offset:2px}
+
+  .pills{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+  .pill{
+    font-family:var(--font-display);font-weight:500;
+    font-size:var(--t-xs);line-height:1;
+    padding:.6em 1.05em;border-radius:999px;cursor:pointer;
+    background:transparent;border:1px solid var(--salvia);color:var(--cafe);
+    transition:background-color .15s var(--ease-hover),color .15s var(--ease-hover);
+  }
+  .pill[aria-pressed="true"]{background:var(--oliva);border-color:var(--oliva);color:var(--crema)}
+  .pill:focus-visible{outline:2px solid var(--oliva);outline-offset:2px}
+
+  .counter{
+    font-family:var(--font-small);font-weight:400;
+    font-size:var(--t-sm);color:var(--oliva);
+    margin:clamp(20px,2.4vw,24px) 0 clamp(20px,2.6vw,28px);
+  }
+
+  /* ── Grid ── */
+  .grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+    align-items:stretch;
+  }
+  .card{
+    display:flex;flex-direction:column;min-width:0;
+    background:#fff;border:1px solid rgba(166,191,133,.55);border-radius:14px;
+    overflow:hidden;
+    box-shadow:0 4px 18px rgba(56,41,21,.05);
+    animation:cardIn 200ms var(--ease-out) both;
+    transition:transform .2s cubic-bezier(.16,1,.3,1), box-shadow .2s var(--ease-hover);
+  }
+  .card:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(56,41,21,.13)}
+  @keyframes cardIn{from{opacity:0}to{opacity:1}}
+
+  .card-img{
+    position:relative;aspect-ratio:16/10;
+    background:linear-gradient(150deg,var(--crema-hi) 0%,var(--crema) 100%);
+    display:flex;align-items:center;justify-content:center;
+    border-bottom:1px solid rgba(166,191,133,.5);
+  }
+  .ph-ico{width:48px;height:48px;color:var(--oliva);opacity:.24}
+  .img-ph{font-family:var(--font-small);font-weight:400;font-size:var(--t-sm);color:var(--gris);letter-spacing:.02em}
+  .card-tags{
+    position:absolute;top:10px;left:10px;z-index:2;
+    display:flex;flex-direction:column;align-items:flex-start;gap:8px;
+  }
+  .badge{
+    font-family:var(--font-small);font-weight:400;font-size:var(--t-xs);line-height:1;
+    color:var(--cafe);border-radius:999px;padding:4px 12px;
+    display:inline-flex;align-items:center;gap:8px;
+    background:rgba(255,255,255,.28);
+    -webkit-backdrop-filter:blur(8px) saturate(1.15);
+    backdrop-filter:blur(8px) saturate(1.15);
+    border:1px solid rgba(255,255,255,.55);
+    box-shadow:0 2px 8px rgba(56,41,21,.12);
+  }
+  .badge-available .dot{
+    width:8px;height:8px;border-radius:50%;background:#47b849;
+    box-shadow:0 0 6px 1px rgba(71,184,73,.9);
+    animation:availPulse 2.1s ease-in-out infinite;
+  }
+  @keyframes availPulse{
+    0%,100%{box-shadow:0 0 5px 1px rgba(71,184,73,.75)}
+    50%{box-shadow:0 0 11px 3px rgba(71,184,73,.5)}
+  }
+  .badge-star{position:relative;overflow:hidden}
+  .badge-star::after{
+    content:'';position:absolute;top:0;left:-65%;width:45%;height:100%;
+    background:linear-gradient(100deg,transparent,rgba(255,255,255,.9),transparent);
+    transform:skewX(-18deg);
+    animation:badgeSheen 1.5s cubic-bezier(.16,1,.3,1) .12s 1;
+  }
+  @keyframes badgeSheen{from{left:-65%}to{left:135%}}
+
+  .card-body{display:flex;flex-direction:column;flex:1 1 auto;padding:16px 16px 20px}
+  .card-name{
+    font-family:var(--font-display);font-weight:500;
+    font-size:var(--t-base);line-height:1.25;color:var(--cafe);
+    margin:0 0 4px;
+  }
+  .card-cat{
+    font-family:var(--font-small);font-weight:400;
+    font-size:var(--t-xs);color:var(--oliva);
+    margin:0 0 12px;
+  }
+  .variant-line{
+    font-family:var(--font-small);font-weight:400;
+    font-size:var(--t-xs);line-height:1.45;color:var(--cafe);
+    margin:0 0 16px;
+  }
+  .variant-tags{display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin:0 0 16px}
+  .vtag{
+    font-family:var(--font-small);font-weight:400;font-size:var(--t-xs);line-height:1.3;
+    background:rgba(166,191,133,.3);color:var(--cafe);
+    padding:4px 8px;border-radius:4px;
+  }
+  .view-btn{
+    margin-top:auto;display:block;text-align:center;text-decoration:none;
+    font-family:var(--font-display);font-weight:500;
+    font-size:var(--t-sm);line-height:1.2;
+    background:var(--oliva);color:var(--crema);
+    padding:.72em 1em;border-radius:8px;
+    transition:transform .18s var(--ease-hover);
+  }
+  .view-btn:hover{transform:translateY(-2px)}
+  .view-btn:focus-visible{outline:2px solid var(--cafe);outline-offset:2px}
+
+  /* ── No results ── */
+  .no-results{padding:var(--sp-2) 0;text-align:center}
+  .no-results p{
+    font-family:var(--font-body);font-weight:300;
+    font-size:var(--t-base);color:var(--cafe);margin:0 0 12px;
+  }
+  .clear-link{
+    font-family:var(--font-display);font-weight:500;font-size:var(--t-sm);
+    color:var(--oliva);text-decoration:underline;text-underline-offset:2px;cursor:pointer;
+  }
+  .clear-link:focus-visible{outline:2px solid var(--oliva);outline-offset:2px}
+
+  /* ── Responsive ── */
+  @media (max-width:900px){
+    .grid{grid-template-columns:repeat(2,1fr)}
+  }
+  @media (max-width:620px){
+    .grid{grid-template-columns:1fr}
+    .filter-bar{align-items:stretch}
+    .search{max-width:none;flex-basis:auto}
+    .pills{justify-content:flex-start}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    .card{animation:none;transition:none}
+    .card:hover{transform:none;box-shadow:0 4px 18px rgba(56,41,21,.05)}
+    .view-btn,.pill{transition:none}
+    .badge-available .dot{animation:none}
+    .badge-star::after{display:none}
+  }
+  /* ── Site navigation (GitHub Pages) ── */
+  .site-nav{position:sticky;top:0;z-index:2000;display:flex;align-items:center;justify-content:space-between;gap:16px;
+    padding:12px clamp(16px,5vw,64px);background:rgba(234,228,209,.9);
+    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--salvia,#a6bf85)}
+  .site-nav__logo{display:inline-flex;align-items:center;text-decoration:none;line-height:0}
+  .site-nav__logo img{height:clamp(28px,3.4vw,36px);width:auto;display:block}
+  .site-nav__links{display:flex;gap:clamp(16px,2.6vw,32px);align-items:center}
+  .site-nav__links a{font-family:var(--font-display,'Poppins',sans-serif);font-weight:500;font-size:var(--t-sm);
+    color:var(--cafe,#382915);text-decoration:none;position:relative;padding:4px 0;transition:color .15s var(--ease-hover)}
+  .site-nav__links a:hover{color:var(--oliva,#424f25)}
+  .site-nav__links a.is-active{color:var(--oliva,#424f25)}
+  .site-nav__links a.is-active::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:2px;background:var(--oliva,#424f25);border-radius:2px}
+  @media (max-width:520px){.site-nav{padding:12px 16px}.site-nav__links{gap:16px}}
+</style>
+<style id="pf-preview">
+/* ===== Tarjeta de portafolio — medidas tomadas del SVG de Michelle =====
+   Todo va en `cqw` (1cqw = 1% del ancho de la tarjeta), así las proporciones del SVG
+   se mantienen sea cual sea el ancho de la columna. El SVG mide 651.236 de ancho:
+   cada medida suya se divide por eso y se multiplica por 100.
+   La tarjeta es de FLUJO, no de posiciones fijas: los productos tienen entre 0 y 3
+   variantes y nombres de largos muy distintos, y un calco absoluto se rompería. */
+/* El maximo de 340px es el que arregla la jerarquia invertida (auditoria
+   2026-08-31). Toda la tarjeta se dimensiona en cqw — porcentaje de SU ancho —
+   y eso esta bien: la hace una pieza proporcional. El problema era que sin tope
+   la tarjeta llegaba a 504px en una sola columna, y entonces el nombre del
+   producto salia a 40px contra los 30px del titulo de la pagina.
+   Con el tope, el nombre nunca pasa de 27px y el titular siempre gana.
+   `auto-fill` cuenta columnas con el minimo (300), asi que el numero de columnas
+   no cambia; solo deja de estirar las tarjetas. */
+.grid{position:relative;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,340px));
+  justify-content:center;
+  gap:clamp(18px,2vw,28px);grid-auto-rows:1fr}
+/* `grid-auto-rows:1fr` iguala TODAS las filas, no solo las tarjetas de una misma
+   fila entre si. Sin esto, una fila de productos con 3 variantes quedaba mas alta
+   que otra de productos con 1, y las tarjetas se veian de tamanos distintos. */
+/* Sin `align-items:start`: las tarjetas se estiran a la altura de su fila y el
+   bloque de foto se pega abajo con margin-top:auto. Así las fotos de una misma
+   fila quedan alineadas aunque unos productos tengan 3 variantes y otros ninguna. */
+/* OJO: `cqw` mide la CAJA DE CONTENIDO del contenedor, no su caja externa. Si la
+   tarjeta llevara su propio relleno, ese relleno saldría del ancho de referencia y
+   todas las medidas se encogerían. Por eso el relleno vive en .pf-in y la tarjeta
+   sólo define el contenedor. Y sus propias medidas no pueden ir en cqw —
+   una caja no puede medirse contra sí misma. */
+.pf-card{container-type:inline-size;
+  background:#fff;border-radius:10px;overflow:hidden;
+  box-shadow:0 1px 2px rgba(48,34,16,.06),0 8px 28px rgba(48,34,16,.07);
+  display:flex;flex-direction:column}
+/* `flex:1`, NO `height:100%`: con height:100% el bloque medía la tarjeta ENTERA, pero
+   en las destacadas arranca debajo de la banda, así que sobresalía por abajo esos
+   mismos pixeles y el botón quedaba más bajo (y recortado). Con flex ocupa sólo lo
+   que queda tras la banda, y el botón cae a la misma altura en las 40. */
+.pf-in{padding:5.83cqw 8.75cqw 0;display:flex;flex-direction:column;flex:1;min-height:0}
+
+/* fila de arriba: disponibilidad + estrella */
+/* Los -3.1cqw laterales son los mismos que lleva la foto: la fila superior y la
+   imagen comparten margen y todo el bloque se alinea a los mismos bordes.
+   La pastilla va a la derecha, dejando libre la esquina superior izquierda. */
+.pf-top{display:flex;align-items:center;justify-content:flex-end;
+  margin:0 -3.1cqw;min-height:7.2cqw}
+.pf-avail{display:inline-flex;align-items:center;gap:2.4cqw;
+  height:7.2cqw;padding:0 3.6cqw;border-radius:999px;background:#fff;
+  position:relative;
+  /* Sombra muy leve: esta pastilla es identica en las 40 tarjetas, asi que no
+     distingue nada y no debe competir por atencion. */
+  box-shadow:0 .2cqw .8cqw rgba(48,34,16,.10);
+  font-family:var(--font-body);font-weight:400;font-size:4.15cqw;color:var(--oliva-dark);
+  white-space:nowrap}
+/* El punto y la caja de la estrella comparten tamano: si se cambia uno sin el
+   otro, dejan de estar alineados. */
+.pf-card{--punto:3.5cqw}
+.pf-dot{width:var(--punto);height:var(--punto);border-radius:50%;background:var(--salvia)}
+/* Producto destacado: banda oliva a sangre con su nombre dentro, alineada a la
+   derecha. La estrella va en una caja del ancho EXACTO del punto de "Available"
+   y con el mismo margen derecho, asi que sus centros coinciden en vertical; el
+   svg se dibuja mayor y desborda la caja por igual a ambos lados, sin descentrar.
+   Las 36 tarjetas sin banda reciben ese mismo alto como relleno superior, o su
+   contenido subiria y la retícula dejaria de alinear. */
+.pf-flag{display:flex;align-items:center;justify-content:flex-end;gap:2.6cqw;
+  height:5.83cqw;background:var(--oliva);color:#fff;
+  /* Centro del punto contado desde el borde derecho de la tarjeta:
+     5.65 (margen de la fila) + 3.6 (relleno de la pastilla) + mitad del punto.
+     Se le resta la mitad del icono para que coincidan los CENTROS, no los bordes. */
+  padding:0 calc(5.65cqw + 3.6cqw + var(--punto)/2 - 2.6cqw) 0 5.65cqw;
+  font-family:var(--font-body);font-weight:500;font-size:3.4cqw;
+  letter-spacing:.02em;white-space:nowrap}
+/* La caja mide lo MISMO que el icono. Antes era mas estrecha y confiaba en que el
+   navegador centrara el desbordamiento: no lo hace de forma fiable y la estrella
+   quedaba 3px corrida. Ahora la alineacion la da el padding del padre. */
+.pf-flag-ico{width:5.2cqw;height:5.2cqw;display:grid;place-items:center}
+/* La estrella se dibuja mayor que su caja y la desborda por igual a los dos lados,
+   asi que su centro sigue siendo el de la caja — y la caja mide lo mismo que el
+   punto y lleva su mismo margen. De ahi que queden alineados. */
+.pf-flag-ico svg{width:5.2cqw;height:5.2cqw;flex:0 0 auto;color:var(--salvia)}
+/* La banda mide justo el relleno superior de .pf-in, y en las destacadas ese
+   relleno se anula: la tarjeta NO crece y el contenido arranca a la misma altura
+   que en las otras 36. Antes sumaba y alargaba la tarjeta. */
+.pf-card--featured .pf-in{padding-top:0}
+
+/* título + enlace de info */
+/* 1er nivel. Es lo unico que se lee de lejos al escanear la rejilla.
+   min-height reserva SIEMPRE dos lineas (2 x 1.11 x 8.02 = 17.81cqw), tenga el
+   nombre una o dos: asi la categoria y todo lo que va debajo arrancan a la misma
+   altura en las 40 tarjetas. Sin esto, la retícula se desalinea segun el largo
+   del nombre. Ninguno pasa de dos lineas — el mas largo son 26 caracteres. */
+.pf-name{font-family:var(--font-display);font-weight:500;font-size:8.02cqw;
+  line-height:1.11;letter-spacing:var(--track-tight);color:#382915;
+  margin:1.2cqw 0 0;min-height:17.81cqw;text-wrap:balance;
+  /* El nombre se centra DENTRO de las dos lineas reservadas. Sin esto, los de una
+     sola linea se pegaban arriba y dejaban el hueco debajo, contra la categoria. */
+  display:flex;align-items:center}
+/* 3er nivel. Conserva la pastilla oscura del SVG, pero DEBAJO del nombre y mas
+   pequena: la posicion y el tamano hacen la jerarquia, no hace falta otro color. */
+.pf-cat{align-self:flex-start;display:inline-block;margin:2.8cqw 0 0;
+  height:6.4cqw;line-height:6.4cqw;padding:0 3.2cqw;border-radius:.69cqw;
+  background:var(--cafe);color:var(--crema);
+  font-family:var(--font-body);font-weight:400;font-size:4.15cqw;white-space:nowrap}
+/* Accion secundaria: legible pero sin competir con el boton principal. */
+.pf-info{align-self:flex-start;margin:3.4cqw 0 0;
+  font-family:var(--font-body);font-weight:400;font-size:4.15cqw;
+  color:var(--cafe);opacity:.72;text-decoration:underline;text-underline-offset:.25em;
+  white-space:nowrap;transition:opacity .2s var(--ease-out)}
+.pf-info:hover{opacity:1}
+
+/* tabla de variantes: reglas finas, sin cajas */
+.pf-table{margin-top:3.6cqw;border-top:1px solid rgba(48,34,16,.55)}
+/* La columna del grado mide 33%, no 26.8%. REGLA PARA FUTURAS TARJETAS: el ancho
+   lo manda la PALABRA MAS LARGA del catalogo, porque no se puede partir. Hoy son
+   "Guggulsterones" y "Quadrangularis", 14 caracteres, que a 14px piden 98px de
+   ancho; la columna da 104 utiles. Con el 26.8% anterior solo habia 67 y
+   "Withanolides" (87px) ya se salia.
+   Si algun dia entra un grado con una palabra mas larga, hay que volver a medirla
+   —no estimarla— y ensanchar la columna, o el texto se sale de su celda. */
+.pf-row{display:grid;grid-template-columns:33% 1fr auto;align-items:center;
+  gap:0 2.4cqw;padding:2.6cqw 0;border-bottom:1px solid rgba(48,34,16,.55)}
+.pf-row--solo{grid-template-columns:1fr auto}
+.pf-row--solo .pf-desc{text-align:left}
+/* La ultima regla quedaba pegada a la foto y leia como un borde de la imagen. */
+.pf-row:last-child{border-bottom:0}
+.pf-grade,.pf-desc{font-family:var(--font-body);font-weight:400;font-size:4.12cqw;
+  line-height:1.17;color:var(--cafe)}
+.pf-grade{text-align:center;padding-right:2.4cqw;
+  border-right:1px solid rgba(48,34,16,.55);align-self:stretch;
+  display:flex;align-items:center;justify-content:center}
+.pf-spec{display:flex;align-items:center;gap:1.2cqw;color:var(--cafe);
+  font-family:var(--font-body);font-weight:400;font-size:3.85cqw;line-height:1.15;
+  text-decoration:none;white-space:nowrap}
+.pf-spec svg{width:3.8cqw;height:3.8cqw;flex:0 0 auto}
+.pf-spec:hover span{text-decoration:underline}
+
+/* foto + botón. margin-top:auto pega el bloque al pie aunque la tabla varíe */
+/* La foto CRECE con la holgura en vez de dejar hueco. Un producto sin variantes
+   tiene menos texto, asi que su foto sale mas alta — la tarjeta se siente
+   intencionada y no incompleta, y todas siguen midiendo lo mismo.
+   `flex:1` en vez de `aspect-ratio` fijo; el min-height es la proporcion del SVG. */
+.pf-shot{position:relative;margin:4.6cqw -3.1cqw 0;flex:1 1 auto;min-height:46cqw;
+  background:var(--crema) center/cover no-repeat;border-radius:.9cqw;
+  display:grid;place-items:end center;padding-bottom:3.4cqw}
+.pf-shot--none{background:repeating-linear-gradient(135deg,var(--crema-hi) 0 8px,var(--crema) 8px 16px)}
+/* ACCION PRINCIPAL — segunda en la jerarquia, sólo por detras del nombre.
+   Ancho 78% de la tarjeta (el padre es la foto, 88.7%: 78/88.7 = 88%), mas alto y
+   con sombra propia para despegarlo de la foto.
+   SIN subrayado, a proposito: el enlace secundario "Product info" tambien va
+   subrayado, y con los dos subrayados la jerarquia entre principal y secundaria
+   se pierde. El relleno solido ya dice "boton"; el subrayado es lo que distingue
+   al enlace. */
+.pf-quote{width:88%;height:12.2cqw;border-radius:2.13cqw;background:var(--oliva);
+  color:#fff;display:grid;place-items:center;
+  font-family:var(--font-display);font-weight:500;font-size:6.25cqw;
+  text-decoration:none;box-shadow:0 .6cqw 2.4cqw rgba(48,34,16,.28);
+  transition:background-color .25s var(--ease-out),transform .25s var(--ease-out)}
+.pf-quote:hover{background:var(--oliva-dark);transform:translateY(-2px)}
+
+@media (max-width:520px){
+  .grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+
+  <section class="section">
+    <div class="container">
+
+      
+
+      <div class="filter-bar">
+        <div class="search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg>
+          <input id="search" type="search" placeholder="Search ingredients..." aria-label="Search ingredients" autocomplete="off">
+        </div>
+        <div class="pills" id="pills" role="group" aria-label="Filter by category">
+          <button class="pill" type="button" data-cat="All" aria-pressed="true">All</button>
+          <button class="pill" type="button" data-cat="Proteins" aria-pressed="false">Proteins</button>
+          <button class="pill" type="button" data-cat="Amino Acids" aria-pressed="false">Amino Acids</button>
+          <button class="pill" type="button" data-cat="Minerals" aria-pressed="false">Minerals</button>
+          <button class="pill" type="button" data-cat="Botanical Extracts" aria-pressed="false">Botanical Extracts</button>
+          <button class="pill" type="button" data-cat="Enzymes" aria-pressed="false">Enzymes</button>
+          <button class="pill" type="button" data-cat="Other Functional Ingredients" aria-pressed="false">Other Functional</button>
+        </div>
+      </div>
+
+      <p class="counter" id="counter" role="status" aria-live="polite">&nbsp;</p>
+
+      <div class="grid" id="grid" aria-label="Ingredients"></div>
+
+      <div class="no-results" id="noResults" hidden>
+        <p>No ingredients match your search</p>
+        <a href="#" class="clear-link" id="clearLink">Clear filters</a>
+      </div>
+
+    </div>
+  </section>
+
+  <script>
+    /* ══════════════════════════════════════════════════════════════
+       CATALOG — one object literal per product.
+       Add a product  → add ONE line under its category.
+       Add a variant  → add ONE string to that product's `variants`.
+       `star` and `variants` are optional (omit when not needed).
+       The botanical name in parentheses lives inside `name`, so it is
+       searchable automatically — no separate field.
+       ══════════════════════════════════════════════════════════════ */
+    const PRODUCTS = [
+      // Datos y agrupacion segun la lista de Michelle (2026-08-31).
+      // El binomio latino va en : el unico HTML que la tarjeta deja pasar.
+      { name:'Hydrolyzed Bovine Collagen', category:'Proteins', star:true, variants:[
+        'Granular \u00b7 100% Hydrolyzed Collagen, \u226590% protein',
+        'Instant \u00b7 100% Hydrolyzed Collagen, \u226590% protein'] },
+
+      { name:'Instant BCAA 2:1:1', category:'Amino Acids', variants:['Instant \u00b7 BCAA 2:1:1'] },
+      { name:'L-Arginine',   category:'Amino Acids', variants:['L-Arginine \u00b7 Pure amino acid'] },
+      { name:'L-Citrulline', category:'Amino Acids', variants:['L-Citrulline \u00b7 Pure amino acid'] },
+      { name:'L-Glutamine',  category:'Amino Acids', variants:['L-Glutamine \u00b7 Pure amino acid'] },
+      { name:'L-Carnitine',  category:'Amino Acids', variants:['L-Carnitine \u00b7 Pure amino acid'] },
+
+      { name:'Potassium Citrate', category:'Minerals', variants:['Potassium Citrate \u00b7 Mineral ingredient'] },
+
+      { name:'Shatavari', category:'Botanical Extracts', variants:['60% Saponins \u00b7 Asparagus racemosus'] },
+      { name:'Neem', category:'Botanical Extracts', variants:['Neem \u00b7 Azadirachta indica'] },
+      { name:'Bacopa Monnieri', category:'Botanical Extracts', variants:['20% Bacosides \u00b7 Bacopa monnieri'] },
+      { name:'Berberis Aristata', category:'Botanical Extracts', variants:['99% Berberine \u00b7 Berberis aristata'] },
+      { name:'Boswellia Serrata', category:'Botanical Extracts', variants:['90% Boswellic Acids \u00b7 Boswellia serrata'] },
+      { name:'Green Tea', category:'Botanical Extracts', variants:['50% Polyphenols \u00b7 Camellia sinensis'] },
+      { name:'Centella Asiatica', category:'Botanical Extracts', variants:['Gotu Kola \u00b7 Centella asiatica'] },
+      { name:'Cissus Quadrangularis', category:'Botanical Extracts', variants:['Cissus Quadrangularis \u00b7 Botanical extract'] },
+      { name:'Guggul', category:'Botanical Extracts', variants:[
+        '1.5% Guggulsterones \u00b7 Commiphora mukul',
+        '3% Guggulsterones \u00b7 Commiphora mukul'] },
+      // Amla 30% y 45% eran dos productos con nombres botanicos distintos.
+      // 'Emblica officinalis' y 'Phyllanthus emblica' son SINONIMOS de la misma
+      // especie, asi que se unifican en una tarjeta con dos graduaciones, como
+      // Ashwagandha o Guggul. Se usa el nombre aceptado (P. emblica) en las dos;
+      // ojo: la ficha del 45% que manda el proveedor lo titula con el sinonimo.
+      { name:'Amla', category:'Botanical Extracts', variants:['30% Tannins \u00b7 Phyllanthus emblica','45% Tannins \u00b7 Phyllanthus emblica'] },
+      { name:'Bhumi Amla', category:'Botanical Extracts', variants:['5% Bitters \u00b7 Phyllanthus niruri'] },
+      { name:'Fenugreek', category:'Botanical Extracts', variants:['60% Saponins \u00b7 Trigonella foenum-graecum'] },
+      { name:'Garcinia Cambogia', category:'Botanical Extracts', variants:['Garcinia Cambogia \u00b7 Botanical extract'] },
+      { name:'Licorice', category:'Botanical Extracts', variants:['Licorice \u00b7 Glycyrrhiza glabra'] },
+      { name:'Moringa', category:'Botanical Extracts', variants:[
+        '10% Saponins \u00b7 Moringa oleifera','25% Saponins \u00b7 Moringa oleifera'] },
+      { name:'Karela', category:'Botanical Extracts', variants:[
+        '5% Bitters \u00b7 Momordica charantia','20% Bitters \u00b7 Momordica charantia'] },
+      { name:'Tulsi', category:'Botanical Extracts', variants:['20% Tannins \u00b7 Ocimum sanctum'] },
+      { name:'Arjuna', category:'Botanical Extracts', variants:[
+        '1% Arjunolic Acid \u00b7 Terminalia arjuna','10% Tannins \u00b7 Terminalia arjuna'] },
+      { name:'Tribulus Terrestris', category:'Botanical Extracts', variants:[
+        '40% Saponins \u00b7 Tribulus terrestris','75% Saponins \u00b7 Tribulus terrestris'] },
+      { name:'Triphala', category:'Botanical Extracts', variants:[
+        '20% Tannins \u00b7 Emblica officinalis + Terminalia bellirica + Terminalia chebula',
+        '40% Tannins \u00b7 Emblica officinalis + Terminalia bellirica + Terminalia chebula'] },
+      { name:'Ashwagandha', category:'Botanical Extracts', star:true, variants:[
+        '1.5% Withanolides \u00b7 Withania somnifera','20% Withanolides \u00b7 Withania somnifera'] },
+      { name:'Nano Curcumin', category:'Botanical Extracts', variants:['5% Curcumin \u00b7 Nano Curcumin'] },
+
+      { name:'Bromelain', category:'Enzymes', variants:['2400 GDU \u00b7 Bromelain enzyme','3000 GDU \u00b7 Bromelain enzyme'] },
+
+      { name:'Shilajit', category:'Other Functional Ingredients', variants:[
+        '20% Fulvic Acid \u00b7 Asphaltum','50% Fulvic Acid \u00b7 Asphaltum'] },
+
+      // --- NO estaban en la lista de Michelle. Se conservan tal cual hasta que ella
+      //     decida si salen del catalogo o se quedan. Tres tienen foto nueva. ---
+      { name:'Egg White Protein Powder', category:'Proteins', variants:[] },
+      { name:'Creatine Monohydrate', category:'Amino Acids', star:true, variants:['80 mesh','200 mesh','500 mesh'] },
+      { name:'L-Carnitine Base', category:'Amino Acids', variants:[] },
+      { name:'Magnesium Citrate', category:'Minerals', star:true, variants:['USP Verified \u00b7 soluble'] },
+      { name:'Magnesium Oxide', category:'Minerals', variants:['Granular \u00b7 USP Verified'] },
+      { name:'Magnesium Bisglycinate', category:'Minerals', variants:[] },
+      { name:'Alkalized Cocoa Powder', category:'Other Functional Ingredients', variants:['Alkalized \u00b7 100% cacao, single origin'] },
+      { name:'Polydextrose', category:'Other Functional Ingredients', variants:[] }
+    ];
+
+    // Normalize optional fields once.
+    PRODUCTS.forEach(function(p){ p.star = !!p.star; p.variants = p.variants || []; });
+
+    var grid = document.getElementById('grid');
+    var counter = document.getElementById('counter');
+    var noResults = document.getElementById('noResults');
+    var searchInput = document.getElementById('search');
+    var pills = Array.prototype.slice.call(document.querySelectorAll('.pill'));
+    var clearLink = document.getElementById('clearLink');
+
+    var activeCat = 'All';
+    var query = '';
+
+    function norm(s){ return s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase(); }
+    function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+    function haystack(p){ return norm(p.name + ' ' + p.variants.join(' ')); }
+
+    function filtered(){
+      var q = norm(query.trim());
+      var list = PRODUCTS.filter(function(p){
+        var catOk = activeCat === 'All' || p.category === activeCat;
+        var qOk = !q || haystack(p).indexOf(q) !== -1;
+        return catOk && qOk;
+      });
+      // Star products first, preserving order otherwise (stable sort).
+      list.sort(function(a,b){ return (b.star?1:0) - (a.star?1:0); });
+      return list;
+    }
+
+    var PH_ICONS = {
+      'Proteins': '<path d="M12 3.4c3 3.9 5 6.9 5 9.7a5 5 0 0 1-10 0c0-2.8 2-5.8 5-9.7z"/><path d="M9.8 13.6a2.2 2.2 0 0 0 2.2 2.2"/>',
+      'Amino Acids': '<path d="M12 3.2 19.4 7.5v9L12 20.8 4.6 16.5v-9z"/><circle cx="12" cy="12" r="1.4"/><path d="M12 10.6V4.2M12 13.4l6 3.5M12 13.4l-6 3.5"/>',
+      'Minerals': '<path d="M7.5 4.5 16.5 4.5 20.5 9.5 12 19.5 3.5 9.5Z"/><path d="M3.5 9.5H20.5"/><path d="M7.5 4.5 10 9.5"/><path d="M16.5 4.5 14 9.5"/>',
+      'Botanical Extracts': '<path d="M5 19C5 11 11 5 19 5c0 8-6 14-14 14Z"/><path d="M9 15c1.8-3 4.5-5.2 7.5-6.5"/>',
+      'Enzymes': '<path d="M9 3.5h6"/><path d="M10 3.5v5.5l-4.6 8A2 2 0 0 0 7.2 20h9.6a2 2 0 0 0 1.8-3l-4.6-8V3.5"/><path d="M8.2 14.5h7.6"/>',
+      'Other Functional Ingredients': '<path d="M12 3.5 13.9 9.1 19.5 11 13.9 12.9 12 18.5 10.1 12.9 4.5 11 10.1 9.1Z"/>'
+    };
+
+    // Nombre -> archivo de imagen. La regla general quita lo que va en parentesis y
+    // se queda con lo anterior a una barra; los cinco casos que no encajan van a mano.
+    /* Algunas fotos traen el monton pequeño sobre fondo negro, y el marco de la
+       tarjeta mostraba mas fondo que producto. Aqui se guarda el encuadre por
+       producto: `background-size` en % del ANCHO del marco (el alto de la tarjeta
+       varia con la retícula, asi que anclar por ancho es lo unico estable) y la
+       posicion en %.
+       Medido sobre el pixel: en magnesium-oxide.jpg (720x385) el polvo ocupa
+       x 173..569, y 79..304; todo lo demas es negro. Con 195% / 53% 49% el marco
+       cae dentro de esa zona incluso cuando la tarjeta crece de alto. */
+    var SHOT_FIX = {
+      'magnesium-oxide': 'background-size:195% auto;background-position:53% 49%'
+    };
+
+    var IMG_FIX = {
+      'Instant BCAA 2:1:1':'instant-bcaa',
+      'Amla (Emblica officinalis)':'amla-emblica',
+      'Glycyrrhiza Glabra / Licorice':'licorice',
+      'Tribulus Terrestris / Gokhru':'tribulus',
+      'Tribulus Terrestris':'tribulus',
+      // De las dos fotos se queda la mejor: 462x247 contra 387x207.
+      'Amla':'amla-emblica'
+    };
+    // Sin foto propia todavia. Las cuatro primeras SI tienen foto en el home, pero
+    // Michelle no quiere repetirla aqui: van con marcador hasta que mande otras.
+    var NO_IMG = {};   // ya no falta ninguna
+    function imgSlug(name){
+      if(NO_IMG[name]) return null;
+      if(IMG_FIX[name]) return IMG_FIX[name];
+      return name.split('/')[0].replace(/\([^)]*\)/g,'')
+                 .trim().toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+    }
+    function escI(t){ return esc(t).replace(/&lt;i&gt;/g,'').replace(/&lt;\/i&gt;/g,''); }
+    function cardHTML(p){
+      var slug = imgSlug(p.name);
+      var rows = (p.variants||[]).map(function(v){
+        // "Granular · 100% Hydrolyzed Collagen, >=90% protein" -> dos columnas.
+        // Sin separador, la variante entera es la descripcion y no hay grado.
+        var k = v.indexOf(' \u00b7 ');
+        var grade = k>0 ? v.slice(0,k) : '';
+        var desc  = k>0 ? v.slice(k+3) : v;
+        // Sin grado no hay dos columnas: la division vertical dejaba un hueco blanco
+        // a la izquierda (se veia en Creatine). Una sola celda, alineada a izquierda.
+        return '<div class="pf-row' + (grade?'':' pf-row--solo') + '">' +
+                 (grade ? '<div class="pf-grade">' + esc(grade) + '</div>' : '') +
+                 '<div class="pf-desc">' + escI(desc) + '</div>' +
+                 '<a class="pf-spec" href="#" aria-label="Sample certificate of analysis for ' + esc(p.name) + '">' +
+                   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+                     '<path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M4 20h16"/>' +
+                   '</svg><span>Sample<br>COA</span></a>' +
+               '</div>';
+      }).join('');
+
+      return '<article class="pf-card' + (p.star?' pf-card--featured':'') + '">' +
+        (p.star ? '<div class="pf-flag">' +
+            '<span class="pf-flag-ico" title="Star product"><svg viewBox="0 0 24 24" role="img" aria-label="Star product">' +
+              '<path fill="currentColor" d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5-5.8-3-5.8 3 1.1-6.5L2.6 9.4l6.5-.9L12 2.6z"/>' +
+            '</svg></span></div>' : '') +
+        '<div class="pf-in">' +
+        '<div class="pf-top">' +
+          '<span class="pf-avail">Available<span class="pf-dot"></span></span>' +
+        '</div>' +
+        // Jerarquia: nombre > variantes > categoria > secundarios. La categoria baja
+        // del nombre — encima competia con el, y es informacion de tercer nivel.
+        '<h3 class="pf-name">' + esc(p.name) + '</h3>' +
+        '<span class="pf-cat">' + esc(p.category) + '</span>' +
+        (rows ? '<div class="pf-table">' + rows + '</div>' : '') +
+        // Accion secundaria, en su propia linea: pegada al titulo le robaba peso.
+        '<a class="pf-info" href="#">Product info</a>' +
+        '<div class="pf-shot' + (slug?'':' pf-shot--none') + '"' +
+          (slug ? ' style="background-image:url(../assets/portfolio/' + slug + '.jpg)' +
+                   (SHOT_FIX[slug] ? ';' + SHOT_FIX[slug] : '') + '"' : '') + '>' +
+          '<a target="_top" class="pf-quote" href="https://www.tcorpi.com/contact">Quote today</a>' +
+        '</div>' +
+      '</div></article>';
+    }
+
+    function update(){
+      var list = filtered();
+      var n = list.length;
+      counter.textContent = n + ' ingredient' + (n === 1 ? '' : 's');
+      if(n === 0){
+        grid.innerHTML = '';
+        grid.hidden = true;
+        noResults.hidden = false;
+      } else {
+        noResults.hidden = true;
+        grid.hidden = false;
+        grid.innerHTML = list.map(cardHTML).join('');
+      }
+    }
+
+    function debounce(fn, ms){
+      var t;
+      return function(){
+        var ctx = this, args = arguments;
+        clearTimeout(t);
+        t = setTimeout(function(){ fn.apply(ctx, args); }, ms);
+      };
+    }
+
+    searchInput.addEventListener('input', debounce(function(e){
+      query = e.target.value;
+      update();
+    }, 150));
+
+    pills.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        activeCat = btn.getAttribute('data-cat');
+        pills.forEach(function(b){
+          var on = (b === btn);
+          b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+        update();
+      });
+    });
+
+    clearLink.addEventListener('click', function(e){
+      e.preventDefault();
+      query = '';
+      searchInput.value = '';
+      activeCat = 'All';
+      pills.forEach(function(b){ b.setAttribute('aria-pressed', b.getAttribute('data-cat') === 'All' ? 'true' : 'false'); });
+      update();
+      searchInput.focus();
+    });
+
+    update();
+  
+/* ═════ Panel de "Product info" ═════
+   Datos sacados de la columna "Specifications" de los COA del proveedor
+   (docs/data/extraer.py). Es la especificacion, no el resultado del lote: el
+   resultado caduca con el lote, la especificacion no.
+   El ENSAYO no se saca de aqui a proposito — el COA certifica UNA graduacion y
+   varios productos tienen dos. Cada variante ya muestra la suya en la tabla de
+   la tarjeta. */
+var DESC = {"Hydrolyzed Bovine Collagen":"Type&nbsp;I collagen peptides from bovine hide, enzymatically hydrolyzed to &ge;90% protein. The low molecular weight means it disperses without gelling. Granular for capsules and tablets; instant for cold beverages, sticks and gummies.","Instant BCAA 2:1:1":"Leucine, isoleucine and valine in the standard 2:1:1 ratio. Instantized so it disperses in cold water without clumping, which is what makes it workable in shaker powders and ready-to-drink formats.","L-Arginine":"Free-form amino acid. White crystalline powder, highly water-soluble and alkaline in solution. Used in sports and clinical nutrition powders and capsules.","L-Citrulline":"Free-form non-protein amino acid. White crystalline powder, very soluble and close to neutral in flavor, so it carries well in flavored pre-workout blends.","L-Glutamine":"Free-form amino acid, supplied as a crystalline powder. Neutral in taste and water-soluble. Common in sports and clinical nutrition blends.","L-Carnitine":"Quaternary ammonium compound derived from lysine and methionine. <b>Strongly hygroscopic</b> &mdash; it needs humidity-controlled handling and moisture-barrier packaging. Used in sports powders, liquids and capsules.","L-Carnitine Base":"The free base form, as opposed to salt forms such as tartrate. Higher carnitine content per gram, and more hygroscopic than the salts &mdash; plan handling and packaging accordingly.","Potassium Citrate":"Potassium salt of citric acid. Highly soluble, with a mildly saline taste. Used as a potassium source, buffer and acidity regulator in beverages, electrolyte blends and effervescents.","Creatine Monohydrate":"Creatine bound to one water molecule &mdash; the most studied form. Three particle sizes: <b>80&nbsp;mesh</b> for tablets and capsules, <b>200&nbsp;mesh</b> for general powders, and <b>500&nbsp;mesh</b> (micronized) for the best dispersion in liquids.","Magnesium Citrate":"Magnesium salt of citric acid, USP grade. The most soluble of the common magnesium forms, which makes it the usual choice for liquids, effervescents and stick packs.","Magnesium Oxide":"Magnesium oxide, USP grade, granular. Carries the highest elemental magnesium per gram of the common forms (around 60%) and is practically insoluble in water &mdash; suited to tablets and capsules where dose per volume matters.","Magnesium Bisglycinate":"Magnesium chelated with two glycine molecules. Neutral in flavor compared with inorganic salts, but lower elemental magnesium per gram, so the same dose takes more volume in the capsule or serving.","Egg White Protein Powder":"Spray-dried egg white (albumen). Complete protein, fat-free and dairy-free. It foams and sets on heating, which is what it is used for in bakery, bars and protein blends.","Alkalized Cocoa Powder":"Cocoa treated with alkali (Dutch process) to raise the pH. Darker in color, milder and less acidic than natural cocoa, and it disperses better in liquids. 100% cacao, single origin.","Polydextrose":"Soluble glucose polymer used as a bulking agent and a source of soluble fiber. Contributes roughly 1&nbsp;kcal/g and very little sweetness, so it replaces the volume of sugar in bars, beverages and confectionery without adding sweetness.","Shatavari":"Extract of <i>Asparagus racemosus</i>, standardized to 60% saponins.","Amla":"Fruit extract of <i>Phyllanthus emblica</i>, available standardized to 30% or 45% tannins. Note that <i>P.&nbsp;emblica</i> and <i>Emblica officinalis</i> are synonyms for the same species &mdash; our 45% data sheet is titled under the latter name.","Bhumi Amla":"Extract of <i>Phyllanthus niruri</i>, standardized to 5% bitters. Despite the shared name, <b>a different species from Amla</b> (<i>P.&nbsp;emblica</i>).","Moringa":"Extract of <i>Moringa oleifera</i>, available standardized to 10% or 25% saponins.","Nano Curcumin":"Curcumin reduced in particle size to improve dispersion, standardized to 5% curcumin."};
+
+var SPECS = {"Ashwagandha":{"descripcion":"Brown colored powder","secado":"Not more than 6.0% w/w (dried at 105 C)","densidad":null,"cenizas":"Not more than 20.0% w/w","solubilidad":"Not less than 80%w/w","malla":"80 mesh, min. 85%","ensayo":"Withanoloides min. 1.5% (Gravimetric)","botanico":null,"parte":"Root","metales":"Not more than 20 ppm","pesticidas":"Complies with USP","disolventes":"Complies with USP","categoria":"Nutraceutical and cosmeceutical"},"Bacopa Monnieri":{"descripcion":"Brown colored powder","secado":"Not more than 6.0% w/w (dried at 105°C)","densidad":"Between 0.40 g/ml and 0.80 g/ml","cenizas":"Not more than 20.0% w/w","solubilidad":"Not less than 80.0% w/w","malla":"80 mesh, min. 85%","ensayo":"Bacosides min. 20.0% (UV)","botanico":"Baccopa monnieri","parte":"Whole plant","metales":"Not more than 20 ppm","pesticidas":"Complies with USP","disolventes":"Complies with USP","categoria":"Nutraceutical and cosmeceutical"},"Berberis Aristata":{"descripcion":"Yellow colored powder","secado":"Not more than 8.0% w/w (dried at 105\\272C)","densidad":"Between 0.40 g/ml and 0.80 g/ml","cenizas":"Not more than 10.0% w/w","solubilidad":null,"malla":"80 mesh, min. 85%","ensayo":"Berberine min. 99%","botanico":"Coscinium fenestratum","parte":"Root","metales":"Not more than 20 ppm","pesticidas":"Complies with USP","disolventes":"Complies with USP","categoria":"Nutraceutical and cosmeceutical"},"Boswellia Serrata":{"descripcion":"Off white color powder","secado":"Not more than 6% w/w (dried at 105\\272C)","densidad":"Between 0.40 g/ml and 0.80 g/ml","cenizas":"Not more than 20% w/w","solubilidad":null,"malla":"80 mesh, min. 85%","ensayo":"Boswellic Acids min. 90% (Titration)","botanico":"Boswellia serrata","parte":null,"metales":"Not more than 20 ppm","pesticidas":null,"disolventes":"Complies with USP","categoria":"Nutraceutical and cosmeceutical"},"Green Tea":{"descripcion":"Reddish brown colored powder","secado":"Not more than 6.0% w/w (dried at 105\\272C)","densidad":"Between 0.40 g/ml and 0.80 g/ml","cenizas":"Not more than 20.0% w/w","solubilidad":"Not less than 80.0% w/w","malla":"80 mesh, min. 85%","ensayo":"Polyphenol min. 90.0%","botanico":"Camellia sinensis","parte":"Leaf","metales":"Not more than 20 ppm","pesticidas":"Complies with USP","disolventes":"Complies with USP","categoria":"Nutraceutical and cosmeceutical"},"Centella Asiatica":{"descripcion":"Brown colored powder","secado":"Not more than 6.0% w/w (dried at 105\\272C)","densidad":"Between 0.40 g/ml and 0.80 g/ml","cenizas":"Not more than 20.0% w/w","solubilidad":"Not less than 80.0% w/w","malla":"80 mesh, min. 85%","ensayo":"Triterpenes min. 10% (HPLC)","botanico":"Centella asiatica","parte":"Whole plant","metales":"Not more than 20 ppm","pesticidas":"Complies with USP","disolventes":"Complies with USP","categoria":"Nutraceutical and cosmeceutical"},"Cissus Quadrangularis":{"descripcion":"Brown colored powder","secado":"Not more than 6.0% w/w (dried at 105\\272C)","densidad":"Between 0.40 g/ml and 0.80 g/ml","cenizas":"Not more than 20.0% w/w","solubilidad":"Not less than 80.0% w/w","malla":"80 mesh, min. 85%","ensayo":"Total Ketosterones min. 20.0% (Gravimetric)","botanico":"Cissus quadrangularis","parte":"Stem","metales":"Not more than 20 ppm","pesticidas":"Complies with USP","disolventes":"Complies with USP","categoria":"Nutraceutical and cosmeceutical"},"Guggul":{"descripcion":"Creamish colored powder","secado":"Not more than 6.0% w/w (dried at 105\\272C)","densidad":"Between 0.40 g/ml and 0.80 g/ml","cenizas":null,"solubilidad":null,"malla":"40 mesh, min. 100%","ensayo":"Guggulustrones min. 3% (UV)","botanico":"Commiphora mukul","parte":null,"metales":"Not more than 20 ppm","pesticidas":"Complies with USP","disolventes":"Complies with USP","categoria":"Nutraceutical and cosmeceutical"},"Fenugreek":{"descripcion":"Brown colored powder","secado":"Not more than 6.0% w/w (dried at 105\\272C)","densidad":"Between 0.40 g/ml and 0.80 g/ml","cenizas":"Not more than 20.0% w/w","solubilidad":"Not less than 80.0% w/w","malla":"80 mesh, min. 85%","ensayo":"Saponins min. 60% (gravimetry)","botanico":null,"parte":"Seed","metales":"Not more than 20 ppm","pesticidas":"Complies with USP","disolventes":"Complies with USP","categoria":"Nutraceutical and cosmeceutical"},"Garcinia Cambogia":{"descripcion":"Off white colored powder","secado":"Not more than 6.0% w/w (dried at 105\\272C)","densidad":"Between 0.40 g/ml and 0.80 g/ml","cenizas":"Not more than 20.0% w/w","solubilidad":null,"malla":"80 mesh, min. 85%","ensayo":"Hydroxycitric acid min. 60.0% (HPLC)","botanico":"Garcinia cambogia","parte":"Fruit","metales":"Not more than 20 ppm","pesticidas":"Complies with USP","disolventes":"Complies with USP","categoria":"Nutraceutical and cosmeceutical"},"Licorice":{"descripcion":"Brown colored powder","secado":"Not more than 6.0% w/w (dried at 105\\272C)","densidad":"Between 0.40 g/ml and 0.80 g/ml","cenizas":"Not more than 20.0% w/w","solubilidad":"Not less than 80.0% w/w","malla":"80 mesh, min. 85%","ensayo":"Glycyrrhizic min. 20.0% (Gravimetry)","botanico":"Glycyrrhiza glabra","parte":"Roots","metales":"Not more than 20 ppm","pesticidas":"Complies with USP","disolventes":"Complies with USP","categoria":"Nutraceutical and cosmeceutical"},"Karela":{"descripcion":"Brown colored powder","secado":"Not more than 6.0% w/w (dried at 105\\272C)","densidad":"Between 0.40 g/ml and 0.80 g/ml","cenizas":"Not more than 20.0% w/w","solubilidad":"Not less than 80.0% w/w","malla":"80 mesh, min. 85%","ensayo":"Bitters min. 5.0% (Gravimetry)","botanico":"Momordika charantia","parte":"Fruit","metales":"Not more than 20 ppm","pesticidas":"Complies with USP","disolventes":"Complies with USP","categoria":"Nutraceutical and cosmeceutical"},"Neem":{"descripcion":"Brown colored powder","secado":"Not more than 6.0% w/w (dried at 105\\272C)","densidad":"Between 0.40 g/ml and 0.80 g/ml","cenizas":"Not more than 20.0% w/w","solubilidad":"Not less than 80.0% w/w","malla":"80 mesh, min. 85%","ensayo":"Bitters min. 5% (Gravimetry)","botanico":"Azadirachta indica","parte":"Leaf","metales":"Not more than 20 ppm","pesticidas":"Complies with USP","disolventes":"Complies with USP","categoria":"Nutraceutical and cosmeceutical"},"Tulsi":{"descripcion":"Brown colored powder","secado":"Not more than 6.0% w/w (dried at 105\\272C)","densidad":"Between 0.40 g/ml and 0.80 g/ml","cenizas":"Not more than 20.0% w/w","solubilidad":"Not less than 80.0% w/w","malla":"80 mesh, min. 85%","ensayo":"Tannins min. 20% (Titration)","botanico":"Ocimum sanctum","parte":"Leaf","metales":"Not more than 20 ppm","pesticidas":"Complies with USP","disolventes":"Complies with USP","categoria":"Nutraceutical and cosmeceutical"},"Arjuna":{"descripcion":"Brown colored powder","secado":"Not more than 6.0% w/w (dried at 105\\272C)","densidad":"Between 0.40 g/ml and 0.80 g/ml","cenizas":"Not more than 20.0% w/w","solubilidad":"Not less than 80.0% w/w","malla":"80 mesh, min. 85%","ensayo":"Tannins min. 10% (Titration)","botanico":"Terminalia arjuna","parte":"Bark","metales":"Not more than 20 ppm","pesticidas":"Complies with USP","disolventes":"Complies with USP","categoria":"Nutraceutical and cosmeceutical"},"Tribulus Terrestris":{"descripcion":"Brown colored powder","secado":"Not more than 6.0% w/w (dried at 105\\272C)","densidad":"Between 0.40 g/ml and 0.80 g/ml","cenizas":"Not more than 20.0% w/w","solubilidad":"Not less than 80.0% w/w","malla":"80 mesh, min. 85%","ensayo":"Saponins min. 40.0% (gravimetry)","botanico":"Tribulus terrestris","parte":"Aerial Part","metales":"Not more than 20 ppm","pesticidas":"Complies with USP","disolventes":"Complies with USP","categoria":"Nutraceutical and cosmeceutical"},"Triphala":{"descripcion":"Brown colored powder","secado":"Not more than 6.0% w/w (dried at 105\\272C)","densidad":"Between 0.40 g/ml and 0.80 g/ml","cenizas":"Not more than 20.0% w/w","solubilidad":"Not less than 80.0% w/w","malla":"80 mesh, min. 85%","ensayo":"Tannins min. 40% (Gravimetry)","botanico":null,"parte":"Fruit","metales":"Not more than 20 ppm","pesticidas":"Complies with USP","disolventes":"Complies with USP","categoria":"Nutraceutical and cosmeceutical"},"Shilajit":{"descripcion":"Brown colored powder","secado":"Not more than 6.0% w/w3.96% w/wTapped bulk densityBetween 0.40 g/ml and 0.80 g/ml0.67 g/ mlUSP <616>Sieve Test (Passes through)","densidad":"Between 0.40 g/ml and 0.80 g/ml","cenizas":"Not more than 10.0% w/w","solubilidad":"Not less than 80.0% w/w","malla":"80 mesh, min. 85%","ensayo":"Fulvic acid min. 50% (Gravimetry)","botanico":"Asphaltum","parte":"Whole bituminous substances","metales":"Not more than 10 ppm","pesticidas":"Complies with USP","disolventes":"Complies with USP","categoria":"Nutraceutical and cosmeceutical"},"Bromelain":{"descripcion":"Off white fine powder","secado":null,"densidad":"Between 0.40 g/ml and 0.80 g/ml","cenizas":null,"solubilidad":null,"malla":"80 mesh, min. 85%","ensayo":"Bromelain activity min. 3000GDU","botanico":"Ananas comosus","parte":"Fruit","metales":"Not more than 20 ppm","pesticidas":"Complies with USP","disolventes":"Complies with USP","categoria":"Nutraceutical and cosmeceutical"}};
+
+(function(){
+  var grid = document.querySelector('.grid');
+  if(!grid) return;
+
+  function fila(txt, val){
+    return val ? '<dt>'+txt+'</dt><dd>'+val+'</dd>' : '';
+  }
+
+  function contenido(nombre){
+    var d = SPECS[nombre];
+    if(!d){
+      // Sin ficha: descripcion del material. Es lo unico honesto que se puede
+      // poner — inventar una tabla de especificacion seria peor que no tenerla.
+      var t = DESC[nombre];
+      return (t ? '<p class="pf-desc-larga">'+t+'</p>' : '')
+           + '<p class="pf-panel-nota">Full technical data sheet available on '
+           + 'request. <a target="_top" href="https://www.tcorpi.com/contact">Get in touch</a> and we&rsquo;ll '
+           + 'send it with the batch documentation.</p>';
+    }
+    // El binomio en cursiva, pero solo si existe. Antes iba
+    // '<i>'+(d.botanico||'')+'</i>'.replace(...) y el .replace se aplicaba SOLO a
+    // '</i>' por precedencia, asi que sin dato quedaba '<i></i>' — que no es
+    // cadena vacia y pintaba una fila en blanco.
+    var bot = d.botanico ? '<i>'+d.botanico+'</i>' : null;
+    var ident = fila('Botanical name', bot)
+              + fila('Plant part', d.parte)
+              + fila('Category', d.categoria);
+    var fis   = fila('Appearance', d.descripcion)
+              + fila('Particle size', d.malla)
+              + fila('Water solubility', d.solubilidad)
+              + fila('Bulk density', d.densidad)
+              + fila('Loss on drying', d.secado)
+              + fila('Ash content', d.cenizas);
+    var cum   = fila('Heavy metals', d.metales)
+              + fila('Pesticides', d.pesticidas)
+              + fila('Residual solvents', d.disolventes);
+    var bloques = '';
+    if(ident) bloques += '<div class="pf-grp"><h4>Identity</h4><dl>'+ident+'</dl></div>';
+    if(fis)   bloques += '<div class="pf-grp"><h4>Physical specification</h4><dl>'+fis+'</dl></div>';
+    if(cum)   bloques += '<div class="pf-grp"><h4>Compliance</h4><dl>'+cum+'</dl></div>';
+    return '<div class="pf-cols">'+bloques+'</div>'
+         + '<p class="pf-panel-nota">Product specification. The batch certificate '
+         + 'of analysis is supplied with your order.</p>';
+  }
+
+  function columnas(){
+    return getComputedStyle(grid).gridTemplateColumns.split(' ').filter(Boolean).length;
+  }
+
+  var abierto = null;   // {panel, scrim, enlace}
+
+  function cerrar(){
+    if(!abierto) return;
+    var a = abierto; abierto = null;
+    a.enlace.setAttribute('aria-expanded','false');
+    a.panel.classList.remove('abierto');
+    a.scrim.classList.remove('abierto');
+    // se retiran al terminar la transicion, no antes
+    setTimeout(function(){
+      if(a.panel.parentNode) a.panel.parentNode.removeChild(a.panel);
+      if(a.scrim.parentNode) a.scrim.parentNode.removeChild(a.scrim);
+    }, 340);
+  }
+
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') cerrar();
+  });
+
+  grid.addEventListener('click', function(ev){
+    var enlace = ev.target.closest ? ev.target.closest('.pf-info') : null;
+    if(!enlace) return;
+    ev.preventDefault();
+
+    var tarjeta = enlace.closest('.pf-card');
+    var yaEstaba = abierto && abierto.enlace === enlace;
+    cerrar();
+    if(yaEstaba) return;
+
+    var nombre = tarjeta.querySelector('.pf-name').textContent.trim();
+
+    var scrim = document.createElement('div');
+    scrim.className = 'pf-scrim';
+    scrim.addEventListener('click', cerrar);
+
+    var panel = document.createElement('div');
+    panel.className = 'pf-panel';
+    panel.innerHTML = '<div class="pf-panel-in">'
+      + '<div class="pf-panel-top"><h3>'+nombre+'</h3>'
+      + '<button type="button" class="pf-panel-x">Close</button></div>'
+      + contenido(nombre) + '</div>';
+
+    grid.appendChild(scrim);
+    grid.appendChild(panel);
+
+    // Se abre a la ALTURA de la tarjeta pulsada, para que nazca donde el ojo ya
+    // esta mirando y no haya que buscarlo. Si por estar en las ultimas filas se
+    // saldria por abajo de la reja, se sube lo justo para caber.
+    var top = tarjeta.offsetTop;
+    var alto = panel.offsetHeight;
+    var limite = grid.clientHeight - alto;
+    if (limite > 0 && top > limite) top = limite;
+    if (top < 0) top = 0;
+    panel.style.top = top + 'px';
+
+    enlace.setAttribute('aria-expanded','true');
+    abierto = {panel:panel, scrim:scrim, enlace:enlace};
+    panel.querySelector('.pf-panel-x').addEventListener('click', cerrar);
+    // Reflujo forzado en vez de requestAnimationFrame: rAF no corre en pestañas
+    // de fondo ni en algunos contenedores, y ahi el panel se quedaba sin abrir.
+    void panel.offsetHeight;
+    panel.classList.add('abierto');
+    scrim.classList.add('abierto');
+  });
+
+  // Al filtrar o buscar, la reja se vuelve a pintar y el panel quedaria huerfano.
+  var obs = new MutationObserver(function(){
+    if(abierto && !document.body.contains(abierto.enlace)) abierto = null;
+  });
+  obs.observe(grid, {childList:true});
+})();
+</script>
+
+</body>
+</html>

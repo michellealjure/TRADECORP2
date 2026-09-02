@@ -1,0 +1,896 @@
+<!-- GENERADO por docs/embed/build.py desde el preview.
+     NO editar a mano: los cambios se pierden al regenerar.
+     Embed: about -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Who we are — TradeCorp</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&family=Kanit:wght@300;400&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'AvenirLight';src:url(../assets/avenir-light.otf) format('truetype');font-weight:300;font-style:normal;font-display:swap;}
+  :root{
+    --oliva:#424f25;
+    --salvia:#a6bf85;
+    --crema:#eae4d1;
+          /* map-pin only — not a brand colour */
+  /* same pin, lifted to read against the video scrim */
+    --cafe:#382915;
+    --font-display:'Poppins',system-ui,sans-serif;
+    --font-body:'Kanit','Poppins',system-ui,sans-serif;
+    --font-small:'AvenirLight',system-ui,sans-serif;
+
+    /* type scale — 1.25 step; lands on 14/17/21/27/34/50 at 1440px */
+    --t-xs:clamp(13px,.97vw,15px);
+    --t-sm:clamp(15px,1.18vw,19px);
+    --t-base:clamp(17px,1.46vw,23px);
+    --t-md:clamp(20px,1.875vw,30px);
+    --t-lg:clamp(24px,2.36vw,38px);
+    --t-xl:clamp(30px,3.47vw,54px);
+
+    /* motion — art-directed, never the browser default */
+    --ease-out:cubic-bezier(.16,1,.3,1);
+    --ease-io:cubic-bezier(.65,0,.35,1);
+    --ease-hover:cubic-bezier(.3,0,.2,1);
+
+    /* optical tracking */
+    --track-display:-.03em;
+    --track-tight:-.02em;
+
+    /* ===== Tokens unificados — auditoria del 2026-08-31 =====
+       Antes cada pagina definia los suyos. Los tres fallos que corrige:
+       - --content-max no existia en el About, asi que su contenedor crecia sin
+         tope (1920px de ancho en un monitor de 1920, contra 1180 del home);
+       - --pad-x se cruzaba entre home y About segun el ancho de ventana, asi que
+         el contenido se movia de sitio al navegar, y en direccion distinta segun
+         el tamano de la pantalla;
+       - el ritmo vertical iba en vh en el home y el About y en vw en las otras
+         dos, asi que en una ventana baja unas paginas se comprimian y otras no.
+         La escala --sp-* va toda en vw. */
+    --content-max:1180px;
+    --pad-x:clamp(20px,5vw,72px);
+    --sp-1:clamp(16px,2vw,28px);
+    --sp-2:clamp(28px,4vw,52px);
+    --sp-3:clamp(48px,6vw,80px);
+    --sp-4:clamp(72px,9vw,120px);
+    /* Derivados de marca. Sustituyen a los 20 colores sueltos que habia. */
+    --oliva-dark:#354c1f;
+    --crema-hi:#f3eede;
+    --crema-lo:#dbdcc0;
+    /* Un solo gris calido, 5,6:1 sobre blanco. Reemplaza a #8a7961 (4,21:1),
+       #9a9075 (3,17:1) y #b3ab98 (2,28:1), que no pasaban el minimo AA. */
+    --gris:#6f6252;
+    --pin:#b0392a;
+
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{background:transparent;margin:0}
+  body{font-family:var(--font-body);color:var(--cafe);-webkit-font-smoothing:antialiased}
+
+  .section{background:var(--crema);padding-block:clamp(48px,7vw,96px)}
+  .container{max-width:1200px;margin:0 auto;padding-inline:var(--pad-x)}
+
+  /* Reused section title — defined once */
+  .section-title{
+    font-family:var(--font-display);
+    font-weight:500;
+    letter-spacing:var(--track-display);font-size:var(--t-xl);
+    line-height:1.1;
+    color:var(--cafe);
+    margin:0;
+  }
+
+  .ico{color:var(--oliva)}
+  .ico svg,svg.ico{display:block}
+
+  /* ═══════════ SECTION 1 — Who we are ═══════════ */
+  .who-grid{
+    display:grid;
+    grid-template-columns:.86fr 1.14fr;
+    column-gap:clamp(32px,5vw,72px);
+    align-items:center;
+  }
+  .who-left{min-width:0}
+  .who-media{min-width:0;align-self:center}
+
+  .who-text .section-title{margin-bottom:clamp(16px,1.8vw,24px)}
+  .hero-phrase{
+    font-family:var(--font-display);
+    font-weight:500;
+    letter-spacing:var(--track-display);font-size:var(--t-lg);
+    line-height:1.15;
+    color:var(--cafe);
+    margin:0 0 clamp(16px,2vw,24px);
+  }
+  .who-body{
+    font-family:var(--font-body);
+    font-weight:300;
+    font-size:var(--t-base);
+    line-height:1.6;
+    color:var(--cafe);
+    margin:0 0 16px;
+    max-width:46ch;
+  }
+  .who-body.closing{margin-bottom:0}
+
+  /* Pillars */
+  .who-pillars{
+    margin-top:clamp(28px,4vw,44px);
+    padding-top:clamp(24px,3vw,32px);
+    border-top:1px solid var(--salvia);
+  }
+  .pillars-row{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:clamp(16px,2vw,28px);
+  }
+  .pillar{
+    position:relative;
+    display:block;
+    text-align:left;
+    padding-top:clamp(16px,1.8vw,20px);
+    color:var(--oliva);
+    opacity:0;transform:translateY(14px);
+    transition:opacity .6s var(--ease-out), transform .6s var(--ease-out);
+    transition-delay:calc(var(--i,0)*.15s);
+  }
+  /* the rule DRAWS in from the left — more presence than a plain fade */
+  .pillar::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:2px;
+    background:var(--oliva);
+    transform:scaleX(0);transform-origin:left center;
+    transition:transform .85s var(--ease-out);
+    transition-delay:calc(var(--i,0)*.15s + .05s);
+  }
+  .who-pillars.in-view .pillar::before{transform:scaleX(1)}
+  .who-pillars.in-view .pillar{opacity:1;transform:none}
+    .pillar-label{
+    display:block;
+    font-family:var(--font-display);
+    font-weight:500;
+    font-size:var(--t-md);
+    letter-spacing:-.02em;
+    line-height:1.1;
+    color:var(--oliva);
+  }
+
+  /* Media column */
+  .who-media{margin:0}
+  .who-img{
+    width:100%;height:auto;display:block;
+    border-radius:16px;
+    background:var(--salvia);
+  }
+  .who-caption{
+    font-family:var(--font-display);
+    font-weight:500;
+    letter-spacing:var(--track-tight);font-size:var(--t-md);
+    line-height:1.25;
+    color:var(--oliva);
+    margin:clamp(16px,1.8vw,24px) 0 0;
+  }
+
+  /* Video (replaces the trucks photo) */
+  .who-vidwrap{position:relative;aspect-ratio:4/3;border-radius:16px;overflow:hidden;background:var(--salvia)}
+  /* scrim so the overlaid city labels stay legible over any frame of the clip */
+  .who-vidwrap::after{content:'';position:absolute;inset:auto 0 0 0;height:48%;z-index:1;
+    background:linear-gradient(to top,rgba(24,18,10,.80),rgba(24,18,10,0));pointer-events:none}
+  .who-locs-on{position:absolute;z-index:2;left:clamp(16px,2.4vw,32px);right:clamp(16px,2.4vw,32px);
+    bottom:clamp(16px,2vw,24px);display:flex;gap:clamp(20px,2.6vw,36px);
+    align-items:center;flex-wrap:wrap;justify-content:center}
+  /* Framing is deliberate, not decorative: the source clip is AI-generated and carries
+   a 'KlingAI 3.0 Omni' watermark bottom-right plus a MALFORMED dock number between
+   10 and 12. This crop removes both — it keeps doors 07-10 (all legible) and the full
+   truck. Do not reset it to a neutral scale without re-checking those two artefacts. */
+  .who-vidwrap .who-video{width:100%;height:100%;display:block;object-fit:cover;border-radius:0;aspect-ratio:auto;transform:scale(1.52) translate(17.5%,4%);transform-origin:center}
+
+  /* Two location maps (Atlanta + Miami) */
+  
+.who-loc{margin:0;display:flex;align-items:center;gap:8px}
+  .pin-ico{width:clamp(21px,2.1vw,27px);height:clamp(21px,2.1vw,27px);
+    color:var(--pin-red-on-dark);flex:0 0 auto;stroke-width:1.9}
+.who-loc b{font-family:var(--font-display);font-weight:500;font-size:var(--t-lg);
+    letter-spacing:-.02em;color:#fff;line-height:1.15;text-shadow:0 1px 14px rgba(24,18,10,.5)}
+.who-locs-note{margin:clamp(12px,1.6vw,20px) 0 0;font-size:var(--t-sm);
+    color:var(--cafe);opacity:.78;line-height:1.6}
+
+  /* ═══════════ SECTION 2 — How we work ═══════════ */
+  .how-title{margin-bottom:clamp(28px,4vw,48px)}
+  .how-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:24px;
+  }
+  .flip-card{
+    position:relative;
+    min-width:0;
+    aspect-ratio:3/4;
+    perspective:1200px;
+    border-radius:16px;
+    outline:none;
+    box-shadow:0 4px 20px rgba(56,41,21,.06);
+    transition:box-shadow .2s var(--ease-hover);
+  }
+  .flip-card:hover{box-shadow:0 16px 34px rgba(56,41,21,.13)}
+  .flip-card:focus-visible{outline:2px solid var(--oliva);outline-offset:3px}
+  .flip-inner{
+    position:relative;width:100%;height:100%;
+    transform-style:preserve-3d;
+    transition:transform 520ms cubic-bezier(.16,1,.3,1);
+  }
+  .flip-card:hover .flip-inner,
+  .flip-card:focus-within .flip-inner{transform:rotateY(180deg)}
+
+  .flip-face{
+    position:absolute;inset:0;
+    border-radius:16px;
+    overflow:hidden;
+    padding:32px;
+    backface-visibility:hidden;
+    -webkit-backface-visibility:hidden;
+  }
+  .flip-front{
+    background:var(--crema);
+    border:1px solid var(--salvia);
+    display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    text-align:center;
+    color:var(--cafe);
+  }
+  .flip-back{
+    background:var(--oliva);
+    transform:rotateY(180deg);
+    display:flex;align-items:center;
+    text-align:left;
+    color:var(--crema);
+  }
+  .flip-media{width:100%} /* empty image slot, fill later */
+
+  .card-num{
+    font-family:var(--font-display);
+    font-weight:500;
+    letter-spacing:var(--track-tight);font-size:var(--t-md);
+    line-height:1;
+    margin-bottom:12px;
+  }
+  .card-title{
+    font-family:var(--font-display);
+    font-weight:500;
+    letter-spacing:var(--track-tight);font-size:var(--t-md);
+    line-height:1.15;
+    margin:0;
+  }
+  .back-inner{width:100%}
+  .back-inner .card-title{margin-bottom:16px}
+  .card-desc{
+    font-family:var(--font-small);
+    font-weight:400;
+    font-size:var(--t-sm);
+    line-height:1.5;
+  }
+  .card-desc p{margin:0}
+  .card-desc p + p{margin-top:12px}
+  .card-desc a{
+    color:var(--crema);
+    text-decoration:underline;
+    text-underline-offset:2px;
+  }
+  .card-desc a:hover{opacity:.85}
+  .card-desc a:focus-visible{outline:2px solid var(--crema);outline-offset:2px;border-radius:2px}
+
+  /* ── Responsive ── */
+  @media (max-width:1000px){
+    .how-grid{grid-template-columns:repeat(2,1fr)}
+  }
+  @media (max-width:820px){
+    .who-grid{grid-template-columns:1fr}
+    .who-media{margin-top:clamp(24px,4vw,32px)}
+    .who-body{max-width:none}
+  }
+  @media (max-width:560px){
+    .how-grid{grid-template-columns:1fr}
+    .flip-card{max-width:360px;margin-inline:auto;width:100%}
+  }
+
+  /* ── Touch: no flip, show only the back face, all visible ── */
+  @media (hover:none){
+    .flip-inner{transform:none!important;transition:none}
+    .flip-front{display:none}
+    .flip-back{position:relative;height:100%;transform:none;backface-visibility:visible}
+  }
+
+  /* ── Reduced motion: cross-fade instead of rotating ── */
+  @media (prefers-reduced-motion:reduce){
+    .flip-inner{transform:none!important;transition:none}
+    .flip-face{transition:opacity 200ms var(--ease-out)}
+    .flip-back{transform:none;backface-visibility:visible;opacity:0}
+    .flip-front{opacity:1}
+    .flip-card:hover .flip-back,
+    .flip-card:focus-within .flip-back{opacity:1}
+    .flip-card:hover .flip-front,
+    .flip-card:focus-within .flip-front{opacity:0}
+    .pillar,.card-desc a{transition:none}
+    .pillar{opacity:1!important;transform:none!important;transition:none}
+  .pillar::before{transform:scaleX(1)!important;transition:none}
+  }
+  /* ── Site navigation (GitHub Pages) ── */
+  .site-nav{position:sticky;top:0;z-index:2000;display:flex;align-items:center;justify-content:space-between;gap:16px;
+    padding:12px clamp(16px,5vw,64px);background:rgba(234,228,209,.9);
+    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--salvia,#a6bf85)}
+  .site-nav__logo{display:inline-flex;align-items:center;text-decoration:none;line-height:0}
+  .site-nav__logo img{height:clamp(28px,3.4vw,36px);width:auto;display:block}
+  .site-nav__links{display:flex;gap:clamp(16px,2.6vw,32px);align-items:center}
+  .site-nav__links a{font-family:var(--font-display,'Poppins',sans-serif);font-weight:500;font-size:var(--t-sm);
+    color:var(--cafe,#382915);text-decoration:none;position:relative;padding:4px 0;transition:color .15s var(--ease-hover)}
+  .site-nav__links a:hover{color:var(--oliva,#424f25)}
+  .site-nav__links a.is-active{color:var(--oliva,#424f25)}
+  .site-nav__links a.is-active::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:2px;background:var(--oliva,#424f25);border-radius:2px}
+  @media (max-width:520px){.site-nav{padding:12px 16px}.site-nav__links{gap:16px}}
+</style>
+
+<style id="ab-prev">
+/* ===== SOLO PREVIEW: tres direcciones para About ===== */
+.ab{display:none}
+html.dir-a .ab-a,html.dir-b .ab-b,html.dir-c .ab-c{display:block}
+.ab-wrap{max-width:var(--content-max);margin:0 auto;padding:0 var(--pad-x)}
+.ab-lbl{font-family:var(--font-body);font-weight:400;font-size:var(--t-sm);
+  color:var(--oliva);letter-spacing:.06em;text-transform:uppercase;margin:0 0 10px}
+.ab-h{font-family:var(--font-display);font-weight:500;letter-spacing:var(--track-display);
+  color:var(--cafe);margin:0;text-wrap:balance}
+.ab-p{font-family:var(--font-body);font-weight:300;font-size:var(--t-base);
+  line-height:1.65;color:var(--cafe);margin:0 0 14px;max-width:62ch}
+.ab-rule{border:0;border-top:1px solid rgba(56,41,21,.22);margin:0}
+.ab-cta{display:inline-flex;align-items:center;gap:10px;height:56px;padding:0 34px;
+  border-radius:999px;background:var(--oliva);color:var(--crema);text-decoration:none;
+  font-family:var(--font-display);font-weight:500;font-size:var(--t-base)}
+.ab-cta:hover{background:#36411d}
+
+/* ---------- A · EDITORIAL ---------- */
+/* El video va SIN ampliar ni recodificar: es el marco el que recorta. Una franja
+   ancha y baja (100/23) deja fuera la parte alta de las puertas, que es donde esta
+   la numeracion mal generada, y conserva los camiones enteros a lo ancho. */
+.abA-hero{position:relative;aspect-ratio:100/21;max-height:460px;overflow:hidden;
+  background:var(--oliva);margin-bottom:clamp(10px,1.6vh,20px)}
+.abA-hero .hv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  /* Encuadre vertical, con dos limites por los dos lados:
+     - por debajo del ~62% entran las puertas del muelle, que llevan numeros mal
+       generados por la IA (10, 12, 19...);
+     - por encima del ~88% asoma abajo a la derecha la marca de agua del generador
+       del video.
+     66% deja el borde superior del trailer con el edificio detras, los camiones
+     completos y algo de piso: la composicion que pidio Michelle. */
+  object-position:50% 66%}
+/* Dos copias del mismo video encadenadas por disolvencia. El clip dura 5s pero la
+   camara se desplaza: los dos camiones solo estan en cuadro hasta ~1,6s; despues
+   quedan el trailer suelto y, al final, los muelles vacios. Se reproduce solo ese
+   tramo y el corte se tapa cruzando las dos capas (ver el script del final). */
+.abA-hero .hv-a{opacity:.78}
+.abA-hero .hv-b{opacity:0}
+.abA-hero h1{position:absolute;left:0;right:0;bottom:-.06em;margin:0;text-align:center;
+  font-family:var(--font-display);font-weight:500;letter-spacing:-.03em;line-height:.9;
+  font-size:clamp(64px,12vw,190px);color:var(--crema);mix-blend-mode:normal}
+/* La etiqueta pega al titular: antes la columna medía 1fr y dejaba un vacío enorme
+   entre "Our promise" y el texto. Ahora es estrecha y fija. */
+.abA-row{display:grid;grid-template-columns:minmax(120px,.42fr) minmax(0,2fr);
+  gap:clamp(18px,2.4vw,40px);padding:var(--sp-3) 0;border-top:1px solid rgba(56,41,21,.22)}
+/* La primera fila arranca casi pegada al video: entre los dos habia 126px (63 de
+   margen + 63 de relleno) y se leia como un salto, no como continuidad. */
+/* Ritmo vertical en la escala --sp-*, toda en vw (auditoria 2026-08-31).
+   Antes el home y el About separaban secciones con vh y el portafolio y el
+   Contact con vw: en una ventana baja unas paginas se comprimian y otras no. */
+.abA-row--2{padding-top:var(--sp-1)}
+/* Dos columnas, no tres: la etiqueta se apila SOBRE el titular en vez de ocupar su
+   propia columna, y ese ancho recuperado se lo lleva el bloque de almacenes, que pasa
+   del 29% al 45% de la fila. */
+.abA-row--2{grid-template-columns:minmax(0,1.22fr) minmax(0,1fr);
+  gap:clamp(28px,4.6vw,88px);align-items:stretch}
+.abA-row--2 .ab-lbl{margin-bottom:14px}
+.abA-row--2 aside{display:flex;flex-direction:column}
+/* El boton va pegado a la nota de "Stock ships...", no empujado al fondo de la
+   columna: con margin-top:auto quedaba alineado con los pilares pero caia fuera
+   de la primera pantalla en viewports bajos. */
+.abA-row--2 aside .ab-cta{margin-top:clamp(18px,2.4vh,28px);align-self:center}
+/* El ultimo parrafo arrastraba su margen inferior y la fila terminaba 14px mas
+   abajo que el texto, asi que el boton no cuadraba con "Built on three things". */
+.abA-row--2 > div > .ab-p:last-of-type{margin-bottom:0}
+/* Con mas sitio, el bloque de almacenes sube de cuerpo y gana peso. */
+.abA-row--2 .ship-1 .ship-row{padding:18px 0}
+.abA-row--2 .ship-1 .ship-row b{font-size:var(--t-md)}
+.abA-row--2 .ship-3 .ship-big{font-size:clamp(30px,3vw,46px)}
+@media (max-width:900px){.abA-row--2{grid-template-columns:1fr}}
+.abA-row:first-of-type{border-top:0}
+.abA-say{font-size:clamp(26px,2.8vw,40px);line-height:1.18;margin:0 0 22px}
+.abA-list{list-style:none;margin:0;padding:0}
+.abA-list li{display:grid;grid-template-columns:64px 1fr;gap:clamp(12px,2vw,28px);
+  padding:22px 0;border-top:1px solid rgba(56,41,21,.16)}
+.abA-list li:first-child{border-top:0}
+.abA-num{font-family:var(--font-display);font-weight:500;font-size:var(--t-md);color:var(--salvia-deep)}
+.abA-list h3{font-family:var(--font-display);font-weight:500;font-size:var(--t-md);
+  color:var(--cafe);margin:0 0 6px}
+.abA-end{text-align:center;padding:var(--sp-3) 0 var(--sp-4)}
+
+/* ---------- B · ESTRUCTURADA ---------- */
+.abB-top{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,64px);
+  align-items:end;padding:clamp(40px,6vh,76px) 0 clamp(24px,3.4vh,38px)}
+.abB-top h1{font-size:clamp(40px,5.2vw,74px);line-height:1.02}
+.abB-shot{aspect-ratio:21/8;border-radius:16px;overflow:hidden;background:var(--oliva)}
+.abB-shot video{width:100%;height:100%;object-fit:cover;display:block}
+.abB-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0;
+  margin-top:clamp(40px,6vh,72px)}
+.abB-cell{padding:clamp(26px,3.4vh,40px) clamp(20px,2.6vw,44px);
+  border-top:1px solid rgba(56,41,21,.22)}
+.abB-cell:nth-child(odd){border-right:1px solid rgba(56,41,21,.22);padding-left:0}
+.abB-cell:nth-child(even){padding-right:0}
+.abB-cell h3{font-family:var(--font-display);font-weight:500;font-size:var(--t-md);
+  color:var(--cafe);margin:0 0 10px}
+.abB-steps{display:grid;grid-template-columns:repeat(4,1fr);
+  border-top:1px solid rgba(56,41,21,.22);margin-top:clamp(48px,7vh,84px)}
+.abB-step{padding:clamp(22px,3vh,34px) clamp(16px,1.8vw,28px) 0;
+  border-left:1px solid rgba(56,41,21,.16)}
+.abB-step:first-child{border-left:0;padding-left:0}
+.abB-step b{display:block;font-family:var(--font-display);font-weight:500;
+  font-size:var(--t-md);color:var(--salvia-deep);margin-bottom:8px}
+.abB-step h3{font-family:var(--font-display);font-weight:500;font-size:var(--t-base);
+  color:var(--cafe);margin:0 0 8px}
+.abB-end{text-align:center;padding:clamp(56px,9vh,104px) 0 clamp(72px,11vh,140px)}
+
+/* ---------- C · MODULAR ---------- */
+.abC-band{background:var(--oliva);color:var(--crema);padding:clamp(64px,10vh,132px) 0}
+.abC-band h1{color:var(--crema);font-size:clamp(42px,5.6vw,80px);line-height:1.04;max-width:18ch}
+.abC-band p{font-family:var(--font-body);font-weight:300;font-size:var(--t-md);
+  line-height:1.6;color:var(--salvia);max-width:52ch;margin:22px 0 0}
+.abC-nums{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,3vw,48px);
+  padding:clamp(44px,7vh,84px) 0;border-bottom:1px solid rgba(56,41,21,.22)}
+.abC-num b{display:block;font-family:var(--font-display);font-weight:500;
+  font-size:clamp(46px,6vw,88px);line-height:1;color:var(--oliva);letter-spacing:-.03em}
+.abC-num span{display:block;margin-top:10px;font-family:var(--font-body);font-weight:300;
+  font-size:var(--t-sm);color:var(--cafe);opacity:.8}
+.abC-alt{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,72px);
+  align-items:center;padding:clamp(44px,7vh,84px) 0}
+.abC-alt:nth-of-type(even) .abC-fig{order:2}
+.abC-fig{aspect-ratio:4/3;border-radius:16px;overflow:hidden;background:var(--salvia-veil)}
+.abC-fig img,.abC-fig video{width:100%;height:100%;object-fit:cover;display:block}
+.abC-steps{background:var(--salvia-veil);padding:clamp(52px,8vh,104px) 0}
+.abC-track{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(16px,2vw,32px);
+  margin-top:clamp(28px,4vh,48px);position:relative}
+.abC-track::before{content:'';position:absolute;left:0;right:0;top:17px;
+  border-top:1px dashed rgba(56,41,21,.35)}
+.abC-st b{position:relative;display:grid;place-items:center;width:34px;height:34px;
+  border-radius:50%;background:var(--oliva);color:var(--crema);
+  font-family:var(--font-display);font-weight:500;font-size:15px}
+.abC-st h3{font-family:var(--font-display);font-weight:500;font-size:var(--t-base);
+  color:var(--cafe);margin:16px 0 6px}
+.abC-end{text-align:center;padding:clamp(56px,9vh,110px) 0 clamp(72px,11vh,140px)}
+
+
+
+/* Icono de ubicacion. Va como SVG en linea y no como PNG: se recolorea con
+   `color` en una linea y no pierde nitidez en pantallas Retina. */
+.pin{width:1em;height:1em;flex:0 0 auto;color:var(--pin);vertical-align:-.12em;margin-right:.42em}
+.ship-1 .ship-row b{display:inline-flex;align-items:center}
+.ship-3 .ship-big{display:flex;align-items:center}
+.ship-3 .ship-big .pin{width:.72em;height:.72em;margin-right:.34em}
+
+/* Entrada escalonada, la misma que la banda de valores del home: suben y aparecen
+   uno tras otro con el mismo easing. Aqui no hay intro con scroll, asi que lo
+   dispara un IntersectionObserver en vez del recorrido del hero. */
+/* El estado por defecto es VISIBLE. El punto de partida (oculto y bajado) sólo se
+   aplica bajo `html.anim`, que pone el propio JS: si el JS falla, el contenido se ve
+   igual. Es la misma regla que usa el intro del home — nada debe quedar invisible
+   esperando a un script. */
+.rise{transition:opacity .5s ease,transform .6s cubic-bezier(.16,.84,.44,1)}
+html.anim .rise{opacity:0;transform:translateY(26px)}
+html.anim.go .rise{opacity:1;transform:none}
+html.anim.go .r2{transition-delay:.14s}
+html.anim.go .r3{transition-delay:.26s}
+html.anim.go .r4{transition-delay:.38s}
+@media (prefers-reduced-motion:reduce){
+  .rise{opacity:1;transform:none;transition:none}
+}
+
+/* Los tres pilares, justo bajo la frase que los anuncia. Llevan regla fina encima —el
+   mismo recurso que separa las filas de esta direccion— para que se lean como apoyo
+   del parrafo y no como otro titular. */
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,32px);
+  margin-top:clamp(20px,2.6vh,30px)}
+.pillars .pil-t{display:block;font-family:var(--font-display);font-weight:500;
+  font-size:var(--t-md);letter-spacing:var(--track-tight);color:var(--cafe)}
+/* La mascara recorta la palabra para la variante "cortina". El padding/margen
+   compensados dejan sitio a la 'y' de Quality: sin eso overflow:hidden le corta
+   la cola incluso en reposo. */
+.pillars .pil-m{display:block;margin-top:12px;overflow:hidden;
+  padding-bottom:.18em;margin-bottom:-.18em}
+@media (max-width:560px){.pillars{grid-template-columns:1fr}}
+
+/* ═════════ How we work — tarjetas que voltean ═════════
+   La fila va a ancho completo con la etiqueta encima: cuatro tarjetas en la
+   columna estrecha de .abA-row quedaban a ~200px y el reverso no respiraba. */
+/* Sin filete y sin relleno superior: el bloque sube justo a donde estaba la
+   linea. La separacion con los pilares la da ahora el relleno inferior de la
+   fila anterior (peticion de Michelle, 2026-08-31). */
+.abA-row--how{grid-template-columns:1fr;gap:clamp(16px,2.4vh,28px);
+  border-top:0;padding-top:0}
+.how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,1.6vw,24px)}
+.fwrap{min-width:0}
+.fcard{position:relative;aspect-ratio:3/4;perspective:1400px;border-radius:16px;
+  outline:none;box-shadow:0 4px 20px rgba(56,41,21,.06);
+  transition:box-shadow .5s cubic-bezier(.16,.84,.44,1),
+             transform .55s cubic-bezier(.16,.84,.44,1),
+             opacity .45s ease}
+.fcard:focus-visible{outline:2px solid var(--oliva);outline-offset:3px}
+.fin{position:relative;width:100%;height:100%;transform-style:preserve-3d;
+  transition:transform .78s cubic-bezier(.16,.84,.44,1)}
+.fface{position:absolute;inset:0;border-radius:16px;overflow:hidden;
+  padding:clamp(18px,1.9vw,30px);
+  backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.ffront{background:var(--crema);border:1px solid var(--salvia);color:var(--cafe);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.fback{background:var(--oliva);color:var(--crema);transform:rotateY(180deg);
+  display:flex;align-items:center;text-align:left}
+.fback-in{width:100%}
+.fnum{font-family:var(--font-display);font-weight:500;font-size:var(--t-md);
+  letter-spacing:var(--track-tight);line-height:1;margin-bottom:12px}
+.ftit{font-family:var(--font-display);font-weight:500;font-size:var(--t-md);
+  letter-spacing:var(--track-tight);line-height:1.15;margin:0}
+.fback-in .ftit{margin-bottom:14px}
+.fdesc{font-family:var(--font-small);font-size:var(--t-sm);line-height:1.5}
+.fdesc p{margin:0}
+.fdesc p + p{margin-top:10px}
+.fdesc a{color:var(--crema);text-decoration:underline;text-underline-offset:2px}
+.fdesc a:hover{opacity:.85}
+@media (max-width:1000px){.how-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.how-grid{grid-template-columns:1fr}
+  .fcard{aspect-ratio:16/9}}
+
+/* Entrada escalonada. Va en .fwrap y no en .fcard a proposito: si el transform de
+   entrada y el del hover viven en el mismo elemento, el de entrada (mas especifico)
+   gana y el hover deja de moverse. */
+.fwrap:nth-child(1){--dc:0s}
+.fwrap:nth-child(2){--dc:.10s}
+.fwrap:nth-child(3){--dc:.20s}
+.fwrap:nth-child(4){--dc:.30s}
+html.anim .fwrap{opacity:0;transform:translateY(30px)}
+html.anim .how-grid.in .fwrap{opacity:1;transform:none;
+  transition:opacity .55s ease var(--dc),
+             transform .72s cubic-bezier(.16,.84,.44,1) var(--dc)}
+
+/* ── 1 · Volteo con vecinos ────────────────────────────────────────────────
+   El volteo de siempre, pero los vecinos se apartan y se atenuan: es el mismo
+   gesto que el carrusel de ingredientes del home (.ing:hover + .ing). */
+html.hm-1 .fcard:hover .fin,
+html.hm-1 .fcard:focus-within .fin,
+html.hm-1 .fcard.demo .fin{transform:rotateY(180deg)}
+html.hm-1 .fcard:hover{box-shadow:0 18px 42px rgba(56,41,21,.16);transform:translateY(-8px)}
+html.hm-1 .fwrap:hover + .fwrap .fcard,
+html.hm-1 .fwrap:focus-within + .fwrap .fcard{transform:translateX(12px);opacity:.58}
+html.hm-1 .fwrap:has(+ .fwrap:hover) .fcard,
+html.hm-1 .fwrap:has(+ .fwrap:focus-within) .fcard{transform:translateX(-12px);opacity:.58}
+
+/* ── 2 · Encadenado por scroll ─────────────────────────────────────────────
+   El giro no lo dispara el raton: lo va marcando el scroll, como el hero del
+   home. Cada tarjeta tiene su tramo, asi que voltean una detras de otra.
+   Sin transicion: el valor ya viene interpolado desde el JS. */
+html.hm-2 .fin{transform:rotateY(calc(var(--rot,0) * 1deg));transition:none}
+html.hm-2 .fcard:hover{box-shadow:0 18px 42px rgba(56,41,21,.16)}
+
+/* ── 3 · Cortina, sin 3D ───────────────────────────────────────────────────
+   El reverso sube tapando la cara: el mismo gesto de cajon con el que la banda
+   de valores sale del hero en el home. */
+html.hm-3 .fface{backface-visibility:visible;-webkit-backface-visibility:visible}
+html.hm-3 .fback{transform:none;clip-path:inset(100% 0 0 0);
+  transition:clip-path .62s cubic-bezier(.16,.84,.44,1)}
+html.hm-3 .fcard:hover .fback,
+html.hm-3 .fcard:focus-within .fback,
+html.hm-3 .fcard.demo .fback{clip-path:inset(0 0 0 0)}
+html.hm-3 .fcard:hover{box-shadow:0 18px 42px rgba(56,41,21,.16);transform:translateY(-8px)}
+html.hm-3 .fwrap:hover + .fwrap .fcard,
+html.hm-3 .fwrap:focus-within + .fwrap .fcard{transform:translateX(12px);opacity:.58}
+html.hm-3 .fwrap:has(+ .fwrap:hover) .fcard,
+html.hm-3 .fwrap:has(+ .fwrap:focus-within) .fcard{transform:translateX(-12px);opacity:.58}
+
+/* ===== Motion de los pilares — 3 opciones para comparar en el preview =====
+   Los pilares ya no usan la clase generica .rise: cada opcion controla por
+   separado la regla y la palabra, que es lo que permite escalonarlas.
+   El retardo base de cada columna sale de --d; el resto lo pone cada variante. */
+.pillars > div:nth-child(1){--d:0s}
+.pillars > div:nth-child(2){--d:.13s}
+.pillars > div:nth-child(3){--d:.26s}
+
+/* "Linea" — la regla se dibuja de izquierda a derecha y la palabra entra detras.
+   Lo dispara la clase .in que pone su PROPIO observer, no el .go de la fila: los
+   pilares estan al final del bloque y con el disparador general la animacion se
+   consumia antes de que llegaran a verse en pantallas bajas. */
+html.anim .pillars .ab-rule{transform:scaleX(0);transform-origin:0 50%}
+html.anim .pillars .pil-t{opacity:0;transform:translateY(10px)}
+html.anim .pillars.in .ab-rule{transform:none;
+  transition:transform .68s cubic-bezier(.16,.84,.44,1) var(--d)}
+html.anim .pillars.in .pil-t{opacity:1;transform:none;
+  transition:opacity .5s ease calc(.26s + var(--d)),
+             transform .6s cubic-bezier(.16,.84,.44,1) calc(.26s + var(--d))}
+/* --- variantes del bloque de almacenes --- */
+.ship{display:none}
+html.ship-1 .ship-1,html.ship-2 .ship-2,html.ship-3 .ship-3{display:block}
+.ship-1 .ship-row{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+  padding:14px 0;border-top:1px solid rgba(56,41,21,.22)}
+.ship-1 .ship-row b{font-family:var(--font-display);font-weight:500;font-size:var(--t-base);color:var(--cafe)}
+.ship-1 .ship-row span{font-family:var(--font-body);font-weight:300;font-size:var(--t-sm);color:var(--oliva)}
+.ship-2 .ship-card{border-radius:14px;overflow:hidden;background:var(--salvia-veil)}
+.ship-2 .ship-card img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.ship-2 .ship-body{padding:16px 18px 18px}
+.ship-2 .ship-body b{display:block;font-family:var(--font-display);font-weight:500;
+  font-size:var(--t-base);color:var(--cafe)}
+.ship-3 .ship-big{font-family:var(--font-display);font-weight:500;letter-spacing:-.02em;
+  font-size:clamp(26px,2.5vw,38px);line-height:1.12;color:var(--oliva);margin:0}
+.ship-3 .ship-pin{display:inline-block;width:7px;height:7px;border-radius:50%;
+  background:var(--salvia-deep);margin-right:10px;vertical-align:middle}
+/* Los controles del preview viven en un panel que se abre y se cierra. Sueltos
+   en la esquina tapaban las tarjetas de "How we work" y el CTA de los almacenes:
+   cinco filas de chips fijas se comen media pantalla. Nada de esto va a la web. */
+@media (max-width:820px){
+  .abA-row,.abB-top,.abB-grid,.abC-alt{grid-template-columns:1fr}
+  .abB-cell:nth-child(odd){border-right:0;padding-left:0}
+  .abB-cell{padding-left:0;padding-right:0}
+  .abB-steps,.abC-nums,.abC-track{grid-template-columns:1fr}
+  .abB-step{border-left:0;padding-left:0;border-top:1px solid rgba(56,41,21,.16)}
+  .abC-track::before{display:none}
+  .abC-alt:nth-of-type(even) .abC-fig{order:0}
+}
+</style>
+</head>
+<body>
+
+
+  <!-- ════════ SECTION 1 — Who we are ════════ -->
+  
+<div class="ab ab-a">
+  <header class="abA-hero">
+    <video class="hv hv-a" src="../about/assets/who-trucks.mp4" muted playsinline autoplay preload="auto"></video>
+    <video class="hv hv-b" src="../about/assets/who-trucks.mp4" muted playsinline preload="auto"></video>
+    <h1>Who we are</h1>
+  </header>
+  <div class="ab-wrap">
+    <section class="abA-row abA-row--2">
+      <div>
+        <p class="ab-lbl rise">Our promise</p>
+        <h2 class="ab-h abA-say rise r2">We make sourcing the easiest part of your day.</h2>
+        <p class="ab-p rise r3">We are your trusted partner for premium nutraceutical and supplement raw materials, customized to your formula and delivered on time — every time.</p><p class="ab-p rise r4">Built on three things we don&rsquo;t compromise on:</p>
+        <div class="pillars">
+          <div><hr class="ab-rule"><span class="pil-m"><span class="pil-t">Quality</span></span></div>
+          <div><hr class="ab-rule"><span class="pil-m"><span class="pil-t">Reliability</span></span></div>
+          <div><hr class="ab-rule"><span class="pil-m"><span class="pil-t">Speed</span></span></div>
+        </div>
+      </div>
+      <aside class="rise r3">
+        <p class="ab-lbl">Where we ship from</p>
+        <div class="ship ship-1">
+          <div class="ship-row"><b><svg class='pin' viewBox='0 0 24 24' aria-hidden='true'><path fill='currentColor' d='M12 1.9c-4.2 0-7.6 3.3-7.6 7.4 0 5.4 6.8 12.2 7.1 12.5.1.1.3.2.5.2s.4-.1.5-.2c.3-.3 7.1-7.1 7.1-12.5 0-4.1-3.4-7.4-7.6-7.4Zm0 10.9a3.4 3.4 0 1 1 0-6.9 3.4 3.4 0 0 1 0 6.9Z'/></svg>Miami, FL</b><span>Warehouse</span></div>
+          <div class="ship-row"><b><svg class='pin' viewBox='0 0 24 24' aria-hidden='true'><path fill='currentColor' d='M12 1.9c-4.2 0-7.6 3.3-7.6 7.4 0 5.4 6.8 12.2 7.1 12.5.1.1.3.2.5.2s.4-.1.5-.2c.3-.3 7.1-7.1 7.1-12.5 0-4.1-3.4-7.4-7.6-7.4Zm0 10.9a3.4 3.4 0 1 1 0-6.9 3.4 3.4 0 0 1 0 6.9Z'/></svg>Atlanta, GA</b><span>Warehouse</span></div>
+          <p class="ab-p" style="font-size:var(--t-sm);margin:16px 0 0">Stock ships from whichever sits closer to you.</p>
+        </div>
+        <div class="ship ship-2">
+          <div class="ship-card"><img src="../about/assets/warehouse.webp" alt="Warehouse">
+            <div class="ship-body"><b><svg class='pin' viewBox='0 0 24 24' aria-hidden='true'><path fill='currentColor' d='M12 1.9c-4.2 0-7.6 3.3-7.6 7.4 0 5.4 6.8 12.2 7.1 12.5.1.1.3.2.5.2s.4-.1.5-.2c.3-.3 7.1-7.1 7.1-12.5 0-4.1-3.4-7.4-7.6-7.4Zm0 10.9a3.4 3.4 0 1 1 0-6.9 3.4 3.4 0 0 1 0 6.9Z'/></svg>Miami, FL &nbsp;&middot;&nbsp; <svg class='pin' viewBox='0 0 24 24' aria-hidden='true'><path fill='currentColor' d='M12 1.9c-4.2 0-7.6 3.3-7.6 7.4 0 5.4 6.8 12.2 7.1 12.5.1.1.3.2.5.2s.4-.1.5-.2c.3-.3 7.1-7.1 7.1-12.5 0-4.1-3.4-7.4-7.6-7.4Zm0 10.9a3.4 3.4 0 1 1 0-6.9 3.4 3.4 0 0 1 0 6.9Z'/></svg>Atlanta, GA</b>
+              <p class="ab-p" style="font-size:var(--t-sm);margin:8px 0 0">Stock ships from whichever sits closer to you.</p></div>
+          </div>
+        </div>
+        <div class="ship ship-3">
+          <p class="ship-big"><svg class='pin' viewBox='0 0 24 24' aria-hidden='true'><path fill='currentColor' d='M12 1.9c-4.2 0-7.6 3.3-7.6 7.4 0 5.4 6.8 12.2 7.1 12.5.1.1.3.2.5.2s.4-.1.5-.2c.3-.3 7.1-7.1 7.1-12.5 0-4.1-3.4-7.4-7.6-7.4Zm0 10.9a3.4 3.4 0 1 1 0-6.9 3.4 3.4 0 0 1 0 6.9Z'/></svg>Miami, FL</p>
+          <p class="ship-big" style="margin-top:6px"><svg class='pin' viewBox='0 0 24 24' aria-hidden='true'><path fill='currentColor' d='M12 1.9c-4.2 0-7.6 3.3-7.6 7.4 0 5.4 6.8 12.2 7.1 12.5.1.1.3.2.5.2s.4-.1.5-.2c.3-.3 7.1-7.1 7.1-12.5 0-4.1-3.4-7.4-7.6-7.4Zm0 10.9a3.4 3.4 0 1 1 0-6.9 3.4 3.4 0 0 1 0 6.9Z'/></svg>Atlanta, GA</p>
+          <hr class="ab-rule" style="margin:18px 0 0">
+          <p class="ab-p" style="font-size:var(--t-sm);margin:14px 0 0">Two US warehouses, so stock ships from whichever sits closer to you.</p>
+        </div>
+        <a target="_top" class="ab-cta rise r4" href="https://www.tcorpi.com/contact">Quote today</a>
+      </aside>
+    </section>
+    <section class="abA-row abA-row--how" id="how">
+      <p class="ab-lbl">How we work</p>
+      <div class="how-grid">
+        <div class="fwrap"><div class="fcard" tabindex="0"><div class="fin">
+          <div class="fface ffront"><span class="fnum">01</span><h3 class="ftit">Reach out</h3></div>
+          <div class="fface fback"><div class="fback-in"><h3 class="ftit">Reach out</h3>
+            <div class="fdesc"><p>Ready to quote or have a question? We&rsquo;re here. Send us an <a target="_top" href="https://www.tcorpi.com/contact">email</a> or <a target="_top" href="https://www.tcorpi.com/contact">fill out the form</a>.</p><p>Response within 24h.</p></div></div></div>
+        </div></div></div>
+        <div class="fwrap"><div class="fcard" tabindex="0"><div class="fin">
+          <div class="fface ffront"><span class="fnum">02</span><h3 class="ftit">Request a sample</h3></div>
+          <div class="fface fback"><div class="fback-in"><h3 class="ftit">Request a sample</h3>
+            <div class="fdesc"><p>Browse our <a target="_top" href="https://www.tcorpi.com/ingredients">ingredients</a>. If you don&rsquo;t find it, <a target="_top" href="https://www.tcorpi.com/ingredients">request what you need</a> &mdash; we&rsquo;ll source it.</p></div></div></div>
+        </div></div></div>
+        <div class="fwrap"><div class="fcard" tabindex="0"><div class="fin">
+          <div class="fface ffront"><span class="fnum">03</span><h3 class="ftit">Place your order</h3></div>
+          <div class="fface fback"><div class="fback-in"><h3 class="ftit">Place your order</h3>
+            <div class="fdesc"><p><a target="_top" href="https://www.tcorpi.com/contact">No minimums required.</a></p></div></div></div>
+        </div></div></div>
+        <div class="fwrap"><div class="fcard" tabindex="0"><div class="fin">
+          <div class="fface ffront"><span class="fnum">04</span><h3 class="ftit">Receive delivery</h3></div>
+          <div class="fface fback"><div class="fback-in"><h3 class="ftit">Receive delivery</h3>
+            <div class="fdesc"><p>Shipped from FL &amp; GA. Our location means you get your ingredients faster.</p></div></div></div>
+        </div></div></div>
+      </div>
+    </section>
+    
+  </div>
+</div>
+
+
+
+
+
+
+
+<script>
+(function(){var d=document.documentElement,bs=document.querySelectorAll('#ab-tog button');
+ function set(v){d.classList.remove('dir-a','dir-b','dir-c');d.classList.add(v);
+   bs.forEach(function(o){o.setAttribute('aria-pressed',String(o.dataset.d===v));});
+   window.scrollTo(0,0);}
+ bs.forEach(function(b){b.addEventListener('click',function(){set(b.dataset.d);});});
+ set('dir-a');
+ var sb=document.querySelectorAll('#ship-tog button');
+ function sset(v){d.classList.remove('ship-1','ship-2','ship-3');d.classList.add(v);
+   sb.forEach(function(o){o.setAttribute('aria-pressed',String(o.dataset.s===v));});}
+ sb.forEach(function(b){b.addEventListener('click',function(){sset(b.dataset.s);});});
+ sset('ship-1');
+ // Los pilares se animan con SU PROPIO observer, cuando entran en pantalla.
+ // Con el disparador de la fila la animacion ya habia terminado para cuando
+ // aparecian, en cualquier viewport donde no cupieran de entrada.
+ // Marca un elemento con .in cuando entra en pantalla. Con dos redes de
+ // seguridad: la primera reacciona si el observer no dispara pero el bloque ya
+ // esta a la vista; la segunda entra pase lo que pase, porque el unico fallo
+ // inaceptable es que el contenido se quede invisible — vale mas gastar la
+ // animacion sin que se vea que perder el texto.
+ // Ojo con innerHeight: en un panel oculto devuelve 0 y la comprobacion
+ // "esta en pantalla" daba siempre falso.
+ function enEscena(el,umbral,alEntrar){
+   if(!el) return;
+   var marcar=function(){ if(el.classList.contains('in')) return;
+     el.classList.add('in'); if(alEntrar) alEntrar(); };
+   if(!('IntersectionObserver' in window)){ marcar(); return; }
+   new IntersectionObserver(function(es,ob){
+     es.forEach(function(e){ if(e.isIntersecting){ marcar(); ob.disconnect(); } });
+   },{threshold:umbral}).observe(el);
+   var red=function(forzar){
+     if(el.classList.contains('in')) return;
+     var vh=window.innerHeight||document.documentElement.clientHeight||0;
+     var r=el.getBoundingClientRect();
+     if(forzar || !vh || (r.top<vh && r.bottom>0)) marcar();
+   };
+   setTimeout(function(){ red(false); },2500);
+   setTimeout(function(){ red(true);  },6000);
+ }
+ // Repetir: quitar y reponer la clase en el mismo frame no anima, el navegador
+ // agrupa los dos cambios. Hay que forzar un reflow en medio.
+ function repetir(el,alEntrar){ if(!el) return;
+   el.classList.remove('in'); void el.offsetWidth;
+   setTimeout(function(){ el.classList.add('in'); if(alEntrar) alEntrar(); },60); }
+
+ var pil=document.querySelector('.abA-row--2 .pillars');
+ enEscena(pil,.5);
+
+ // ── How we work ───────────────────────────────────────────────────────────
+ var grid=document.querySelector('.how-grid');
+ // Pista de uso: al entrar la seccion, la primera tarjeta se voltea sola y
+ // vuelve. Sin esto nadie descubre que las tarjetas tienen reverso. Se cancela
+ // si el visitante ya paso el raton por alguna: ya lo sabe, y voltearsela en la
+ // cara mientras la esta leyendo es peor que no dar la pista.
+ var sinMovimiento=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+ var descubierto=false, avisos=[];
+ // pointerover y no pointerenter: pointerenter no burbujea, asi que el raton
+ // sobre una tarjeta no llegaria a la reja.
+ if(grid) grid.addEventListener('pointerover',function(){ descubierto=true; });
+ function pista(){
+   avisos.forEach(clearTimeout); avisos=[];
+   if(!grid || sinMovimiento) return;
+   var c=grid.querySelector('.fcard');
+   if(!c) return;
+   c.classList.remove('demo');
+   if(d.classList.contains('hm-2')) return;   // ahi el scroll ya las voltea todas
+   // 1,15s: lo que tarda la entrada escalonada en asentarse (0,30 de retardo
+   // de la cuarta + 0,72 de recorrido). Antes se solaparian los dos gestos.
+   avisos.push(setTimeout(function(){ if(!descubierto) c.classList.add('demo'); },1150));
+   avisos.push(setTimeout(function(){ c.classList.remove('demo'); },2950));
+ }
+ enEscena(grid,.2,pista);
+ var hb=document.querySelectorAll('#hm-tog button[data-h]');
+ function hset(v){ d.classList.remove('hm-1','hm-2','hm-3'); d.classList.add(v);
+   hb.forEach(function(o){o.setAttribute('aria-pressed',String(o.dataset.h===v));});
+   if(v!=='hm-2') fins.forEach(function(f){ f.style.removeProperty('--rot'); });
+   scrub(); descubierto=false; repetir(grid,pista); }
+ hb.forEach(function(b){b.addEventListener('click',function(){hset(b.dataset.h);});});
+ d.classList.add('hm-1');
+
+ // Variante 2: el giro lo marca el scroll, no el raton. Mismo planteamiento que
+ // el hero del home — progreso normalizado, easing y avance sin retroceso.
+ var fins=[].slice.call(document.querySelectorAll('.fin'));
+ var maxP=0, pend=false;
+ function easeInOutCubic(x){ return x<.5 ? 4*x*x*x : 1-Math.pow(-2*x+2,3)/2; }
+ function tramo(p,a,b){ var k=(p-a)/(b-a); return k<0?0:(k>1?1:k); }
+ function scrub(){
+   pend=false;
+   if(!grid||!d.classList.contains('hm-2')) return;
+   var vh=window.innerHeight||document.documentElement.clientHeight||0;
+   if(!vh) return;
+   // Recorrido corto a proposito: de 0.90vh a 0.45vh. Con uno mas largo el giro
+   // de la ultima tarjeta terminaba tan abajo que la pagina se quedaba sin
+   // scroll antes de completarlo — esta seccion esta cerca del final.
+   var top=grid.getBoundingClientRect().top;
+   var p=(0.90*vh - top)/(0.45*vh);
+   p=p<0?0:(p>1?1:p);
+   if(p>maxP) maxP=p; else p=maxP;      // no rebobina, igual que el home
+   fins.forEach(function(f,i){
+     f.style.setProperty('--rot',(easeInOutCubic(tramo(p,i*0.15,0.55+i*0.15))*180).toFixed(1));
+   });
+ }
+ addEventListener('scroll',function(){ if(!pend){ pend=true; requestAnimationFrame(scrub); } },{passive:true});
+ addEventListener('resize',scrub);
+ var vb=document.querySelectorAll('#vid-tog button');
+ vb.forEach(function(b){b.addEventListener('click',function(){
+   vb.forEach(function(o){o.setAttribute('aria-pressed',String(o===b));});
+   if(window.setHeroVideo) window.setHeroVideo(b.dataset.v);});});
+ // Dispara la entrada cuando la fila entra en pantalla. Igual que en el home, el
+ // movimiento no se rebobina: una vez dentro, se queda.
+ var row=document.querySelector('.abA-row--2');
+ var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+ if(row&&!reduce){
+   d.classList.add('anim');                       // recien aqui se oculta
+   var go=function(){ d.classList.add('go'); };
+   new IntersectionObserver(function(es,ob){
+     es.forEach(function(e){ if(e.isIntersecting){ go(); ob.disconnect(); } });
+   },{threshold:.15}).observe(row);
+   // Red de seguridad: si el observador no llega a dispararse por lo que sea, el
+   // contenido aparece igual. Nunca se queda invisible.
+   setTimeout(go,1600);
+ }
+})();
+
+/* --- Hero: bucle sobre el tramo bueno del video ------------------------------
+   El clip original dura 5,04s. Medido cuadro a cuadro: hasta ~1,6s se ven los dos
+   camiones con el logo; en 2,4s ya solo queda el trailer y de 3,6s en adelante son
+   los muelles vacios. Se reproduce [IN, OUT] a velocidad reducida y el salto del
+   bucle se disuelve entre las dos capas, que es lo que evita el corte seco.
+   El fundido va en requestAnimationFrame: 'timeupdate' dispara ~4 veces por
+   segundo y a esa resolucion la disolvencia se ve escalonada. */
+(function(){
+  var hero=document.querySelector('.abA-hero'); if(!hero) return;
+  var vs=[hero.querySelector('.hv-a'), hero.querySelector('.hv-b')];
+  if(!vs[0]||!vs[1]) return;
+
+  var FADE=0.5, BASE=0.78, cur=0;
+  /* Solo para el preview: deja comparar el tramo corto contra el clip entero.
+     Al aplicar a la web se deja fijo el que elija Michelle y se borra #vid-tog. */
+  var MODOS={ lento:{i:0.05,o:1.58,r:0.6},
+              normal:{i:0.05,o:1.58,r:1},
+              completo:{i:0.05,o:5.00,r:1} };
+  var m=MODOS.completo;   // el clip original entero — decision de Michelle, 2026-08-31
+  var IN=m.i, OUT=m.o, RATE=m.r;
+  window.setHeroVideo=function(k){
+    m=MODOS[k]||MODOS.completo; IN=m.i; OUT=m.o; RATE=m.r;
+    vs.forEach(function(v){ v.playbackRate=RATE; v.currentTime=IN; v.style.opacity='0'; });
+    vs[1].pause(); cur=0; vs[0].style.opacity=String(BASE); vs[0].play().catch(function(){});
+  };
+
+  if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches){
+    vs[0].currentTime=IN; vs[0].pause(); vs[1].remove(); return;
+  }
+
+  vs.forEach(function(v){ v.playbackRate=RATE; });
+  var start=function(){ vs[0].currentTime=IN; vs[0].play().catch(function(){}); };
+  if(vs[0].readyState>=1) start(); else vs[0].addEventListener('loadedmetadata',start,{once:true});
+
+  function tick(){
+    var a=vs[cur], b=vs[1-cur], t=a.currentTime;
+    if(t>=OUT-FADE){
+      if(b.paused){ b.currentTime=IN; b.play().catch(function(){}); }
+      var k=(t-(OUT-FADE))/FADE; if(k>1) k=1; if(k<0) k=0;
+      a.style.opacity=((1-k)*BASE).toFixed(3);
+      b.style.opacity=(k*BASE).toFixed(3);
+      if(k>=1){ a.pause(); a.currentTime=IN; a.style.opacity='0'; cur=1-cur; }
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
+
+</body></html>

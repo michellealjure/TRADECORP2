@@ -1,0 +1,1186 @@
+<!-- GENERADO por docs/embed/build.py desde el preview.
+     NO editar a mano: los cambios se pierden al regenerar.
+     Embed: home-1 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TradeCorp</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&family=Kanit:wght@300;400&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'AvenirLight';src:url(../assets/avenir-light.otf) format('truetype');font-weight:300;font-style:normal;font-display:swap;}
+:root{
+  --oliva:#424f25;
+  --salvia:#a6bf85;
+  --ing-fig-shape:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='391.6%20115.3%20168.4%20168.4'%3E%3Cpath%20fill='%23000'%20d='M441.078,164.791c-42.366,42.409-61.19,92.252-42.067,111.416,19.122,19.121,69.009.297,111.416-42.11s61.19-92.252,42.067-111.373c-19.165-19.165-69.009-.297-111.416,42.067h0Z'/%3E%3C/svg%3E");
+  --oliva-deep:var(--oliva-dark);                   /* descripción de las tarjetas de ingrediente */
+  --salvia-veil:var(--crema-lo);                  /* franja de los valores = salvia 22% sobre crema */
+  --ing-shape:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201024.267%20982.443'%3E%3Cpath%20fill='%23000'%20d='M900.034,128.176h-.007C817.097,42.665,687.537,0,511.18,0S207.156,42.672,124.399,128.176C41.469,213.694,0,334.817,0,491.218s41.121,277.357,123.37,362.868c82.242,85.685,211.461,128.357,387.818,128.357s307.642-42.672,389.883-128.357c82.068-85.511,123.196-206.467,123.196-362.868s-41.469-277.531-124.225-363.042h-.007Z'/%3E%3C/svg%3E");
+  --crema:#eae4d1;
+  --cafe:#382915;
+  --font-display:'Poppins',system-ui,sans-serif;
+  --font-body:'Kanit','Poppins',system-ui,sans-serif;
+    --font-small:'AvenirLight',system-ui,sans-serif;
+
+  /* type scale — 1.25 step; lands on 14/17/21/27/34/50 at 1440px */
+  /* Escala unificada con el resto del sitio (auditoria 2026-08-31). La del home
+     era un 13-18% mas pequena, asi que el texto crecia de golpe al entrar a
+     cualquier pagina interior: el cuerpo pasaba de 18px a 21px. */
+  --t-xs:clamp(13px,.97vw,15px);
+  --t-sm:clamp(15px,1.18vw,19px);
+  --t-base:clamp(17px,1.46vw,23px);
+  --t-md:clamp(20px,1.875vw,30px);
+  --t-lg:clamp(24px,2.36vw,38px);
+  --t-xl:clamp(30px,3.47vw,54px);
+
+  /* motion — art-directed, never the browser default */
+  --ease-out:cubic-bezier(.16,1,.3,1);
+  --ease-io:cubic-bezier(.65,0,.35,1);
+  --ease-hover:cubic-bezier(.3,0,.2,1);
+
+  /* optical tracking */
+  --track-display:-.03em;
+  --track-tight:-.02em;
+
+    /* ===== Tokens unificados — auditoria del 2026-08-31 =====
+       Antes cada pagina definia los suyos. Los tres fallos que corrige:
+       - --content-max no existia en el About, asi que su contenedor crecia sin
+         tope (1920px de ancho en un monitor de 1920, contra 1180 del home);
+       - --pad-x se cruzaba entre home y About segun el ancho de ventana, asi que
+         el contenido se movia de sitio al navegar, y en direccion distinta segun
+         el tamano de la pantalla;
+       - el ritmo vertical iba en vh en el home y el About y en vw en las otras
+         dos, asi que en una ventana baja unas paginas se comprimian y otras no.
+         La escala --sp-* va toda en vw. */
+    --content-max:1180px;
+    --pad-x:clamp(20px,5vw,72px);
+    --sp-1:clamp(16px,2vw,28px);
+    --sp-2:clamp(28px,4vw,52px);
+    --sp-3:clamp(48px,6vw,80px);
+    --sp-4:clamp(72px,9vw,120px);
+    /* Derivados de marca. Sustituyen a los 20 colores sueltos que habia. */
+    --oliva-dark:#354c1f;
+    --crema-hi:#f3eede;
+    --crema-lo:#dbdcc0;
+    /* Un solo gris calido, 5,6:1 sobre blanco. Reemplaza a #8a7961 (4,21:1),
+       #9a9075 (3,17:1) y #b3ab98 (2,28:1), que no pasaban el minimo AA. */
+    --gris:#6f6252;
+    --pin:#b0392a;
+
+
+  /* one gutter for the whole page */
+
+
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:transparent}
+body{font-family:var(--font-body)}
+
+.track{height:250vh;position:relative}
+.stage{position:sticky;top:0;height:100vh;overflow:hidden;background:var(--crema)}
+
+.zoom{position:absolute;inset:0;z-index:3}
+.zoom svg{width:100%;height:100%;display:block}
+
+.card{position:absolute;inset:0;background:var(--oliva);overflow:hidden;opacity:0;z-index:2;
+  display:flex;flex-direction:column;justify-content:center;will-change:opacity,clip-path}
+.mark{position:absolute;top:9%;left:50%;transform:translateX(-50%);
+  font-family:var(--font-display);font-weight:500;font-size:min(15vw,220px);
+  color:rgba(166,191,133,.13);letter-spacing:-.03em;white-space:nowrap;line-height:1;
+  pointer-events:none}
+.card-in{position:relative;z-index:2;padding:0 var(--pad-x);width:100%;
+  max-width:calc(var(--content-max) + var(--pad-x)*2);margin:0 auto;
+  display:flex;align-items:flex-end;gap:clamp(20px,2.2vw,32px);justify-content:space-between}
+/* 650 = lo que mide el titular a 52px (636) + aire. Más ancho sólo agranda el
+   hueco del centro, porque el texto no lo llena.
+   Alineado abajo y no centrado: el bloque pesa hacia el pie del verde, como en la
+   referencia. El padding lo despega del borde. */
+.hero-copy{flex:1 1 auto;max-width:650px;padding-bottom:clamp(20px,4.5vh,52px)}
+/* El ancho sale del alto: la O mide exactamente lo mismo que el verde visible, y su
+   borde derecho cae en el gutter porque .media es el último ítem de .card-in. */
+.media{flex:0 0 auto;width:auto;display:flex;align-items:center;justify-content:flex-end}
+.lens{position:relative;height:var(--o-h,480px);width:auto;aspect-ratio:1472.597/1412.534}
+.lens canvas,.lens svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.lens svg{pointer-events:none}
+.lens .cls-2{fill:#ebe5d0}
+
+/* Versalita chica dentro de una cápsula, no titular secundario: a 29px en peso 700
+   le robaba la atención al h1 (66% de su tamaño y más grueso). El marco le devuelve
+   presencia sin que vuelva a competir por tamaño. */
+.eyebrow{display:inline-block;font-family:var(--font-body);font-weight:400;font-size:var(--t-xs);
+  text-transform:uppercase;letter-spacing:.18em;
+  color:var(--salvia);margin:0 0 22px;
+  padding:9px 20px;border-radius:999px;
+  background:rgba(234,228,209,.09);border:1px solid rgba(234,228,209,.22)}
+/* Peso 500 y token, como el h1 de las otras tres paginas: iba en 400 y el home
+   se veia mas debil sin que hubiera una razon detras (auditoria 2026-08-31). */
+h1{font-family:var(--font-display);font-weight:500;font-size:var(--t-xl);
+  letter-spacing:var(--track-display);
+  line-height:1.12;color:var(--crema);margin:0 0 20px}
+.sub{font-family:var(--font-body);font-weight:400;font-size:var(--t-base);
+  color:var(--crema);margin:0 0 28px;max-width:60ch;line-height:1.6}
+.ctas{display:flex;gap:16px;flex-wrap:wrap}
+.btn{font-family:var(--font-display);font-weight:500;font-size:var(--t-base);
+  background:var(--crema);color:var(--cafe);border-radius:999px;
+  padding:.62em 1.5em;text-decoration:none;display:inline-block;
+  transition:transform .18s var(--ease-hover)}
+.btn b{font-weight:700}
+.btn:hover{transform:translateY(-2px)}
+
+/* La banda va sobre una franja de color a sangre completa. Sin ella flotaba sobre
+   el mismo crema que es el fondo de la sección siguiente, y no se sabía dónde
+   terminaba el hero.
+   La franja se pinta con un ::before que se desborda a los lados: las columnas de
+   la banda están alineadas al pixel con el titular (x=130) y con la O (x=1310), así
+   que mover su caja rompería esa alineación. El pseudo pinta el fondo sin tocarlas.
+   Se ancla bajo el verde, no al pie del stage: --extra ya no se usa para subirla. */
+/* La tarjeta de valores NACE DETRÁS de la tarjeta verde y sale por abajo.
+   Arranca justo donde el verde termina, así que se leen como una sola pieza. */
+.band{position:absolute;left:0;right:0;top:calc(38px + var(--o-h,478px));
+  bottom:auto;z-index:1;opacity:0;
+  max-width:calc(var(--content-max) + var(--pad-x)*2);margin:0 auto;
+  padding:clamp(30px,4.8vh,56px) var(--pad-x);
+  display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+  will-change:opacity,transform}
+/* La superficie se dibuja con un ::before porque las columnas de la banda están
+   alineadas al pixel con el titular (x=130) y con la O (x=1310): mover la caja de
+   la banda rompería esa alineación.
+   - izquierda/derecha: hasta los bordes EXACTOS de la tarjeta verde (38px), no
+     los de la ventana.
+   - top:-40px: nace detrás del verde, así las esquinas redondeadas del verde
+     apoyan sobre esta superficie y no sobre el crema. Ese trozo queda tapado
+     porque el verde va en z-index 2 y la banda en 1.
+   - radio sólo abajo: arriba se funde con el verde. */
+.band::before{content:'';position:absolute;z-index:-1;top:-40px;bottom:0;
+  left:calc(-1 * max(0px, (100vw - 100%)/2 - 38px));
+  right:calc(-1 * max(0px, (100vw - 100%)/2 - 38px));
+  background:var(--salvia-veil);border-radius:0 0 28px 28px}
+/* Bajo 920px la O se oculta y --o-h queda en `auto`: eso invalida el calc() del
+   top y la banda se iría al borde superior del stage, detrás del verde.
+   Ahí se ancla al pie, como antes. */
+@media (max-width:920px){
+  .band{top:auto;bottom:calc(var(--extra,0px) / 2)}
+  /* La bajada crece sólo en escritorio: en móvil la banda ya venía apretada de
+     antes (dos filas casi tocándose) y a 18px las filas se solapan. Pendiente. */
+  .band p{font-size:clamp(13px,1.04vw,17px)}
+}
+/* values — editorial: no boxes, hairline dividers, headline-scale type */
+.band{grid-template-rows:auto auto}
+/* 24px, no 32: con el contenedor a 1180 "Direct & personal" se partía por 5px */
+.band>div{padding:0 clamp(12px,1.6vw,24px);border-left:1px solid rgba(56,41,21,.18);
+  display:grid;grid-row:span 2;grid-template-rows:subgrid;align-content:start}
+@supports not (grid-template-rows:subgrid){
+  .band>div{display:block}
+  .band h2{min-height:2.16em}   /* reserve two lines so descriptions still align */
+}
+.band>div:first-child{padding-left:0;border-left:0}
+.band>div:last-child{padding-right:0}
+/* Tamanos congelados de la escala anterior, a peticion de Michelle (2026-08-31).
+   La banda esta calibrada a ojo contra el hero del que sale; con la escala nueva
+   el titulo pasaba de 28,9 a 34px y el texto de 18 a 21, y se comia el equilibrio. */
+.band h2{font-family:var(--font-display);font-weight:500;font-size:clamp(22px,2.01vw,33px);
+  letter-spacing:var(--track-display);line-height:1.08;
+  color:var(--oliva);margin:0 0 6px;text-wrap:balance}
+/* Sin opacidad y un escalón más grande: la bajada era gris y pequeña al lado del
+   título. A plomo, var(--cafe) sobre la franja da 8.9:1. */
+.band p{font-family:var(--font-body);font-weight:400;font-size:clamp(15px,1.25vw,20px);
+  color:var(--cafe);margin:0;line-height:1.5;max-width:24ch}
+
+/* ===== Our most requested ingredients — moving carousel ===== */
+/* ===== Our most requested ingredients — carril arrastrable ===== */
+/* Ritmo vertical en la escala --sp-*, toda en vw (auditoria 2026-08-31).
+   Antes el home y el About separaban secciones con vh y el portafolio y el
+   Contact con vw: en una ventana baja unas paginas se comprimian y otras no. */
+.ingredients{background:var(--crema);padding:var(--sp-3) 0 var(--sp-1);overflow:hidden}
+/* El título crece al entrar: --tsc lo escribe el JS en cada frame de scroll. */
+.ing-title{font-family:var(--font-display);font-weight:400;font-size:var(--t-xl);letter-spacing:var(--track-display);
+  color:var(--cafe);text-align:center;margin:0 0 20px;line-height:1.1;padding:0 var(--pad-x);
+  transform:scale(var(--tsc,1));transform-origin:50% 50%;will-change:transform}
+.ing-sub{font-family:var(--font-body);font-weight:300;font-size:var(--t-base);
+/* Ritmo tomado de la referencia de Michelle y redondeado a la retícula de 4px:
+   título -> subtítulo 26px, subtítulo -> iconos 68px. El segundo hueco tiene que
+   ser claramente mayor que el primero, o el subtítulo se lee pegado a las tarjetas. */
+  color:var(--oliva);text-align:center;margin:0 0 clamp(36px,5.1vh,46px);padding:0 var(--pad-x)}
+/* El hueco real hasta el verde no es sólo este margen: el carril mete 8px y la
+   tarjeta otros 36 de relleno invisible (es más grande que el círculo para que la
+   foto pueda crecer en hover). Los tres suman, por eso se sentía tan lejos. */
+
+/* El carril es un scroller nativo con la barra oculta: rueda, trackpad, teclado y
+   arrastre funcionan de fábrica. El auto-scroll escribe scrollLeft (NO un transform)
+   justamente para que el arrastre y la animación no se peleen por la misma propiedad. */
+.ing-carousel{margin-top:-48px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none;
+  overscroll-behavior-x:contain;cursor:grab;-webkit-tap-highlight-color:transparent}
+.ing-carousel::-webkit-scrollbar{width:0;height:0;display:none}
+.ing-carousel.is-drag{cursor:grabbing;user-select:none;-webkit-user-select:none}
+.ing-carousel:focus-visible{outline:2px solid var(--cafe);outline-offset:-2px}
+/* Aire vertical para el anillo de foco; la foto ya cabe dentro del slot. */
+/* 56px arriba y abajo para el sobrante de la foto centrada. El de arriba se cancela
+   con el margen negativo del carril: el recorte de overflow-y sigue 48px mas alto,
+   asi que la foto cabe, pero visualmente las tarjetas no se alejan del subtitulo. */
+.ing-track{display:flex;width:max-content;padding:56px 0}
+
+/* Sin marco la tarjeta ya no tiene que ser cuadrada ni tan ancha: sólo tiene que
+   caber el bloque de texto y la foto del hover. Más estrecha y más baja = las
+   tarjetas quedan más cerca entre sí y más cerca del título. */
+.ing{position:relative;flex:0 0 auto;width:clamp(240px,23vw,318px);aspect-ratio:318/250;
+  margin-right:clamp(4px,0.42vw,6px);cursor:pointer;outline:none;z-index:1}
+.ing:hover,.ing:focus-within{z-index:4}
+
+/* Sin marco: la única forma en reposo es la figurita sobre el título — la 'o'
+   inclinada del logo, rellena con la foto del ingrediente. Va como máscara para que
+   la foto herede el contorno sin recortes extra.
+   Medidas del SVG de Michelle: lado 18.07% del ancho de la tarjeta, y su caja es
+   cuadrada (168.4 x 168.4). El fondo va al 140% para entrar en la textura del montón
+   en vez de mostrarle los bordes. */
+/* 18.07% del SLOT, no de la caja de texto: .ing-info lleva 10.3% de padding y un
+   porcentaje aquí se mediría contra la caja ya recortada (salía 52px en vez de 65). */
+.ing-fig{width:clamp(47.7px,4.699vw,65.05px);aspect-ratio:1;margin:0 auto clamp(5.4px,0.534vw,7.4px);
+  /* 240%, no 140%: la 'o' está INCLINADA, así que su contorno llega hasta las
+     esquinas de su caja — a 46px del centro en una figura de 65px. El montón a
+     140% sólo cubría 41px de radio y por eso asomaba el fondo crema en las puntas.
+     A 240% el radio del montón pasa de 64px y la figura queda sólo con textura. */
+  /* El zoom es 240% por defecto pero se puede subir por ingrediente con
+     --fig-zoom. Medido sobre el pixel: en ing-magnesium-oxide.jpg la ventana
+     centrada a 240% atrapa una mancha de luminancia 10 —negra— en el borde del
+     monton, que sobre un polvo BLANCO canta muchisimo. A 300% la ventana es mas
+     pequena, la mancha queda fuera y el pixel mas oscuro sube a 110 (gris medio,
+     invisible a 65px). El resto se quedan en 240%: el cacao sale "oscuro" al
+     medirlo pero es que el cacao ES marron, ahi no hay nada que arreglar. */
+  background:var(--photo) center/var(--fig-zoom,240%) no-repeat;
+  /* --fig-tone sólo afecta a la figurita, NUNCA a la foto grande del hover:
+     los polvos blancos se disuelven en el crema a este tamaño. */
+  filter:var(--fig-tone,none);
+  -webkit-mask:var(--ing-fig-shape) center/100% 100% no-repeat;
+          mask:var(--ing-fig-shape) center/100% 100% no-repeat}
+
+/* La foto mide 112% de la tarjeta (356px a 1440) y va CENTRADA. Sobresale 53px por
+   arriba y por abajo; ese aire lo pone el padding de .ing-track, y el de arriba se
+   cancela con un margen negativo en el carril para no separarlo del subtítulo. */
+.ing-media{position:absolute;top:50%;left:50%;width:112%;aspect-ratio:1;margin:0;background-repeat:no-repeat;background-position:center;
+  background-size:contain;opacity:0;transform:translate(-50%,-50%) scale(.9);
+  -webkit-mask:var(--mask) center/contain no-repeat;
+          mask:var(--mask) center/contain no-repeat;
+  /* Va DESPUES del atajo `mask`, que lo reinicia. Y es imprescindible: la mascara
+     es un PNG en escala de grises, que NO tiene canal alfa, asi que por defecto
+     CSS la lee como "todo opaco" y no recorta nada. Con luminance, blanco muestra
+     y negro oculta. */
+  -webkit-mask-source-type:luminance;
+          mask-mode:luminance;
+  transition:opacity .34s var(--ease-out),transform .44s var(--ease-out);
+  will-change:opacity,transform;pointer-events:none}
+/* La foto vive como variable en el <article>: la usan la capa grande del hover y la
+   figurita del reposo, sin repetir la URL ni duplicar la descarga. */
+.img-1{--photo:url(../assets/ing-collagen.jpg);--mask:url(../assets/ing-collagen-mask.png)}
+.img-2{--photo:url(../assets/ing-creatine.jpg);--mask:url(../assets/ing-creatine-mask.png)}
+.img-3{--photo:url(../assets/ing-cocoa.jpg);--mask:url(../assets/ing-cocoa-mask.png)}
+/* Los dos magnesios se disolvían en el crema. Más brillante, no más oscuro: el
+   crema es beige cálido, así que un blanco más puro se separa igual de bien y se ve
+   limpio, mientras que oscurecerlos los volvía grises.
+   Y no es sólo subir `brightness`: sobre un blanco casi puro eso lo quema y se
+   pierde el grano. El CONTRASTE abre los blancos hacia arriba conservando las
+   sombras que dibujan la textura del polvo.
+   La creatina se queda como está — decisión de Michelle, 2026-08-31. */
+.img-4{--photo:url(../assets/ing-magnesium-oxide.jpg);--mask:url(../assets/ing-magnesium-oxide-mask.png);
+  --fig-tone:contrast(1.2) brightness(1.05) saturate(.92);
+  --fig-zoom:300%}
+.img-5{--photo:url(../assets/ing-magnesium-citrate.jpg);--mask:url(../assets/ing-magnesium-citrate-mask.png);
+  --fig-tone:contrast(1.2) brightness(1.05) saturate(.92)}
+/* El color va en JPEG y la transparencia en una máscara gris aparte: un PNG con
+   alfa a este tamaño pesaba 4 MB los cinco; así son 690 KB y el recorte es real,
+   la foto ya no arrastra un cuadrado de fondo. La máscara puede ir a menos
+   resolución y con 16 niveles porque es una sombra suave. */
+.ing-media{background-image:var(--photo)}
+
+/* Al pasar el raton sobre una tarjeta, las dos vecinas se apartan un poco para
+   dejarle sitio a la foto. :has() permite alcanzar tambien a la anterior, que con
+   selectores de hermano no se podia. */
+.ing:hover + .ing{--nudge:16px}
+.ing:has(+ .ing:hover){--nudge:-16px}
+@media (hover:none){.ing{--nudge:0px}}
+.ing-info{position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:flex-start;text-align:center;z-index:3;
+  /* Anclado arriba, no centrado: centrado dejaba 66px de aire muerto sobre la
+     figurita y era lo que separaba las tarjetas del subtítulo.
+     El SVG v2 da 8.06% de margen lateral, pero ahí la tarjeta era proporcionalmente
+     más ancha respecto al cuerpo del título. Con la tarjeta estrechada a 318px y el
+     título en el tamaño ya aprobado (22.97px), 8.06% dejaba la caja en 267px y
+     "Alkalized Cocoa Powder" mide 267 clavados: se partía en dos por cero margen. */
+  padding:14px 6.5% 0;
+  transform:translate(var(--nudge,0px),0);
+  transition:transform .38s var(--ease-out);will-change:transform}
+.ing-copy{transition:opacity .28s var(--ease-out)}
+/* OJO: los tres tamanos del carrusel (.ing-name, .ing-feat, .ing-explore) NO van
+   por token a proposito. Son valores literales del SVG v2 que entrego Michelle,
+   y cambiarlos rompe la fidelidad con su archivo de diseno. Es la unica
+   excepcion consciente a la escala unica; queda pendiente su decision. */
+.ing-name{font-family:var(--font-display);font-weight:500;font-size:clamp(16.84px,1.659vw,22.97px);
+  letter-spacing:var(--track-tight);text-wrap:balance;
+  color:var(--cafe);margin:0 0 clamp(7.1px,0.7vw,9.7px);line-height:1.16}
+/* Todo literal del SVG v2: cuerpo, interlineado 1.06 y color. Sin el marco verde
+   detrás, #354c1f sobre el crema da 7.5:1 — ya no hay que negociar contraste. */
+.ing-feat{font-family:var(--font-body);font-weight:300;font-size:clamp(14.51px,1.429vw,19.79px);
+  color:var(--oliva-deep);margin:0;line-height:1.06}
+/* Sin margen: el relleno de 9px que reserva la píldora del hover ya aporta todo el
+   aire que pide el SVG (35.8px entre líneas base). */
+.ing-explore{margin-top:0;display:inline-block;padding:9px 20px;border-radius:999px;
+  font-family:var(--font-display);font-weight:500;font-size:clamp(14.6px,1.438vw,19.91px);
+  color:var(--oliva);text-decoration:underline;text-underline-offset:3px;
+  border:1.5px solid transparent;background:transparent;
+  transition:background-color .34s var(--ease-out),color .34s var(--ease-out),border-color .34s var(--ease-out)}
+
+/* Hover: el marco se va, la foto entra grande y "Explore" sube al centro.
+   --ex-shift = (alto de la copia + su margen) / 2, medido por tarjeta en el JS:
+   la copia ocupa 1 o 2 líneas según el producto, así que no puede ser un número fijo. */
+/* :focus-visible y no :focus-within. La tarjeta lleva tabindex, asi que un CLIC
+   la enfocaba y el ingrediente se quedaba abierto hasta hacer clic en otro
+   sitio. Con el raton la tarjeta ahora solo se sostiene mientras el puntero
+   esta encima, que es lo que pidio Michelle.
+   El teclado sigue cubierto: :focus-visible SI se activa al tabular, y
+   :has(:focus-visible) recoge el caso de que el foco caiga en el enlace
+   "Explore" que va dentro. */
+.ing:hover .ing-media,
+.ing:focus-visible .ing-media,
+.ing:has(:focus-visible) .ing-media{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.ing:hover .ing-copy,
+.ing:focus-visible .ing-copy,
+.ing:has(:focus-visible) .ing-copy{opacity:0}
+.ing:hover .ing-info,
+.ing:focus-visible .ing-info,
+.ing:has(:focus-visible) .ing-info{transform:translate(0,calc(-1 * var(--ex-shift,0px)))}
+.ing:hover .ing-explore,
+.ing:focus-visible .ing-explore,
+.ing:has(:focus-visible) .ing-explore{
+  background:var(--oliva);color:var(--crema);border-color:var(--oliva)}
+.ing:focus-visible{outline:2px solid var(--cafe);outline-offset:6px;border-radius:18px}
+
+@media (hover:none){
+  .ing-carousel{scroll-snap-type:x proximity;cursor:auto}
+  .ing{scroll-snap-align:center}
+  /* Sin hover, el toque es la unica forma de abrir un ingrediente, y el
+     navegador no aplica :focus-visible al tocar. Aqui SI hace falta que el
+     estado se sostenga: se recupera :focus-within solo para tactil. */
+  .ing:focus-within .ing-media{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  .ing:focus-within .ing-copy{opacity:0}
+  .ing:focus-within .ing-info{transform:translate(0,calc(-1 * var(--ex-shift,0px)))}
+  .ing:focus-within .ing-explore{
+    background:var(--oliva);color:var(--crema);border-color:var(--oliva)}
+}
+@media (prefers-reduced-motion:reduce){
+  .ing-title{transform:none}
+  .ing-media,.ing-info,.ing-copy,.ing-shape,.ing-explore{transition:none}
+}
+
+@media (max-width:920px){
+  /* not enough room beside the copy — drop the media so text stays readable */
+  .media{display:none}
+  .hero-copy{max-width:none;padding-bottom:clamp(16px,3vh,32px)}
+  /* El recorte de la tarjeta entra 38px y el gutter sólo 20: el texto quedaba
+     cortado 18px por la izquierda. Aire suficiente para librar el borde. */
+  .card-in{padding:0 calc(var(--pad-x) + 12px)}
+}
+@media (max-width:720px){
+  .band{grid-template-columns:repeat(2,1fr)}
+}
+@media (prefers-reduced-motion:reduce){
+  .track{height:100vh}
+  .zoom{display:none}
+}
+
+/* ===== Why TradeCorp? — curved reveal + growing cards ===== */
+.why{position:relative;background:var(--salvia);padding:var(--sp-4) var(--pad-x) var(--sp-3)}
+.why-curve{position:absolute;left:0;bottom:100%;width:100%;height:56px;line-height:0;transform:translateY(0);pointer-events:none}
+.why-curve svg{display:block;width:100%;height:56px}
+.why-inner{max-width:var(--content-max);margin:0 auto}
+.why-title{font-family:var(--font-display);font-weight:400;font-size:var(--t-xl);letter-spacing:var(--track-display);
+  color:var(--cafe);text-align:center;margin:0;line-height:1.1}
+.why-title-line{display:block;height:1px;width:100%;margin:clamp(20px,3vh,28px) 0 clamp(36px,6vh,60px);
+  background:rgba(56,41,21,.2)}
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,2.4vw,32px)}
+.why-card{position:relative;overflow:hidden;border-radius:24px;background:#eae4d1;
+  display:flex;flex-direction:column;min-height:clamp(380px,40vw,460px);
+  /* reserved at full size; the top-down clip is scrubbed by scroll (unfold) */
+  clip-path:inset(0 0 100% 0 round 24px)}
+.why-card-top{flex:1 1 0;display:flex;flex-direction:column;justify-content:center;padding:clamp(20px,3vw,32px)}
+.why-card-title{font-family:var(--font-display);font-weight:500;font-size:var(--t-md);letter-spacing:var(--track-tight);
+  color:var(--cafe);margin:0 0 12px;line-height:1.18}
+.why-card-desc{font-family:var(--font-body);font-weight:400;font-size:var(--t-sm);
+  color:var(--cafe);margin:0;line-height:1.6}
+.why-card-media{flex:1 1 0;overflow:hidden}
+.why-card-media img{width:100%;height:100%;object-fit:cover;display:block}
+@media (max-width:760px){ .why-grid{grid-template-columns:1fr;max-width:460px;margin:0 auto} }
+@media (prefers-reduced-motion:reduce){
+  .why{background:#a6bf85 !important}
+  .why-curve{transform:none !important}
+  .why-card{clip-path:none !important}
+}
+
+/* ===== Trusted partners (inside .why) — moving quote carousel ===== */
+.tp{margin-top:clamp(48px,7vh,96px)}
+/* A sangre. El carril cuelga directamente de .why (no de .why-inner) y solo
+   anula el padding lateral de la seccion, que es lo que la separa del borde de
+   la ventana. Asi las tarjetas nacen y mueren en el margen de la PANTALLA, no en
+   el del contenido.
+   Se hace con margenes negativos y no con 100vw a proposito: 100vw incluye el
+   ancho de la barra de scroll, asi que en Windows se pasa de largo y descentra
+   la seccion entera. */
+.tp-marquee{margin:clamp(28px,4.5vh,48px) calc(-1 * var(--pad-x)) 0;overflow:hidden}
+.tp-marquee:focus-visible{outline:2px solid var(--cafe);outline-offset:4px;border-radius:8px}
+.tp-track{display:flex;align-items:stretch;width:max-content;animation:tp-scroll 55s linear infinite;will-change:transform}
+/* :focus-visible y no :focus-within: el carril lleva tabindex, asi que un CLIC
+   lo enfocaba y se quedaba parado hasta que hacias clic en otro sitio — que es
+   el "se traba" que reporto Michelle. Con :focus-visible solo pausa el teclado.
+   La pausa al pasar el raton SI se mantiene: sirve para poder leer un testimonio. */
+.tp-marquee:hover .tp-track,
+.tp-marquee:focus-visible .tp-track,
+.tp-marquee:has(:focus-visible) .tp-track{animation-play-state:paused}
+@keyframes tp-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.tp-quote{flex:0 0 auto;width:clamp(260px,24vw,330px);margin-right:clamp(16px,1.4vw,20px);
+  background:#fff;border:1px solid rgba(56,41,21,.10);border-radius:14px;
+  padding:clamp(20px,1.8vw,24px);display:flex;flex-direction:column}
+.tp-quote-by{display:flex;align-items:center;gap:12px;margin:0 0 16px}
+.tp-avatar{flex:0 0 auto;width:40px;height:40px;border-radius:50%;background:var(--oliva);
+  color:var(--crema);font-family:var(--font-display);font-weight:600;font-size:15px;
+  display:grid;place-items:center;line-height:1}
+.tp-who{display:flex;flex-direction:column;min-width:0}
+.tp-quote-text{margin:0;flex:1 1 auto;font-family:var(--font-body);font-weight:400;font-size:var(--t-sm);color:var(--cafe);line-height:1.6}
+.tp-quote-by{display:flex;flex-direction:row;align-items:center;gap:12px}
+.tp-quote-name{font-family:var(--font-display);font-weight:500;font-size:var(--t-sm);color:var(--cafe);line-height:1.3}
+.tp-quote-role{font-family:var(--font-small);font-weight:300;font-size:var(--t-xs);letter-spacing:.03em;color:var(--gris);line-height:1.4}
+@media (prefers-reduced-motion:reduce){
+  .tp-marquee{-webkit-mask-image:none;mask-image:none}
+  .tp-track{animation:none;flex-wrap:wrap;width:auto;gap:clamp(16px,1.5vw,20px);justify-content:center}
+  .tp-quote{margin-right:0}
+  .tp-quote[aria-hidden="true"]{display:none}
+}
+  /* ── Site navigation (GitHub Pages) ── */
+  .site-nav{position:sticky;top:0;z-index:2000;display:flex;align-items:center;justify-content:space-between;gap:16px;
+    padding:12px clamp(16px,5vw,64px);background:rgba(234,228,209,.9);
+    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--salvia,#a6bf85)}
+  .site-nav__logo{display:inline-flex;align-items:center;text-decoration:none;line-height:0}
+  .site-nav__logo img{height:clamp(28px,3.4vw,36px);width:auto;display:block}
+  .site-nav__links{display:flex;gap:clamp(16px,2.6vw,32px);align-items:center}
+  .site-nav__links a{font-family:var(--font-display,'Poppins',sans-serif);font-weight:500;font-size:var(--t-sm);
+    color:var(--cafe,#382915);text-decoration:none;position:relative;padding:4px 0;transition:color .15s var(--ease-hover)}
+  .site-nav__links a:hover{color:var(--oliva,#424f25)}
+  .site-nav__links a.is-active{color:var(--oliva,#424f25)}
+  .site-nav__links a.is-active::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:2px;background:var(--oliva,#424f25);border-radius:2px}
+  @media (max-width:520px){.site-nav{padding:12px 16px}.site-nav__links{gap:16px}}
+
+/* ===== intro: CSS default IS the final state =====
+   Nothing here depends on JS to become visible. The start state is applied only
+   under html.intro-armed, which the head script adds solely when the intro will
+   actually run. If JS fails, the composed hero is what renders. */
+html:not(.intro-armed) .track{height:100vh}
+/* Terminado el intro el track vuelve a 100vh: los 150vh de recorrido ya se usaron
+   y dejarlos hace que el hero se quede clavado 1350px, sobre todo al volver hacia
+   arriba. El JS descuenta esa misma distancia del scroll para que no salte. */
+html.intro-collapsed .track{height:100vh}
+/* Reproduccion automatica: el track nunca crece a 250vh, porque ya no hace falta
+   recorrido de scroll. Se pone desde el <head>, antes del primer pintado, para
+   que no asome una barra de scroll de 2,5 pantallas durante unos frames. */
+html.intro-auto .track{height:100vh}
+.zoom{opacity:0}
+.mark{opacity:0}
+.card{opacity:1}
+.band{opacity:1;transform:none}
+/* NOTE: .zoom and .mark are deliberately NOT revealed by CSS. Revealing them on
+   html.intro-armed painted the logo before boot() had decided which frame we are
+   on — on a back-navigation the browser restores the scroll, so the logo appeared
+   and was instantly snapped away. applyFrame() reveals them instead. */
+html.intro-armed .card{opacity:0}
+html.intro-armed .band{opacity:0}
+html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer frame */
+.why-card{clip-path:none}
+</style>
+
+<script>
+/* Decide before first paint whether the intro will run. If it will not, no class
+   is added and the CSS defaults (= the composed hero) stand. Content is never
+   invisible because of JS. */
+(function(){
+  try{
+    // ?intro=1 lo obliga a repetirse: si no, corre una sola vez por sesion y
+    // revisarlo obliga a abrir pestaña nueva cada vez.
+    if(/[?&]intro=1\b/.test(location.search)) sessionStorage.removeItem('tc_intro_done');
+    var done = sessionStorage.getItem('tc_intro_done') === '1';
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // Por defecto el intro se reproduce SOLO al cargar. Guiarlo por scroll no
+    // sobrevive dentro de un iframe de Wix: el scroll de la pagina padre no
+    // llega al embed (medido el 2026-08-22) y el track de 250vh obligaria a una
+    // barra de scroll interna. Con ?driver=scroll vuelve el comportamiento
+    // anterior, para poder comparar los dos.
+    var porScroll = /[?&]driver=scroll\b/.test(location.search);
+    if(!done && !reduce){
+      document.documentElement.className += ' intro-armed';
+      if(!porScroll) document.documentElement.className += ' intro-auto';
+    }
+  }catch(e){ document.documentElement.className += ' intro-armed intro-auto'; }
+})();
+</script>
+</head>
+<body>
+
+
+
+<div class="track" id="track">
+  <div class="stage" id="stage">
+
+    <div class="band" id="band">
+      <div><h2>Always in stock</h2><p>No lead times, no minimums</p></div>
+      <div><h2>FL &amp; GA base</h2><p>Faster shipping to your lab</p></div>
+      <div><h2>Direct &amp; personal</h2><p>Your order is always our first call</p></div>
+      <div><h2>Free sample</h2><p>Experience quality before you order</p></div>
+    </div>
+
+    <div class="card" id="card">
+      <div class="mark" id="mark">trade corp.</div>
+      <div class="card-in">
+        <div class="hero-copy">
+          <p class="eyebrow">Nutraceutical raw materials</p>
+          <h1>Your nutraceutical supply.<br>Ready when you are.</h1>
+          <p class="sub">Premium raw materials, always in stock. Shipped from FL &amp; GA &mdash; faster than you expect.</p>
+          <div class="ctas">
+            <a target="_top" class="btn" href="https://www.tcorpi.com/contact">Request a <b>FREE</b> sample</a>
+            <a target="_top" class="btn" href="https://www.tcorpi.com/ingredients">Explore our ingredients</a>
+          </div>
+        </div>
+        <div class="media" aria-hidden="true">
+          <div class="lens">
+            <canvas id="lensCv"></canvas>
+            <svg viewBox="0 0 1472.597 1412.534" xmlns="http://www.w3.org/2000/svg">
+              <defs><filter id="drop-shadow-2" x="565.315" y="552.61" width="376" height="349" filterUnits="userSpaceOnUse">
+      <feOffset dx="17" dy="12"/>
+      <feGaussianBlur result="blur" stdDeviation="17"/>
+      <feFlood flood-color="#000" flood-opacity=".14"/>
+      <feComposite in2="blur" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter></defs>
+              <g id="Logo" class="cls-1">
+    <g id="O_and_o-2" data-name="O and o">
+      <path id="o-glyph" class="cls-2" d="M822.928,620.271c-18.06-18.621-46.274-27.913-84.679-27.913-38.105,0-66.207,9.292-84.229,27.913-18.06,18.623-27.09,45-27.09,79.06s8.954,60.399,26.866,79.021c17.91,18.659,46.05,27.952,84.455,27.952,38.706,0,66.994-9.292,84.904-27.952,17.872-18.621,26.828-44.962,26.828-79.021s-9.03-60.437-27.052-79.06h-.002ZM769.048,729.867c-37.394,37.394-81.382,53.992-98.243,37.132-16.861-16.899-.262-60.849,37.094-98.243,37.394-37.356,81.345-53.992,98.243-37.094,16.861,16.86.262,60.849-37.094,98.205h0Z"/>
+    </g>
+    <g id="Investments">
+      <path class="cls-2" d="M607.362,834.841v-12.789h-7.86v-2.586h11.165v15.375h7.86v2.621h-19.026v-2.621h7.86ZM606.603,813.98c0-1.235.819-1.852,2.456-1.852,1.608,0,2.412.617,2.412,1.852,0,1.305-.804,1.957-2.412,1.957-1.638,0-2.456-.652-2.456-1.957Z"/>
+      <path class="cls-2" d="M626.477,819.466h3.171l.134,3.459c.595-1.048,1.622-1.916,3.082-2.603,1.458-.687,3.156-1.031,5.091-1.031,2.054,0,3.684.46,4.89,1.38,1.206.921,1.809,2.382,1.809,4.385v12.405h-3.305v-11.461c0-1.514-.41-2.591-1.228-3.232-.819-.64-1.943-.961-3.372-.961-1.013,0-1.943.134-2.791.402-.849.268-1.585.635-2.211,1.101-.625.466-1.109,1.008-1.452,1.625-.343.618-.513,1.264-.513,1.939v10.588h-3.305v-17.996h0Z"/>
+      <path class="cls-2" d="M651.174,819.466h3.484l5.761,13.663,5.761-13.663h3.484l-7.592,17.996h-3.26l-7.637-17.996h0Z"/>
+      <path class="cls-2" d="M675.559,828.446c0-1.304.179-2.475.536-3.512.357-1.036.833-1.939,1.429-2.708.863-.978,1.935-1.712,3.216-2.201,1.28-.489,2.798-.734,4.555-.734,1.697,0,3.178.245,4.444.734,1.265.489,2.329,1.223,3.193,2.201.774.978,1.302,2.027,1.586,3.145.283,1.118.424,2.236.424,3.355h-15.944c.029.816.126,1.55.29,2.201.163.652.394,1.235.692,1.747.536.816,1.228,1.421,2.077,1.817.849.396,1.913.594,3.193.594,2.471,0,4.258-.71,5.359-2.132.089-.163.201-.337.335-.524.134-.186.246-.385.335-.594l.045-.07h3.484l-.045.105c-.179.559-.41,1.078-.692,1.555-.283.478-.588.915-.915,1.31-1.757,1.934-4.392,2.9-7.905,2.9-1.786,0-3.29-.25-4.511-.751-1.221-.501-2.218-1.171-2.992-2.009-.775-.839-1.333-1.811-1.675-2.918-.343-1.106-.513-2.277-.513-3.512h0ZM691.325,826.385c-.119-.466-.261-.903-.424-1.31-.164-.407-.35-.774-.558-1.101-1.102-1.421-2.799-2.132-5.091-2.132-1.906,0-3.313.425-4.22,1.276-.909.85-1.526,1.939-1.853,3.267h12.148,0Z"/>
+      <path class="cls-2" d="M708.43,837.741c-1.549,0-2.844-.175-3.886-.524-1.043-.349-1.891-.874-2.546-1.572-.328-.419-.588-.891-.782-1.415-.194-.524-.306-1.124-.335-1.799v-.07h3.216l-.045.07c0,.28.045.542.134.786s.193.472.313.681c.327.466.804.816,1.429,1.048.625.233,1.458.349,2.501.349,2.114,0,3.573-.489,4.377-1.468.119-.186.223-.407.313-.664.089-.256.134-.547.134-.874,0-.489-.06-.891-.179-1.205-.119-.314-.35-.577-.692-.786-.343-.21-.804-.378-1.385-.507-.581-.128-1.333-.25-2.256-.367l-3.171-.384c-1.518-.186-2.695-.687-3.528-1.503-.834-.815-1.251-1.864-1.251-3.145,0-.675.134-1.281.402-1.817.268-.536.61-1.013,1.027-1.433.685-.605,1.533-1.066,2.546-1.38,1.012-.314,2.218-.472,3.618-.472,2.203,0,4.02.425,5.449,1.275,1.429.851,2.173,2.172,2.233,3.966v.07h-3.26v-.035c0-1.025-.432-1.753-1.295-2.184-.864-.431-1.906-.646-3.126-.646-.834,0-1.511.076-2.032.227-.521.152-.99.39-1.407.716-.447.419-.67.932-.67,1.537,0,.419.045.769.134,1.048s.275.507.558.681c.283.175.685.321,1.206.437.521.117,1.228.233,2.121.349l3.037.384c1.756.233,3.089.781,3.997,1.642.908.862,1.362,2.015,1.362,3.459,0,.978-.208,1.811-.625,2.499-.417.687-.99,1.258-1.72,1.712-.73.454-1.601.786-2.613.996-1.013.21-2.114.314-3.305.314h0Z"/>
+      <path class="cls-2" d="M732.011,813.945v5.521h7.592v2.586h-7.592v9.365c0,.513.089.978.268,1.398s.506.786.983,1.101c.476.314,1.109.554,1.898.716.789.163,1.779.245,2.97.245.327,0,.737-.005,1.228-.018.491-.011.915-.075,1.273-.192v2.586c-.328.047-.752.093-1.273.14-.521.047-1.079.07-1.675.07-1.668,0-3.075-.151-4.22-.454-1.147-.302-2.07-.71-2.769-1.223-.7-.512-1.206-1.13-1.518-1.852-.313-.722-.469-1.502-.469-2.341v-9.539h-5.047v-2.586h5.047v-5.521h3.305Z"/>
+      <path class="cls-2" d="M746.615,819.466h3.171l.134,2.83c.536-.978,1.399-1.724,2.59-2.236,1.19-.512,2.546-.769,4.064-.769,1.429,0,2.605.251,3.528.751.923.501,1.533,1.38,1.831,2.638.565-1.165,1.503-2.021,2.814-2.568,1.31-.547,2.814-.821,4.511-.821.923,0,1.749.087,2.479.262.729.175,1.355.471,1.876.891.521.419.915.967,1.184,1.643.268.676.402,1.515.402,2.516v12.859h-3.305v-11.951c0-.745-.082-1.363-.246-1.852-.164-.489-.402-.874-.715-1.153s-.685-.472-1.117-.577c-.432-.105-.915-.157-1.451-.157-1.727,0-3.126.425-4.198,1.276-1.072.851-1.608,1.963-1.608,3.337v11.077h-3.305v-11.951c0-.745-.082-1.363-.246-1.852-.164-.489-.402-.874-.715-1.153s-.685-.472-1.117-.577c-.432-.105-.915-.157-1.451-.157-1.727,0-3.126.425-4.198,1.276-1.072.851-1.608,1.963-1.608,3.337v11.077h-3.305v-17.996h0Z"/>
+      <path class="cls-2" d="M782.701,828.446c0-1.304.179-2.475.536-3.512.357-1.036.833-1.939,1.429-2.708.863-.978,1.935-1.712,3.216-2.201,1.28-.489,2.798-.734,4.555-.734,1.697,0,3.178.245,4.444.734,1.265.489,2.329,1.223,3.193,2.201.774.978,1.302,2.027,1.586,3.145.283,1.118.424,2.236.424,3.355h-15.944c.029.816.126,1.55.29,2.201.163.652.394,1.235.692,1.747.536.816,1.228,1.421,2.077,1.817.849.396,1.913.594,3.193.594,2.471,0,4.258-.71,5.359-2.132.089-.163.201-.337.335-.524.134-.186.246-.385.335-.594l.045-.07h3.484l-.045.105c-.179.559-.41,1.078-.692,1.555-.283.478-.588.915-.915,1.31-1.757,1.934-4.392,2.9-7.905,2.9-1.786,0-3.29-.25-4.511-.751-1.221-.501-2.218-1.171-2.992-2.009-.775-.839-1.333-1.811-1.675-2.918-.343-1.106-.513-2.277-.513-3.512h0ZM798.467,826.385c-.119-.466-.261-.903-.424-1.31-.164-.407-.35-.774-.558-1.101-1.102-1.421-2.799-2.132-5.091-2.132-1.906,0-3.313.425-4.22,1.276-.909.85-1.526,1.939-1.853,3.267h12.148,0Z"/>
+      <path class="cls-2" d="M809.453,819.466h3.171l.134,3.459c.595-1.048,1.622-1.916,3.082-2.603,1.458-.687,3.156-1.031,5.091-1.031,2.054,0,3.684.46,4.89,1.38,1.206.921,1.809,2.382,1.809,4.385v12.405h-3.305v-11.461c0-1.514-.41-2.591-1.228-3.232-.819-.64-1.943-.961-3.372-.961-1.013,0-1.943.134-2.791.402-.849.268-1.585.635-2.211,1.101-.625.466-1.109,1.008-1.452,1.625-.343.618-.513,1.264-.513,1.939v10.588h-3.305v-17.996h0Z"/>
+      <path class="cls-2" d="M844.11,813.945v5.521h7.592v2.586h-7.592v9.365c0,.513.089.978.268,1.398s.506.786.983,1.101c.476.314,1.109.554,1.898.716.789.163,1.779.245,2.97.245.327,0,.737-.005,1.228-.018.491-.011.915-.075,1.273-.192v2.586c-.328.047-.752.093-1.273.14-.521.047-1.079.07-1.675.07-1.668,0-3.075-.151-4.22-.454-1.147-.302-2.07-.71-2.769-1.223-.7-.512-1.206-1.13-1.518-1.852-.313-.722-.469-1.502-.469-2.341v-9.539h-5.047v-2.586h5.047v-5.521h3.305Z"/>
+      <path class="cls-2" d="M864.833,837.741c-1.549,0-2.844-.175-3.886-.524-1.043-.349-1.891-.874-2.546-1.572-.328-.419-.588-.891-.782-1.415-.194-.524-.306-1.124-.335-1.799v-.07h3.216l-.045.07c0,.28.045.542.134.786s.193.472.313.681c.327.466.804.816,1.429,1.048.625.233,1.458.349,2.501.349,2.114,0,3.573-.489,4.377-1.468.119-.186.223-.407.313-.664.089-.256.134-.547.134-.874,0-.489-.06-.891-.179-1.205-.119-.314-.35-.577-.692-.786-.343-.21-.804-.378-1.385-.507-.581-.128-1.333-.25-2.256-.367l-3.171-.384c-1.518-.186-2.695-.687-3.528-1.503-.834-.815-1.251-1.864-1.251-3.145,0-.675.134-1.281.402-1.817.268-.536.61-1.013,1.027-1.433.685-.605,1.533-1.066,2.546-1.38,1.012-.314,2.218-.472,3.618-.472,2.203,0,4.02.425,5.449,1.275,1.429.851,2.173,2.172,2.233,3.966v.07h-3.26v-.035c0-1.025-.432-1.753-1.295-2.184-.864-.431-1.906-.646-3.126-.646-.834,0-1.511.076-2.032.227-.521.152-.99.39-1.407.716-.447.419-.67.932-.67,1.537,0,.419.045.769.134,1.048s.275.507.558.681c.283.175.685.321,1.206.437.521.117,1.228.233,2.121.349l3.037.384c1.756.233,3.089.781,3.997,1.642.908.862,1.362,2.015,1.362,3.459,0,.978-.208,1.811-.625,2.499-.417.687-.99,1.258-1.72,1.712-.73.454-1.601.786-2.613.996-1.013.21-2.114.314-3.305.314h0Z"/>
+    </g>
+  </g>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="lensSrc" style="position:absolute;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none" aria-hidden="true">
+      <video id="lvOil"   src="../assets/hero-oil.mp4"   muted loop playsinline preload="auto"></video>
+      <video id="lvScoop" src="../assets/hero-scoop.mp4" muted loop playsinline preload="metadata"></video>
+      <video id="lvAmber" src="../assets/hero-amber.mp4" muted loop playsinline preload="metadata"></video>
+      <video id="lvCocoa" src="../assets/hero-cocoa.mp4" muted loop playsinline preload="metadata"></video>
+    </div>
+    <div class="zoom" id="zoom"><svg id="Layer_3" data-name="Layer 3" xmlns="http://www.w3.org/2000/svg" viewBox="33 33 3928 743" preserveAspectRatio="none"><defs><style> .cls-1 { fill: none; } .cls-2 { fill: #424f25; } .cls-3 { fill: #382915; } 
+</style></defs><g id="logoG"><path id="o-glyph" class="cls-3" d="M2986.815,274.538c-34.338-35.405-87.982-53.072-161.002-53.072-72.45,0-125.88,17.668-160.146,53.072-34.338,35.408-51.507,85.56-51.507,150.318s17.025,114.838,51.081,150.245c34.052,35.477,87.555,53.145,160.576,53.145,73.592,0,127.377-17.668,161.429-53.145,33.98-35.405,51.008-85.488,51.008-150.245s-17.169-114.91-51.435-150.318h-.003ZM2884.371,482.916c-71.098,71.098-154.734,102.657-186.792,70.599-32.058-32.13-.499-115.694,70.527-186.792,71.098-71.026,154.662-102.656,186.792-70.527,32.058,32.057.499,115.694-70.527,186.72Z"/><g id="wordmark"><path class="cls-2" d="M221.11,595.922c-45.019,0-78.373-11.8-100.051-35.408-21.694-23.598-32.53-55.711-32.53-96.346v-170.936c0-5.644-4.575-10.222-10.222-10.222h-34.729c-5.644,0-10.222-4.575-10.222-10.222v-65.208c0-5.644,4.575-10.222,10.222-10.222h34.729c5.644,0,10.222-4.575,10.222-10.222v-66.136c0-4.525,2.976-8.512,7.318-9.799l90.728-26.879c6.55-1.939,13.123,2.966,13.123,9.799v93.015c0,5.644,4.575,10.222,10.222,10.222h77.559c5.953,0,10.649,5.07,10.189,11.006l-5.017,65.208c-.41,5.326-4.85,9.438-10.189,9.438h-72.542c-5.644,0-10.222,4.575-10.222,10.222v163.529c0,21.406,4.942,36.107,14.823,44.051,9.877,7.968,25.242,11.948,46.112,11.948,11.364,0,23.033-1.5,35.001-4.506,6.468-1.624,12.759,3.183,12.759,9.851v55.957c0,4.24-2.576,8.125-6.566,9.562-10.245,3.695-21.232,6.56-32.96,8.591-14.278,2.474-30.193,3.705-47.76,3.705h.003Z"/><path class="cls-2" d="M365.213,577.575V207.473c0-5.585,4.529-10.114,10.114-10.114h83.873c5.109,0,9.415,3.813,10.038,8.883l1.998,16.326c.866,7.088,8.532,11.023,14.816,7.636,14.993-8.079,32.494-15.594,52.505-22.544,22.085-7.675,43.887-13.28,65.388-16.821,6.097-1.004,11.6,3.839,11.6,10.019v63.642c0,4.968-3.606,9.146-8.506,9.979-12.453,2.12-25.816,4.962-40.081,8.529-17.569,4.401-34.312,9.336-50.227,14.819-13.408,4.624-25.061,9.438-34.958,14.449-3.35,1.697-5.392,5.195-5.392,8.949v256.348c0,5.585-4.529,10.114-10.114,10.114h-90.945c-5.585,0-10.114-4.529-10.114-10.114l.003.003Z"/><path class="cls-2" d="M770.342,595.922c-24.704,0-47.632-4.529-68.758-13.589-21.143-9.057-38.161-22.508-51.054-40.347-12.906-17.838-19.355-40.206-19.355-67.114,0-38.417,13.589-69.168,40.763-92.234,27.174-23.053,67.38-34.584,120.636-34.584h104.58c5.913,0,10.708-4.794,10.708-10.708h0c0-24.146-6.731-41.17-20.172-51.054-13.458-9.884-40.494-14.819-81.113-14.819-39.526,0-77.75,5.431-114.677,16.273-6.872,2.018-13.786-2.963-13.786-10.127v-56.351c0-4.473,2.734-8.542,6.947-10.045,16.729-5.969,36.507-11.01,59.34-15.098,26.068-4.657,54.48-7.003,85.232-7.003,58.736,0,104.166,11.938,136.283,35.828,32.116,23.877,48.173,62.166,48.173,114.867v237.157c0,5.913-4.794,10.708-10.708,10.708h-76.532c-5.25,0-9.723-3.807-10.566-8.985l-1.395-8.565c-1.254-7.705-10.104-11.594-16.516-7.141-12.542,8.713-26.945,15.843-43.211,21.392-22.518,7.689-50.785,11.531-84.818,11.531v.007ZM800.815,522.629c24.704,0,46.112-4.112,64.23-12.345,16.624-7.554,30.006-16.959,40.163-28.218,1.759-1.952,2.658-4.532,2.658-7.157v-46.972c0-5.913-4.794-10.708-10.708-10.708h-102.105c-43.375,0-65.053,17.848-65.053,53.525,0,34.584,23.594,51.878,70.819,51.878l-.003-.003Z"/><path class="cls-2" d="M1266.879,595.922c-34.581,0-65.46-6.179-92.635-18.524-27.174-12.355-48.455-32.658-63.816-60.935-15.377-28.267-23.059-65.742-23.059-112.406s8.506-85.917,25.527-117.758c17.008-31.834,39.799-55.99,68.351-72.466,28.536-16.467,59.826-24.704,93.865-24.704,36.55,0,68.492,7.196,95.838,21.593,6.228,3.278,13.687-1.073,13.687-8.109V41.951c0-5.123,4.154-9.277,9.277-9.277h92.608c5.122,0,9.277,4.154,9.277,9.277v536.463c0,5.122-4.154,9.277-9.277,9.277h-78.501c-4.483,0-8.325-3.206-9.126-7.62l-2.425-13.336c-1.234-6.783-9.129-9.818-14.668-5.71-13.668,10.133-28.231,18.068-43.691,23.785-20.044,7.41-43.782,11.115-71.236,11.115l.003-.003ZM1297.351,514.395c33.186,0,61.312-10.865,84.391-32.599,1.864-1.756,2.894-4.259,2.894-6.819v-169.502c0-2.753-1.198-5.428-3.321-7.18-22.305-18.423-48.104-27.64-77.382-27.64-69.165,0-103.756,44.468-103.756,133.405,0,41.728,8.506,70.55,25.53,86.462,17.008,15.932,40.885,23.877,71.636,23.877l.006-.003Z"/><path class="cls-2" d="M1784.838,595.922c-67.521,0-121.046-16.887-160.569-50.647-39.533-33.761-59.298-84.943-59.298-153.576,0-62.028,16.598-111.294,49.82-147.804,33.216-36.514,82.757-54.769,148.641-54.769,60.38,0,106.634,15.794,138.747,47.349,32.123,31.575,48.173,72.886,48.173,123.937v60.554c0,5.667-4.594,10.261-10.261,10.261h-259.084c-6.803,0-11.856,6.566-9.91,13.087,7.239,24.251,20.592,41.301,40.045,51.136,22.774,11.531,55.035,17.304,96.763,17.304,20.858,0,42.122-1.926,63.816-5.772,15.735-2.783,29.803-6.143,42.214-10.091,6.642-2.113,13.366,2.773,13.366,9.743v57.814c0,4.109-2.399,7.886-6.192,9.457-16.69,6.904-35.762,12.188-57.217,15.837-24.156,4.122-50.506,6.179-79.052,6.179h0ZM1678.476,362.887h164.454c5.667,0,10.261-4.594,10.261-10.261v-11.151c0-22.508-6.596-40.206-19.765-53.108-13.182-12.903-35.408-19.358-66.707-19.358-36.78,0-62.458,7.41-76.985,22.239-12.893,13.129-20.07,33.37-21.537,60.728-.315,5.897,4.374,10.914,10.281,10.914l-.003-.003Z"/><path class="cls-2" d="M2407.117,601.973c-69.726,0-123.114-17.294-160.172-51.878-37.049-34.584-55.583-85.09-55.583-151.519,0-68.614,19.893-119.665,59.704-153.159,39.799-33.482,92.907-50.24,159.335-50.24,27.453,0,51.064,1.939,70.819,5.772,17.511,3.406,34.584,8.752,51.235,16.024,3.918,1.713,6.412,5.661,6.412,9.937v56.459c0,7.485-7.446,12.877-14.458,10.258-10.127-3.78-21.228-6.954-33.308-9.516-18.117-3.833-37.603-5.759-58.46-5.759-41.728,0-73.569,8.64-95.519,25.934-21.97,17.294-32.947,48.728-32.947,94.288,0,41.728,10.012,72.201,30.065,91.407,20.034,19.22,52.551,28.825,97.577,28.825,19.21,0,38.01-1.926,56.406-5.772,12.841-2.678,25.081-6.294,36.724-10.855,7.105-2.783,14.747,2.392,14.747,10.025v58.608c0,4.404-2.619,8.437-6.711,10.061-35.418,14.058-77.379,21.097-125.867,21.097v.003Z"/><path class="cls-2" d="M3094.692,583.967V213.186c0-5.398,4.374-9.772,9.773-9.772h84.519c4.939,0,9.1,3.685,9.7,8.585l2.093,17.117c.837,6.849,8.243,10.665,14.314,7.38,15.092-8.168,32.74-15.764,52.945-22.78,22.226-7.721,44.153-13.349,65.785-16.887,5.894-.965,11.21,3.718,11.21,9.69v64.328c0,4.801-3.482,8.837-8.214,9.638-12.535,2.123-25.996,4.985-40.376,8.578-17.569,4.401-34.305,9.336-50.227,14.819-13.487,4.653-25.202,9.5-35.139,14.544-3.235,1.641-5.205,5.021-5.205,8.65v256.896c0,5.398-4.374,9.773-9.773,9.773h-91.63c-5.398,0-9.773-4.374-9.773-9.773l-.003-.003Z"/><path class="cls-2" d="M3401.831,761.227V213.796c0-5.733,4.65-10.383,10.383-10.383h77.1c5.103,0,9.451,3.708,10.255,8.749l1.638,10.288c1.217,7.649,9.999,11.193,16.336,6.74,13.225-9.29,27.358-16.782,42.391-22.482,20.313-7.679,44.189-11.531,71.643-11.531,57.092,0,101.153,15.525,132.171,46.536,31.007,31.02,46.522,81.655,46.522,151.926s-16.608,122.566-49.82,156.864c-33.226,34.318-78.366,51.471-135.459,51.471-36.895,0-69.132-6.973-96.723-20.92-6.996-3.538-15.266,1.303-15.266,9.142v171.027c0,5.733-4.65,10.383-10.383,10.383h-90.41c-5.733,0-10.383-4.65-10.383-10.383l.006.003ZM3596.995,520.447c32.937,0,57.916-10.15,74.941-30.463,17.002-20.3,25.527-52.157,25.527-95.519,0-41.715-7.698-71.771-23.063-90.177-15.377-18.383-40.078-27.581-74.107-27.581-32.501,0-60.485,10.76-83.962,32.264-2.139,1.959-3.324,4.798-3.324,7.699v168.845c0,3.327,1.565,6.514,4.269,8.453,10.258,7.351,21.051,13.438,32.372,18.249,12.893,5.493,28.684,8.233,47.349,8.233l-.004-.003Z"/><rect class="cls-2" x="3871.2" y="510.563" width="90.584" height="83.174" rx="9.638" ry="9.638"/></g><path id="o-counter" fill="#eae4d1" d="M2768.073,366.74c-71.026,71.098-102.584,154.662-70.527,186.792,32.058,32.057,115.694.499,186.792-70.599,71.098-71.098,102.584-154.662,70.527-186.72-32.13-32.13-115.694-.499-186.792,70.527Z"/><g><path class="cls-2" d="M2242.993,760.45v-66.979h-32.208v-13.542h45.75v80.52h32.208v13.725h-77.958v-13.725h32.208ZM2239.882,651.199c0-6.466,3.354-9.699,10.065-9.699,6.588,0,9.882,3.233,9.882,9.699,0,6.833-3.294,10.248-9.882,10.248-6.711,0-10.065-3.415-10.065-10.248Z"/><path class="cls-2" d="M2321.315,679.93h12.993l.549,18.117c2.439-5.49,6.648-10.033,12.627-13.634,5.976-3.596,12.93-5.398,20.862-5.398,8.418,0,15.097,2.41,20.038,7.228,4.941,4.821,7.412,12.476,7.412,22.967v64.965h-13.542v-60.024c0-7.929-1.678-13.57-5.032-16.927-3.357-3.354-7.961-5.033-13.817-5.033-4.149,0-7.96.704-11.438,2.104-3.477,1.404-6.496,3.326-9.058,5.765-2.562,2.442-4.546,5.278-5.948,8.51-1.404,3.234-2.104,6.619-2.104,10.156v55.449h-13.542v-94.245Z"/><path class="cls-2" d="M2422.513,679.93h14.274l23.607,71.552,23.607-71.552h14.274l-31.11,94.245h-13.359l-31.293-94.245Z"/><path class="cls-2" d="M2522.429,726.96c0-6.831.732-12.962,2.196-18.392,1.464-5.427,3.414-10.156,5.856-14.183,3.537-5.124,7.929-8.967,13.176-11.529,5.244-2.561,11.466-3.842,18.666-3.842,6.954,0,13.021,1.281,18.208,3.842,5.184,2.562,9.544,6.405,13.084,11.529,3.171,5.124,5.336,10.614,6.497,16.47,1.158,5.856,1.738,11.712,1.738,17.568h-65.331c.12,4.271.518,8.115,1.189,11.529.669,3.417,1.615,6.468,2.836,9.149,2.196,4.272,5.032,7.443,8.509,9.517,3.477,2.075,7.838,3.11,13.084,3.11,10.125,0,17.445-3.72,21.96-11.163.366-.852.824-1.767,1.373-2.744.549-.976,1.007-2.014,1.373-3.111l.183-.366h14.274l-.183.549c-.732,2.929-1.678,5.645-2.836,8.144-1.161,2.502-2.41,4.79-3.751,6.862-7.2,10.128-17.997,15.189-32.391,15.189-7.32,0-13.482-1.31-18.483-3.935-5.004-2.622-9.09-6.131-12.261-10.522-3.174-4.392-5.461-9.484-6.863-15.28-1.404-5.793-2.104-11.924-2.104-18.392ZM2587.028,716.163c-.489-2.439-1.069-4.727-1.738-6.862-.672-2.134-1.436-4.055-2.288-5.765-4.515-7.44-11.469-11.163-20.862-11.163-7.809,0-13.573,2.228-17.293,6.68-3.723,4.454-6.253,10.156-7.594,17.11h49.776Z"/><path class="cls-2" d="M2657.116,775.638c-6.345,0-11.652-.915-15.921-2.745-4.272-1.83-7.749-4.575-10.431-8.234-1.344-2.196-2.411-4.667-3.203-7.412-.795-2.745-1.252-5.885-1.373-9.424v-.366h13.176l-.183.366c0,1.464.183,2.836.549,4.117s.792,2.471,1.281,3.568c1.341,2.442,3.294,4.271,5.856,5.49,2.562,1.221,5.976,1.83,10.248,1.83,8.661,0,14.64-2.562,17.934-7.687.486-.975.915-2.133,1.281-3.477.366-1.341.549-2.865.549-4.575,0-2.562-.246-4.667-.732-6.313-.489-1.647-1.436-3.02-2.836-4.117-1.404-1.099-3.294-1.981-5.673-2.654-2.379-.669-5.461-1.31-9.242-1.921l-12.993-2.013c-6.222-.976-11.043-3.598-14.457-7.869-3.417-4.27-5.124-9.76-5.124-16.471,0-3.537.549-6.708,1.647-9.516,1.098-2.805,2.5-5.307,4.209-7.503,2.805-3.171,6.282-5.582,10.431-7.228,4.146-1.647,9.087-2.471,14.823-2.471,9.027,0,16.47,2.228,22.326,6.679,5.856,4.455,8.904,11.377,9.15,20.771v.366h-13.359v-.184c0-5.367-1.77-9.179-5.307-11.438-3.54-2.256-7.809-3.385-12.81-3.385-3.417,0-6.193.397-8.327,1.189-2.136.795-4.058,2.044-5.765,3.751-1.83,2.196-2.745,4.881-2.745,8.052,0,2.196.183,4.026.549,5.49.366,1.464,1.126,2.653,2.288,3.568,1.158.915,2.805,1.679,4.941,2.288,2.133.611,5.032,1.221,8.692,1.83l12.444,2.013c7.197,1.221,12.656,4.089,16.379,8.601,3.72,4.516,5.581,10.555,5.581,18.117,0,5.124-.854,9.487-2.562,13.085-1.71,3.6-4.058,6.588-7.046,8.967-2.991,2.379-6.559,4.117-10.706,5.216-4.149,1.098-8.664,1.646-13.542,1.646Z"/><path class="cls-2" d="M2753.739,651.015v28.914h31.11v13.542h-31.11v49.044c0,2.686.366,5.124,1.098,7.32.732,2.196,2.073,4.117,4.026,5.765,1.95,1.646,4.543,2.899,7.777,3.751,3.231.855,7.289,1.281,12.169,1.281,1.341,0,3.02-.028,5.033-.092,2.013-.06,3.751-.395,5.215-1.006v13.542c-1.344.245-3.083.488-5.215.731-2.136.246-4.423.366-6.863.366-6.833,0-12.598-.792-17.293-2.379-4.698-1.584-8.481-3.72-11.346-6.405-2.868-2.682-4.941-5.916-6.222-9.699-1.281-3.779-1.921-7.868-1.921-12.261v-49.959h-20.679v-13.542h20.679v-28.914h13.542Z"/><path class="cls-2" d="M2813.579,679.93h12.993l.549,14.823c2.196-5.124,5.733-9.027,10.614-11.712,4.878-2.682,10.431-4.026,16.653-4.026,5.856,0,10.674,1.312,14.457,3.934,3.78,2.625,6.282,7.229,7.503,13.816,2.316-6.099,6.159-10.582,11.529-13.45,5.367-2.865,11.529-4.3,18.483-4.3,3.78,0,7.166.458,10.156,1.373,2.988.915,5.55,2.469,7.686,4.666,2.133,2.196,3.751,5.064,4.85,8.602,1.098,3.539,1.647,7.932,1.647,13.176v67.344h-13.542v-62.586c0-3.903-.337-7.137-1.007-9.699-.672-2.562-1.647-4.575-2.928-6.039-1.281-1.464-2.808-2.471-4.575-3.02-1.77-.549-3.751-.823-5.947-.823-7.077,0-12.81,2.228-17.202,6.68-4.392,4.455-6.588,10.279-6.588,17.477v58.011h-13.542v-62.586c0-3.903-.337-7.137-1.006-9.699-.672-2.562-1.647-4.575-2.928-6.039-1.281-1.464-2.808-2.471-4.575-3.02-1.77-.549-3.751-.823-5.947-.823-7.077,0-12.81,2.228-17.202,6.68-4.392,4.455-6.588,10.279-6.588,17.477v58.011h-13.542v-94.245Z"/><path class="cls-2" d="M2961.441,726.96c0-6.831.732-12.962,2.196-18.392,1.464-5.427,3.414-10.156,5.856-14.183,3.537-5.124,7.929-8.967,13.176-11.529,5.244-2.561,11.466-3.842,18.666-3.842,6.954,0,13.021,1.281,18.208,3.842,5.184,2.562,9.544,6.405,13.084,11.529,3.171,5.124,5.336,10.614,6.497,16.47,1.158,5.856,1.738,11.712,1.738,17.568h-65.331c.12,4.271.518,8.115,1.189,11.529.669,3.417,1.615,6.468,2.836,9.149,2.196,4.272,5.032,7.443,8.509,9.517,3.477,2.075,7.838,3.11,13.084,3.11,10.125,0,17.445-3.72,21.96-11.163.366-.852.824-1.767,1.373-2.744.549-.976,1.007-2.014,1.373-3.111l.183-.366h14.274l-.183.549c-.732,2.929-1.678,5.645-2.836,8.144-1.161,2.502-2.41,4.79-3.751,6.862-7.2,10.128-17.997,15.189-32.391,15.189-7.32,0-13.482-1.31-18.483-3.935-5.004-2.622-9.09-6.131-12.261-10.522-3.174-4.392-5.461-9.484-6.863-15.28-1.404-5.793-2.104-11.924-2.104-18.392ZM3026.04,716.163c-.489-2.439-1.069-4.727-1.738-6.862-.672-2.134-1.436-4.055-2.288-5.765-4.515-7.44-11.469-11.163-20.862-11.163-7.809,0-13.573,2.228-17.293,6.68-3.723,4.454-6.253,10.156-7.594,17.11h49.776Z"/><path class="cls-2" d="M3071.057,679.93h12.993l.549,18.117c2.439-5.49,6.648-10.033,12.627-13.634,5.976-3.596,12.93-5.398,20.862-5.398,8.418,0,15.097,2.41,20.038,7.228,4.941,4.821,7.412,12.476,7.412,22.967v64.965h-13.542v-60.024c0-7.929-1.678-13.57-5.032-16.927-3.357-3.354-7.961-5.033-13.817-5.033-4.149,0-7.96.704-11.438,2.104-3.477,1.404-6.496,3.326-9.058,5.765-2.562,2.442-4.546,5.278-5.948,8.51-1.404,3.234-2.104,6.619-2.104,10.156v55.449h-13.542v-94.245Z"/><path class="cls-2" d="M3213.065,651.015v28.914h31.11v13.542h-31.11v49.044c0,2.686.366,5.124,1.098,7.32.732,2.196,2.073,4.117,4.026,5.765,1.95,1.646,4.543,2.899,7.777,3.751,3.231.855,7.289,1.281,12.169,1.281,1.341,0,3.02-.028,5.033-.092,2.013-.06,3.751-.395,5.215-1.006v13.542c-1.344.245-3.083.488-5.215.731-2.136.246-4.423.366-6.863.366-6.833,0-12.598-.792-17.293-2.379-4.698-1.584-8.481-3.72-11.346-6.405-2.868-2.682-4.941-5.916-6.222-9.699-1.281-3.779-1.921-7.868-1.921-12.261v-49.959h-20.679v-13.542h20.679v-28.914h13.542Z"/><path class="cls-2" d="M3297.976,775.638c-6.345,0-11.652-.915-15.921-2.745-4.272-1.83-7.749-4.575-10.431-8.234-1.344-2.196-2.411-4.667-3.203-7.412-.795-2.745-1.252-5.885-1.373-9.424v-.366h13.176l-.183.366c0,1.464.183,2.836.549,4.117s.792,2.471,1.281,3.568c1.341,2.442,3.294,4.271,5.856,5.49,2.562,1.221,5.976,1.83,10.248,1.83,8.661,0,14.64-2.562,17.934-7.687.486-.975.915-2.133,1.281-3.477.366-1.341.549-2.865.549-4.575,0-2.562-.246-4.667-.732-6.313-.489-1.647-1.436-3.02-2.836-4.117-1.404-1.099-3.294-1.981-5.673-2.654-2.379-.669-5.461-1.31-9.242-1.921l-12.993-2.013c-6.222-.976-11.043-3.598-14.457-7.869-3.417-4.27-5.124-9.76-5.124-16.471,0-3.537.549-6.708,1.647-9.516,1.098-2.805,2.5-5.307,4.209-7.503,2.805-3.171,6.282-5.582,10.431-7.228,4.146-1.647,9.087-2.471,14.823-2.471,9.027,0,16.47,2.228,22.326,6.679,5.856,4.455,8.904,11.377,9.15,20.771v.366h-13.359v-.184c0-5.367-1.77-9.179-5.307-11.438-3.54-2.256-7.809-3.385-12.81-3.385-3.417,0-6.193.397-8.327,1.189-2.136.795-4.058,2.044-5.765,3.751-1.83,2.196-2.745,4.881-2.745,8.052,0,2.196.183,4.026.549,5.49.366,1.464,1.126,2.653,2.288,3.568,1.158.915,2.805,1.679,4.941,2.288,2.133.611,5.032,1.221,8.692,1.83l12.444,2.013c7.197,1.221,12.656,4.089,16.379,8.601,3.72,4.516,5.581,10.555,5.581,18.117,0,5.124-.854,9.487-2.562,13.085-1.71,3.6-4.058,6.588-7.046,8.967-2.991,2.379-6.559,4.117-10.706,5.216-4.149,1.098-8.664,1.646-13.542,1.646Z"/></g></g></svg></div>
+
+  </div>
+</div>
+
+
+
+
+
+
+<script>
+(function(){
+  var stage=document.getElementById('stage'),
+      zoom=document.getElementById('zoom'),
+      card=document.getElementById('card'),
+      mark=document.getElementById('mark'),
+      band=document.getElementById('band'),
+      track=document.getElementById('track'),
+      svg=zoom.querySelector('svg'),
+      logoG=zoom.querySelector('#logoG'),
+      counter=zoom.querySelector('#o-counter'),
+      cardIn=card.querySelector('.card-in');
+
+  var CREMA=[234,228,209], OLIVA=[66,79,37];
+  var MAX_SCALE=70, INSET=38, RADIUS=28, BAND_GAP=52, BAND_AIR=14;
+  var INSET_SM=16;   // 38px de margen se come media pantalla en un teléfono
+  var DONE_KEY='tc_intro_done', DURATION=2600;
+
+  var LOGO={x:33,y:33,w:3928,h:743};
+  var cx=0, cy=0, stageW=0, stageH=0, restW=0, vbW0=0, p0x=0, p0y=0;
+  var lastP=0, bandGap=BAND_GAP, running=false, done=false, scrollHandler=null;
+  // El cajón sube la banda justo su propio alto: así su borde inferior coincide con
+  // el del verde y queda escondida del todo detrás (la banda va en z-index 1, el
+  // verde en 2). offsetHeight no lo afecta el transform, se puede medir cuando sea.
+  var bandH=0, bandCols=[].slice.call(band.children);
+  var lensExtra=0;
+
+  function measure(){
+    var sr=stage.getBoundingClientRect();
+    // A zero-sized stage (hidden pane, iframe before layout, display:none ancestor)
+    // would divide by zero and write viewBox="NaN NaN NaN NaN", erasing the logo.
+    // Bail out and let the next resize/rAF re-measure instead.
+    if(sr.width<1 || sr.height<1){ return false; }
+    stageW=sr.width; stageH=sr.height;
+    restW = stageW<=720 ? stageW*0.82 : Math.min(stageW*0.54,660);
+    var bb=counter.getBBox();
+    cx=bb.x+bb.width/2; cy=bb.y+bb.height/2;
+    // rest camera: the whole logo, rendered restW wide, centred
+    vbW0 = LOGO.w*stageW/restW;
+    var vbH0 = vbW0*stageH/stageW;
+    var vbX0 = (LOGO.x+LOGO.w/2)-vbW0/2, vbY0 = (LOGO.y+LOGO.h/2)-vbH0/2;
+    // the counter's screen position at rest — the zoom walks it to the centre
+    p0x = (cx-vbX0)*stageW/vbW0;
+    p0y = (cy-vbY0)*stageH/vbH0;
+    INSET = innerWidth<=920 ? INSET_SM : 38;
+    bandH=band.offsetHeight;
+    bandGap=Math.max(BAND_GAP, bandH + BAND_AIR - INSET);
+    lensLayout();
+    applyFrame(lastP);
+    return true;
+  }
+
+
+  /* ═════════ La O del logo como ventana de video ═════════
+     Dos formas del SVG de marca: la O grande lleva el video con zoom y un velo negro
+     sutil; la o interior, el mismo video sin zoom y un velo más marcado para que el
+     logo se despegue. Un solo canvas dibuja las dos, así no pueden desincronizarse. */
+  var lensCv=document.getElementById('lensCv');
+  var lensCtx=lensCv?lensCv.getContext('2d'):null;
+  var LENS_VB_W=1472.597, LENS_VB_H=1412.534, LENS_RATIO=LENS_VB_W/LENS_VB_H;
+  var LENS_BIG=new Path2D("M1293.997,184.284h-.014C1174.751,61.346,988.481,0,734.931,0,483.36,0,297.833,61.349,178.85,184.284,59.617,307.232,0,481.377,0,706.238s59.116,398.756,177.37,521.701c118.24,123.188,304.02,184.537,557.574,184.537,255.536,0,442.296-61.349,560.535-184.537,117.99-122.938,177.117-296.843,177.117-521.701s-59.616-399.006-178.6-521.955Z"), LENS_SMALL=new Path2D("M534.534,504.44c-246.627,246.876-356.206,537.038-244.894,648.605,111.317,111.313,401.729,1.733,648.605-245.143,246.876-246.876,356.206-537.038,244.894-648.355-111.566-111.566-401.729-1.733-648.605,244.893Z");
+  var LENS={zb:2.00, zs:0.70, ab:0.23, as:0.44, copyMin:650, greenMax:480, gap:32,
+            kb:0.88, ks:1.35, kh:-8, kc:1.12};
+  var XF=1.2, TAIL=0.2;
+
+  var SEQ=[
+    {el:'lvOil',   hold:3.5},
+    {el:'lvOil',   hold:3.5},
+    {el:'lvScoop', endAt:4.2},
+    {el:'lvAmber'},
+    {el:'lvCocoa', grade:true, hold:6.0}
+  ];
+  SEQ.forEach(function(q){ q.v=document.getElementById(q.el); });
+
+  function lensAutoHold(q){
+    if(q.hold) return;
+    var d=q.endAt || q.v.duration;
+    q.hold=(d&&isFinite(d)) ? Math.max(2.4, d/(q.rate||1) - XF - TAIL) : 4.0;
+  }
+  SEQ.forEach(function(q){
+    if(q.hold) return;
+    q.hold=4.0;
+    if(q.v.readyState>=1){ q.hold=null; lensAutoHold(q); }
+    else q.v.addEventListener('loadedmetadata',function(){ q.hold=null; lensAutoHold(q); });
+  });
+
+  var lensW=0, lensH=0, lensBig=null, lensSmall=null;
+  var lensT=0, lensCur=0, lensWanted={}, lensRun=false, lensLast=0;
+
+  function lensLayout(){
+    if(!lensCv) return;
+    var root=document.documentElement;
+    if(innerWidth<=900){ root.style.setProperty('--o-h','auto'); lensExtra=0;
+      root.style.setProperty('--extra','0px'); return; }
+    var bot=bandGap;
+    var avail=innerHeight - 2*INSET - bot;
+    var padX=Math.min(Math.max(20, innerWidth*0.046), 76);
+    var gutter=Math.max(padX, (innerWidth-1180)/2);
+    var contentW=innerWidth - 2*gutter;
+    // leer el gap real del CSS: tenerlo duplicado aquí hacía que el titular se
+    // partiera en tres cuando los dos números no coincidían
+    var gapCss=parseFloat(getComputedStyle(cardIn).columnGap);
+    var gapUse=isFinite(gapCss)?gapCss:LENS.gap;
+    var maxW=contentW - LENS.copyMin - gapUse;
+    var greenH=Math.min(avail, maxW/LENS_RATIO, LENS.greenMax);
+    lensExtra=Math.max(0, avail-greenH);
+    root.style.setProperty('--extra', lensExtra+'px');
+    root.style.setProperty('--o-h', greenH+'px');
+  }
+
+  function lensBuild(){
+    if(!lensCv) return false;
+    var r=lensCv.getBoundingClientRect();
+    if(!r.width) return false;
+    var dpr=Math.min(devicePixelRatio||1,2);
+    lensW=Math.round(r.width*dpr); lensH=Math.round(r.height*dpr);
+    lensCv.width=lensW; lensCv.height=lensH;
+    var m=new DOMMatrix().scale(lensW/LENS_VB_W, lensH/LENS_VB_H);
+    lensBig=new Path2D(); lensBig.addPath(LENS_BIG,m);
+    lensSmall=new Path2D(); lensSmall.addPath(LENS_SMALL,m);
+    return true;
+  }
+
+  function lensCover(i, zoom, alpha){
+    var v=SEQ[i].v;
+    if(v.readyState<2) return;
+    var s=Math.max(lensW/v.videoWidth, lensH/v.videoHeight)*zoom;
+    var dw=v.videoWidth*s, dh=v.videoHeight*s;
+    if(alpha!==undefined) lensCtx.globalAlpha=alpha;
+    lensCtx.filter = SEQ[i].grade
+      ? 'brightness('+LENS.kb+') saturate('+LENS.ks+') hue-rotate('+LENS.kh+'deg) contrast('+LENS.kc+')'
+      : 'none';
+    lensCtx.drawImage(v,(lensW-dw)/2,(lensH-dh)/2,dw,dh);
+    lensCtx.filter='none'; lensCtx.globalAlpha=1;
+  }
+
+  function lensTick(dt){
+    var hold=SEQ[lensCur].hold, cyc=hold+XF;
+    lensT+=dt;
+    if(lensT>=cyc){ lensT-=cyc; lensCur=(lensCur+1)%SEQ.length; }
+    var nxt=(lensCur+1)%SEQ.length;
+    // el salto entre las dos partes del aceite es el mismo reproductor: no hay cruce
+    var same=SEQ[nxt].el===SEQ[lensCur].el;
+    var f=(!same && lensT>hold) ? (lensT-hold)/XF : 0;
+
+    /* El rebobinado se lleva por REPRODUCTOR, no por posición: el aceite ocupa dos
+       posiciones seguidas y no debe rebobinar entre ellas. Y rebobinar en la entrada
+       —incluida la pre-carga de 0.8 s— evita que el clip asome por su último cuadro. */
+    var now={};
+    SEQ.forEach(function(q,i){
+      if(i===lensCur || (!same && i===nxt && lensT>hold-0.8)) now[q.el]=q;
+    });
+    Object.keys(now).forEach(function(el){
+      var q=now[el];
+      if(!lensWanted[el]){ try{ q.v.currentTime=0; }catch(e){} q.v.playbackRate=q.rate||1; }
+      if(q.endAt && q.v.currentTime>=q.endAt+0.2){ if(!q.v.paused) q.v.pause(); }
+      else if(q.v.paused) q.v.play().catch(function(){});
+    });
+    Object.keys(lensWanted).forEach(function(el){
+      if(!now[el] && !lensWanted[el].v.paused) lensWanted[el].v.pause();
+    });
+    lensWanted=now;
+    return {f:f, nxt:nxt};
+  }
+
+  function lensDraw(dt){
+    if(!lensCtx) return;
+    if(!lensBig && !lensBuild()) return;
+    var st=lensTick(dt||0);
+    lensCtx.clearRect(0,0,lensW,lensH);
+
+    lensCtx.save(); lensCtx.clip(lensBig);
+    lensCover(lensCur, LENS.zb);
+    if(st.f>0) lensCover(st.nxt, LENS.zb, st.f);
+    lensCtx.fillStyle='rgba(0,0,0,'+LENS.ab+')'; lensCtx.fillRect(0,0,lensW,lensH);
+    lensCtx.restore();
+
+    lensCtx.save(); lensCtx.clip(lensSmall);
+    // fondo: si el zoom interior bajara de ~0.67 el video no taparía la o
+    lensCtx.fillStyle='#241a0e'; lensCtx.fillRect(0,0,lensW,lensH);
+    lensCover(lensCur, LENS.zs);
+    if(st.f>0) lensCover(st.nxt, LENS.zs, st.f);
+    lensCtx.fillStyle='rgba(0,0,0,'+LENS.as+')'; lensCtx.fillRect(0,0,lensW,lensH);
+    lensCtx.restore();
+  }
+
+  function lensFrame(ts){
+    if(!lensRun) return;
+    var dt=lensLast?Math.min((ts-lensLast)/1000,0.05):0.016;
+    lensLast=ts; lensDraw(dt); requestAnimationFrame(lensFrame);
+  }
+  function lensStart(){
+    if(!lensCv) return;
+    lensLayout();
+    if(!lensBuild()) return;
+    lensDraw(0);
+    if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches){
+      SEQ.forEach(function(q){ q.v.pause(); }); return;
+    }
+    if(lensRun) return;
+    lensRun=true; lensLast=0; requestAnimationFrame(lensFrame);
+  }
+
+  if(lensCv){
+    new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){ lensStart(); }
+        else { lensRun=false; SEQ.forEach(function(q){ q.v.pause(); }); }
+      });
+    },{rootMargin:'120px'}).observe(lensCv);
+    // ResizeObserver, no 'resize': ese dispara antes de que el layout se asiente y el
+    // canvas queda dimensionado para la caja vieja (se ve borroso).
+    new ResizeObserver(function(){ lensLayout(); lensBuild(); lensDraw(0); }).observe(lensCv);
+    SEQ.forEach(function(q){ q.v.addEventListener('loadeddata', function(){ lensDraw(0); }); });
+    // el primero carga completo; el resto espera, para no pedir 8 MB de entrada
+    (function(){
+      var first=SEQ[0].v;
+      var warm=function(){ SEQ.slice(1).forEach(function(q){
+        if(q.v.preload!=='auto'){ q.v.preload='auto'; q.v.load(); } }); };
+      if(first.readyState>=3) setTimeout(warm,400);
+      else first.addEventListener('canplaythrough',function(){ setTimeout(warm,400); },{once:true});
+    })();
+    lensStart();
+  }
+
+  function seg(p,a,b){return Math.max(0,Math.min(1,(p-a)/(b-a)));}
+  function easeInOutCubic(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;}
+  function easeInCubic(t){return t*t*t;}
+  function easeOutCubic(t){return 1-Math.pow(1-t,3);}
+  function mix(c1,c2,t){
+    return 'rgb('+Math.round(c1[0]+(c2[0]-c1[0])*t)+','
+                 +Math.round(c1[1]+(c2[1]-c1[1])*t)+','
+                 +Math.round(c1[2]+(c2[2]-c1[2])*t)+')';
+  }
+
+  function applyFrame(p){
+    p=Math.max(0,Math.min(1,p));
+    lastP=p;
+    var z=easeInCubic(seg(p,0.06,0.48)), s=1+z*MAX_SCALE;
+    // NOTHING is scaled. Path coordinates never change; only the camera moves.
+    // Narrowing the viewBox makes Skia re-render the visible region at native
+    // resolution each frame, so no scaled raster context exists to be cached.
+    var vbW=vbW0/s, vbH=vbW*stageH/stageW;
+    var px=p0x+(stageW/2-p0x)*z, py=p0y+(stageH/2-p0y)*z;
+    var vbX=cx-px*vbW/stageW, vbY=cy-py*vbH/stageH;
+    if(isFinite(vbX)&&isFinite(vbY)&&vbW>0&&vbH>0){
+      svg.setAttribute('viewBox',vbX+' '+vbY+' '+vbW+' '+vbH);
+    }
+    zoom.style.opacity=(p>0.52?0:1);
+    counter.setAttribute('fill',mix(CREMA,OLIVA,seg(p,0.08,0.34)));
+    card.style.opacity=seg(p,0.45,0.56);
+    var k=easeInOutCubic(seg(p,0.58,0.88)),
+        pad=k*INSET, rad=k*RADIUS, bot=k*bandGap, ext=k*lensExtra;
+    // `ext` acorta el verde para que la O pueda igualarlo; sin él, en pantallas altas
+    // el verde crece y la O no entra al lado del texto.
+    card.style.clipPath='inset('+pad+'px '+pad+'px '+(pad+bot+ext)+'px '+pad+'px round '+rad+'px)';
+    cardIn.style.transform='translateY('+(-(bot+ext)/2)+'px)';
+    mark.style.opacity=1-k;
+    // La banda aparece CON la tarjeta, no después: hasta que el verde no es opaco
+    // se vería flotando sobre el crema. Mientras tanto está escondida detrás de él.
+    band.style.opacity=seg(p,0.45,0.56);
+    // Cajón: sale de detrás del verde. Arranca en 0.78, cuando el recorte del verde
+    // todavía es más grande que su tamaño final y por tanto aún la tapa entera.
+    var dk=easeInOutCubic(seg(p,0.78,0.97));
+    band.style.transform='translateY('+(-(1-dk)*bandH)+'px)';
+    // Escalonado: cada columna tiene su propio tramo, corrido 0.023. El último
+    // termina en 0.999 — todo tiene que caber antes de 1 o se corta al final.
+    for(var i=0;i<bandCols.length;i++){
+      var ck=easeOutCubic(seg(p, 0.84+i*0.023, 0.93+i*0.023));
+      bandCols[i].style.opacity=ck;
+      bandCols[i].style.transform='translateY('+((1-ck)*26)+'px)';
+    }
+  }
+
+  // Locks the composed hero and tears the intro down for good.
+  function finish(){
+    if(done) return;
+    done=true; running=false;
+    applyFrame(1);
+    if(scrollHandler){ window.removeEventListener('scroll',scrollHandler); scrollHandler=null; }
+    zoom.style.willChange='auto';
+    card.style.willChange='auto';
+    band.style.willChange='auto';
+    try{ sessionStorage.setItem(DONE_KEY,'1'); }catch(e){}
+    // NOTE: 'intro-armed' is deliberately NOT removed. It controls the 250vh track
+    // height, and dropping it mid-scroll would shorten the document under the
+    // user's feet and make the page jump.
+    document.documentElement.classList.add('intro-done');
+    // El track mide 250vh para darle recorrido al intro. Una vez terminado, esos
+    // 150vh sobrantes son scroll muerto: bajando no cambia nada y subiendo el hero
+    // se queda pegado. Se colapsa a 100vh y se resta la misma distancia del scroll,
+    // así la página queda visualmente idéntica pero sin el tramo muerto.
+    // El comentario viejo decía que colapsar hacía saltar la página; saltaba porque
+    // no se compensaba el scroll, no porque colapsar estuviera mal.
+    (function(){
+      var before=track.offsetHeight;
+      document.documentElement.classList.add('intro-collapsed');
+      var d=before-track.offsetHeight;
+      if(d>0) window.scrollTo(0, Math.max(0, (window.pageYOffset||0)-d));
+    })();
+    window.dispatchEvent(new Event('tc:intro-done'));
+  }
+
+  function onResize(){ measure(); }
+
+  // Scroll drives the intro, but progress RATCHETS: it only ever increases. Scrolling
+  // back up holds the frame instead of rewinding, and once it reaches 1 the listener
+  // detaches, so a replay is impossible rather than merely suppressed.
+  function scrollDriver(){
+    running=true;
+    var ticking=false, maxP=0;
+    function read(){
+      ticking=false;
+      var r=track.getBoundingClientRect(), total=r.height-stage.offsetHeight;
+      // Un recorrido de 0 no es "progreso 0": es que ya no hay recorrido (track
+      // colapsado, stage sin medir). Devolver 0 rebobinaba al cuadro 0 y hacía
+      // reaparecer el logo al bajar. Sin recorrido no hay nada que leer.
+      if(total<=0) return;
+      var p = (-r.top)/total;
+      if(p>maxP) maxP=p;
+      applyFrame(maxP);
+      if(maxP>=1) finish();
+    }
+    scrollHandler=function(){ if(!ticking){ ticking=true; requestAnimationFrame(read); } };
+    window.addEventListener('scroll',scrollHandler,{passive:true});
+    read();
+  }
+
+  // Reproduccion automatica. Alimenta applyFrame con un progreso LINEAL en el
+  // tiempo, no suavizado: applyFrame ya reparte sus propias curvas por tramos
+  // (seg + easeInOutCubic), asi que suavizar aqui encima seria suavizar dos
+  // veces y el intro saldria pastoso en las puntas.
+  // 3600ms es el equivalente aproximado a recorrer los 150vh de scroll que
+  // tenia antes a velocidad de lectura. Es el unico numero que hay que tocar
+  // si Michelle lo quiere mas rapido o mas lento.
+  var AUTO_MS=3600;
+  function timeDriver(){
+    running=true;
+    var t0=null;
+    function paso(ts){
+      if(done) return;
+      if(t0===null) t0=ts;
+      var p=(ts-t0)/AUTO_MS;
+      if(p>=1){ finish(); return; }
+      applyFrame(p);
+      requestAnimationFrame(paso);
+    }
+    applyFrame(0);
+    requestAnimationFrame(paso);
+  }
+
+  function boot(){
+    if(!measure()){                       // stage not laid out yet — try again
+      window.addEventListener('resize',onResize,{passive:true});
+      requestAnimationFrame(boot);
+      setTimeout(function(){ if(!done && !running) boot(); }, 400);
+      return;
+    }
+    var params=new URLSearchParams(location.search);
+    var reduce=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var already=false;
+    try{ already = sessionStorage.getItem(DONE_KEY)==='1'; }catch(e){}
+
+    if(params.get('driver')==='message'){          // kept for testing only
+      window.addEventListener('message',function(e){
+        var ok=['https://www.tcorpi.com','https://tcorpi.com'];
+        if(ok.indexOf(e.origin)===-1) return;
+        var d=e.data;
+        if(!d||typeof d.progress!=='number'||!isFinite(d.progress)) return;
+        if(d.progress<0||d.progress>1) return;
+        applyFrame(d.progress);
+      });
+      applyFrame(0); return;
+    }
+    // Restored scroll (back/forward navigation) can land us past the hero. Running
+    // the intro from there would flash frame 0 before the first scroll read.
+    var r=track.getBoundingClientRect(), travel=r.height-stage.offsetHeight;
+    var already_past = travel>0 && (-r.top)/travel >= 1;
+
+    if(already || reduce){ finish(); return; }    // no animation, no flash
+    window.addEventListener('resize',onResize,{passive:true});
+    if(document.documentElement.classList.contains('intro-auto')){
+      timeDriver(); return;
+    }
+    // El caso "el scroll restaurado nos dejo pasado el hero" solo aplica al motor
+    // de scroll: con el automatico el track mide 100vh y no hay tramo que pasar.
+    if(already_past){ finish(); return; }
+    scrollDriver();                                // its first read() sets the frame
+  }
+
+  window.applyFrame=applyFrame;
+
+  // Boot immediately (this script is at the end of body, so layout exists) and
+  // re-measure once webfonts settle — waiting for fonts.ready before showing
+  // anything left the stage blank for several frames.
+  boot();
+  if(document.fonts && document.fonts.ready){
+    document.fonts.ready.then(function(){ if(!done) measure(); });
+  }
+})();
+
+// Hero media autoplay (muted → allowed). Belt-and-suspenders: retry play on
+// load and when the tab becomes visible again, for browsers that defer it.
+(function(){
+  var vids=document.querySelectorAll('.media video');
+  function kick(){ [].forEach.call(vids,function(v){ var p=v.play(); if(p&&p.catch){p.catch(function(){});} }); }
+  kick();
+  window.addEventListener('load',kick);
+  document.addEventListener('visibilitychange',function(){ if(!document.hidden){ kick(); } });
+})();
+</script>
+
+<script>
+/* Why TradeCorp? — scroll-driven curved reveal + card entrance.
+   This SCRUBS: every scroll frame recomputes the clip and the colour, so the
+   unfold follows the scroll wheel instead of firing a fixed-length animation at
+   a threshold. That difference IS the feel of it — do not "simplify" this into
+   an IntersectionObserver + CSS transition. That was tried and reads as broken,
+   because the animation is over before the section is comfortably in view.
+   Independent of the hero intro: no intro-armed / sessionStorage gating here. */
+(function(){
+  var sec=document.getElementById('why'); if(!sec) return;
+  var curve=sec.querySelector('.why-curve'), path=sec.querySelector('.why-curve path');
+  var cards=[].slice.call(sec.querySelectorAll('.why-card'));
+  var CREAM=[234,228,209], GREEN=[166,191,133];
+  function cl(v){return v<0?0:v>1?1:v;}
+  function mix(t){return 'rgb('+Math.round(CREAM[0]+(GREEN[0]-CREAM[0])*t)+','+Math.round(CREAM[1]+(GREEN[1]-CREAM[1])*t)+','+Math.round(CREAM[2]+(GREEN[2]-CREAM[2])*t)+')';}
+  function applyFrame(p){ p=cl(p); var c=mix(p); sec.style.backgroundColor=c; if(path) path.setAttribute('fill',c); curve.style.transform='translateY('+((1-p)*100)+'px)'; }
+  window.applyWhyFrame=applyFrame;
+
+  if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    applyFrame(1); cards.forEach(function(c){c.style.clipPath='none';}); return;
+  }
+
+  var ticking=false, maxCardP=[0,0,0];
+  function read(){
+    ticking=false;
+    var r=sec.getBoundingClientRect(), vh=window.innerHeight;
+    applyFrame((vh-r.top)/(vh*0.5));                 // section colour + curve
+    // cards unfold top->down as they scroll up; sticky (does not re-fold)
+    var start=vh*0.92, end=vh*0.45;
+    cards.forEach(function(c,i){
+      var t=c.getBoundingClientRect().top;
+      var cp=cl((start - i*70 - t)/(start-end));     // slight left-to-right stagger
+      if(cp>maxCardP[i]) maxCardP[i]=cp;
+      c.style.clipPath='inset(0 0 '+((1-maxCardP[i])*100).toFixed(2)+'% 0 round 24px)';
+    });
+  }
+  function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(read); } }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('resize',onScroll,{passive:true});
+  window.addEventListener('tc:intro-done',onScroll);   // track collapse moves positions
+  read();
+})();
+
+/* Ingredientes — título que crece al entrar + carril arrastrable e infinito.
+   El auto-scroll mueve scrollLeft y no un transform: así el arrastre, la rueda,
+   el trackpad y el teclado usan el mismo mecanismo nativo y nadie pelea por la
+   misma propiedad. La barra va oculta por CSS, no desactivada. */
+(function(){
+  var sec=document.querySelector('.ingredients'); if(!sec) return;
+  var car=sec.querySelector('.ing-carousel'), trk=sec.querySelector('.ing-track');
+  var title=sec.querySelector('.ing-title');
+  var slow=window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* --- 1. el título crece con el scroll --- */
+  var tick=false;
+  function readTitle(){
+    tick=false;
+    var r=title.getBoundingClientRect(), vh=window.innerHeight;
+    var p=(vh*0.94-r.top)/(vh*0.42);              // 0 al asomar, 1 ya asentado
+    p=p<0?0:p>1?1:p;
+    p=1-Math.pow(1-p,3);                          // ease-out cúbico
+    title.style.setProperty('--tsc',(0.74+0.26*p).toFixed(4));
+  }
+  function onScroll(){ if(!tick){ tick=true; requestAnimationFrame(readTitle); } }
+  if(slow){ title.style.setProperty('--tsc','1'); }
+  else{
+    window.addEventListener('scroll',onScroll,{passive:true});
+    window.addEventListener('resize',onScroll,{passive:true});
+    window.addEventListener('tc:intro-done',onScroll);   // el track colapsa y todo sube
+    readTitle();
+  }
+
+  /* --- 2. "Explore" sube al centro en hover ---
+     La copia mide 1 o 2 líneas según el producto, así que el desplazamiento no
+     puede ser un número fijo: se mide por tarjeta y se guarda en --ex-shift. */
+  function measureCards(){
+    [].forEach.call(sec.querySelectorAll('.ing'),function(c){
+      var ex=c.querySelector('.ing-explore'); if(!ex) return;
+      // se MIDE dónde está Explore en reposo (ya con --info-drop aplicado) y cuánto
+      // le falta para el centro de la tarjeta. Una fórmula no sirve: la copia ocupa
+      // 1 o 2 líneas según el producto y el bloque va desplazado hacia abajo.
+      // La foto va centrada en la tarjeta, así que su centro ES el de la tarjeta.
+      // No sirve `md.offsetTop + md.offsetHeight/2`: el centrado se hace con
+      // `top:50%` mas `translateY(-50%)`, y offsetTop sólo ve el 50%, no el -50%.
+      // Tampoco sirve getBoundingClientRect sobre la foto: en reposo lleva
+      // scale(.9) y devolvería la caja encogida.
+      var host=ex.offsetParent, base=(host&&host!==c)?host.offsetTop:0;
+      var exC=base+ex.offsetTop+ex.offsetHeight/2;
+      c.style.setProperty('--ex-shift',(exC-c.offsetHeight/2).toFixed(1)+'px');
+    });
+  }
+  measureCards();
+  window.addEventListener('resize',measureCards,{passive:true});
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(measureCards);
+
+  /* --- 3. auto-scroll infinito + arrastre ---
+     La lista va 4 veces. El periodo es un cuarto del ancho y la ventana de trabajo
+     es [periodo, 2*periodo): queda un periodo entero de pista a cada lado, así el
+     arrastre hacia la izquierda nunca choca contra el 0 del scroller. */
+  var SPEED=26, per=0, last=0, run=false, drag=false;
+  function remeasure(){
+    per=trk.scrollWidth/4;
+    if(per>0 && (car.scrollLeft<per || car.scrollLeft>=2*per)) car.scrollLeft=per;
+  }
+  function wrap(){
+    if(per<=0) return 0;
+    if(car.scrollLeft>=2*per){ car.scrollLeft-=per; return -per; }
+    if(car.scrollLeft<per){ car.scrollLeft+=per; return per; }
+    return 0;
+  }
+  remeasure();
+  window.addEventListener('resize',remeasure,{passive:true});
+  window.addEventListener('load',remeasure);
+
+  function frame(ts){
+    if(!run) return;
+    var dt=last?Math.min((ts-last)/1000,0.05):0.016; last=ts;
+    // Dos arreglos sobre lo que habia aqui:
+    //
+    // a) La pausa por foco usa :focus-visible, no :focus-within. Con
+    //    :focus-within un CLIC de raton dejaba el foco dentro del carrusel y se
+    //    quedaba congelado hasta que hacias clic fuera. :focus-visible solo se
+    //    activa con teclado, que es para lo unico que hacia falta la pausa.
+    //
+    // b) El hover se lee del DOM en cada frame en vez de llevar una bandera con
+    //    pointerenter/pointerleave. Durante un arrastre hay captura de puntero y
+    //    el pointerleave puede no llegar nunca: la bandera se quedaba en true y
+    //    el carrusel no arrancaba mas. Leerlo del DOM se autocorrige.
+    var sobre = car.matches(':hover');
+    var foco  = false;
+    try{ foco = car.matches(':focus-visible') || !!car.querySelector(':focus-visible'); }catch(err){}
+    if(!sobre && !drag && !foco){ car.scrollLeft+=SPEED*dt; wrap(); }
+    requestAnimationFrame(frame);
+  }
+  function start(){ if(run||slow) return; run=true; last=0; requestAnimationFrame(frame); }
+  new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting) start(); else run=false; });
+  },{rootMargin:'160px'}).observe(car);
+
+  car.addEventListener('scroll',function(){ if(!drag) wrap(); },{passive:true});
+
+  var sx=0, sl=0, moved=0, pid=null;
+  car.addEventListener('pointerdown',function(e){
+    if(e.pointerType!=='mouse' || e.button!==0) return;  // en táctil manda el scroll nativo
+    drag=true; moved=0; pid=e.pointerId; sx=e.clientX; sl=car.scrollLeft;
+    car.classList.add('is-drag');
+    try{ car.setPointerCapture(pid); }catch(err){}
+  });
+  car.addEventListener('pointermove',function(e){
+    if(!drag || e.pointerId!==pid) return;
+    var d=e.clientX-sx;
+    if(Math.abs(d)>moved) moved=Math.abs(d);
+    car.scrollLeft=sl-d;
+    sl+=wrap();                                   // el salto del bucle también corre el origen
+  });
+  function endDrag(e){
+    if(!drag || (e && e.pointerId!==pid)) return;
+    drag=false; car.classList.remove('is-drag');
+    try{ car.releasePointerCapture(pid); }catch(err){}
+    // si hubo desplazamiento real fue un arrastre, no un clic: se traga el click
+    if(moved>6) car.addEventListener('click',function(ev){
+      ev.preventDefault(); ev.stopPropagation();
+    },{capture:true,once:true});
+  }
+  car.addEventListener('pointerup',endDrag);
+  car.addEventListener('pointercancel',endDrag);
+  car.addEventListener('dragstart',function(e){ e.preventDefault(); });
+})();
+</script>
+
+
+</body>
+</html>
