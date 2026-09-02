@@ -652,6 +652,25 @@ window.TCScroll=(function(){
     var y=e.touches[0].clientY; mover(ty-y); ty=y;
   }, {passive:true});
 
+  /* ── Aviso de altura a Wix ────────────────────────────────────────────────
+     El contenido NO mide lo mismo en cada ancho (medido 2026-09-02: 2.639px a
+     1920, 2.606 a 1440, 2.537 a 1280, 2.346 a 1024), asi que ningun alto fijo
+     sirve. Si la caja de Wix se queda corta el iframe pasa a tener barra propia
+     — dos barras, tirones y el motor cambia de modo a media pagina. Si sobra,
+     queda crema muerta al final.
+     Aqui se publica la altura real; del otro lado, Velo la recoge con
+     onMessage y ajusta la caja. Si nadie escucha no pasa nada. */
+  function avisarAltura(){
+    if(window.self===window.top) return;          // fuera de un iframe no aplica
+    var h=Math.ceil(document.body.getBoundingClientRect().height);
+    try{ parent.postMessage({tcAlto:h}, '*'); }catch(e){}
+  }
+  addEventListener('load', avisarAltura);
+  addEventListener('resize', avisarAltura, {passive:true});
+  if(window.ResizeObserver){
+    try{ new ResizeObserver(avisarAltura).observe(document.body); }catch(e){}
+  }
+
   return {
     // Alto de ventana contra el que medir el progreso.
     vh:  function(){ return embed ? VENTANA : window.innerHeight; },
