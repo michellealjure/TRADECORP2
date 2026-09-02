@@ -494,6 +494,10 @@ html.intro-armed .card{opacity:0}
 html.intro-armed .band{opacity:0}
 html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer frame */
 .why-card{clip-path:none}
+
+/* Bordes del embed: el aire entre cajas lo pone Wix (build.py) */
+.ingredients{padding-top:0}
+.why{padding-bottom:0}
 </style>
 
 <script>
@@ -876,5 +880,47 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
 </script>
 
 
+
+<script>
+/* Reproduccion por tiempo — sustituye al scroll dentro del embed (build.py) */
+(function(){
+  var sec   = document.querySelector('.ingredients');
+  var title = sec && sec.querySelector('.ing-title');
+  var why   = document.getElementById('why');
+  var cards = why ? [].slice.call(why.querySelectorAll('.why-card')) : [];
+  if(!title && !why) return;
+
+  function fin(){
+    if(title) title.style.setProperty('--tsc','1');
+    if(window.applyWhyFrame) window.applyWhyFrame(1);
+    cards.forEach(function(c){ c.style.clipPath='none'; });
+  }
+  if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches){
+    fin(); return;
+  }
+
+  var DUR=1500, t0=null;
+  function easeOut(x){ return 1-Math.pow(1-x,3); }
+  function tramo(p,a,b){ var k=(p-a)/(b-a); return k<0?0:k>1?1:k; }
+
+  function paso(ts){
+    if(t0===null) t0=ts;
+    var p=(ts-t0)/DUR;
+    if(p>=1){ fin(); return; }
+    var k=easeOut(p);
+    if(title) title.style.setProperty('--tsc',(0.74+0.26*k).toFixed(4));
+    if(window.applyWhyFrame) window.applyWhyFrame(easeOut(tramo(p,0.10,0.70)));
+    cards.forEach(function(c,i){
+      var ck=easeOut(tramo(p, 0.30+i*0.10, 0.85+i*0.10));
+      c.style.clipPath='inset(0 0 '+((1-ck)*100).toFixed(1)+'% 0 round 24px)';
+    });
+    requestAnimationFrame(paso);
+  }
+  requestAnimationFrame(paso);
+  // Red de seguridad: si rAF no corre (pestaña de fondo), nada puede quedarse
+  // a medio pintar — el verde a medias o una tarjeta recortada se ven rotos.
+  setTimeout(function(){ if(t0===null) fin(); }, 2500);
+})();
+</script>
 </body>
 </html>

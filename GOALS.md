@@ -2800,3 +2800,38 @@ Están en los COA, así que corregirlas en la web las desalinearía del document
 - **Bacopa:** «Baccopa monnieri» → *Bacopa*, con una sola c.
 
 Vale la pena reclamárselas junto con la del Amla.
+
+### Los tres problemas al montarlo en Wix (2026-08-31)
+
+**1. Espacios enormes entre secciones.** No era el relleno de Wix sumándose:
+**al partir el home cree una costura que no existia**. «Why buyers choose» y
+«Trusted partners» eran UNA sola seccion —el verde corria continuo entre las
+dos— y al separarlas cada mitad se quedo con su relleno de borde: 80 px de una
+mas 120 px de la otra, mas lo que ponga Wix encima.
+
+`sin_costura()` anula el relleno de los bordes que antes eran interiores:
+home-1 abajo, home-2 arriba y abajo, home-3 arriba. Solo los bordes que dan a
+otra caja — el relleno de dentro se respeta, y en las secciones con fondo de
+color el que queda dentro tiene que seguir ahi o el color no llena el hueco.
+
+Altos nuevos: home-2 **1371 → 1211**, home-3 **607 → 487**. 280 px menos.
+
+**2 y 3. El motion del titulo y el verde de «Why» no funcionaban.** Misma causa:
+las dos van guiadas por scroll y **el scroll de la pagina de Wix no llega al
+iframe**, asi que se quedaban congeladas en su primer fotograma — titulo pequeño
+y seccion sin teñir, con las tarjetas sin desplegar.
+
+`autoplay_home2()` las reproduce por tiempo, 1,5 s, igual que se hizo con el
+intro. No hace falta desmontar los oyentes de scroll que ya hay: como dentro del
+iframe no se dispara ningun evento de scroll, nunca vuelven a escribir y el
+bucle nuevo simplemente pinta encima. Red de seguridad a 2,5 s por si `rAF` no
+corre: nada puede quedarse a medio pintar, que un verde a medias o una tarjeta
+recortada se ven rotos.
+
+Verificado: titulo a escala 1, fondo en `rgb(166,191,133)` exacto, las tres
+tarjetas con `clip-path:none`.
+
+**Queda un limite conocido:** la animacion arranca al CARGAR el embed, no al
+llegar el visitante. Si Wix carga los iframes de golpe al abrir la pagina, el
+movimiento se gasta antes de que nadie lo vea. Saberlo requiere Velo — que es la
+misma pieza que hace falta para el alto del catalogo.

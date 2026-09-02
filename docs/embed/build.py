@@ -203,6 +203,84 @@ def enlaces_externos(html):
     return html
 
 
+def sin_costura(html, reglas):
+    """Quita el relleno de los BORDES del embed.
+
+    Dos razones distintas:
+
+    1. «Why buyers choose» y «Trusted partners» eran UNA sola seccion en el
+       original — el verde corria continuo entre las dos. Al partirlas cada
+       mitad se quedo con su relleno, y al apilarlas en Wix se suman: 80px de
+       una mas 120px de la otra, mas lo que ponga Wix encima.
+
+    2. El aire ENTRE secciones lo pone Wix. Si lo ponen los dos, va doble.
+
+    Solo se tocan los bordes que dan a otra caja: el relleno interior se
+    respeta, y en las secciones con fondo de color el que queda dentro tiene
+    que seguir ahi o el color no llena el hueco."""
+    extra = '\n/* Bordes del embed: el aire entre cajas lo pone Wix (build.py) */\n' + reglas + '\n'
+    i = html.rindex('</style>')
+    return html[:i] + extra + html[i:]
+
+
+def autoplay_home2(html):
+    """Las dos animaciones de home-2 pasan de scroll a tiempo.
+
+    Dentro de un iframe el scroll de la pagina de Wix NO llega (medido: el
+    scrollY del embed se queda en 0 mientras el padre se desplaza), asi que
+    ambas se quedaban congeladas en su primer fotograma: el titulo pequeno y la
+    seccion «Why» sin teñir de verde, con las tarjetas sin desplegar.
+
+    No hace falta desmontar los oyentes de scroll que ya hay: como no se dispara
+    ningun evento de scroll dentro del iframe, nunca vuelven a escribir. Este
+    bucle simplemente pinta encima."""
+    js = """
+<script>
+/* Reproduccion por tiempo — sustituye al scroll dentro del embed (build.py) */
+(function(){
+  var sec   = document.querySelector('.ingredients');
+  var title = sec && sec.querySelector('.ing-title');
+  var why   = document.getElementById('why');
+  var cards = why ? [].slice.call(why.querySelectorAll('.why-card')) : [];
+  if(!title && !why) return;
+
+  function fin(){
+    if(title) title.style.setProperty('--tsc','1');
+    if(window.applyWhyFrame) window.applyWhyFrame(1);
+    cards.forEach(function(c){ c.style.clipPath='none'; });
+  }
+  if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches){
+    fin(); return;
+  }
+
+  var DUR=1500, t0=null;
+  function easeOut(x){ return 1-Math.pow(1-x,3); }
+  function tramo(p,a,b){ var k=(p-a)/(b-a); return k<0?0:k>1?1:k; }
+
+  function paso(ts){
+    if(t0===null) t0=ts;
+    var p=(ts-t0)/DUR;
+    if(p>=1){ fin(); return; }
+    var k=easeOut(p);
+    if(title) title.style.setProperty('--tsc',(0.74+0.26*k).toFixed(4));
+    if(window.applyWhyFrame) window.applyWhyFrame(easeOut(tramo(p,0.10,0.70)));
+    cards.forEach(function(c,i){
+      var ck=easeOut(tramo(p, 0.30+i*0.10, 0.85+i*0.10));
+      c.style.clipPath='inset(0 0 '+((1-ck)*100).toFixed(1)+'% 0 round 24px)';
+    });
+    requestAnimationFrame(paso);
+  }
+  requestAnimationFrame(paso);
+  // Red de seguridad: si rAF no corre (pestaña de fondo), nada puede quedarse
+  // a medio pintar — el verde a medias o una tarjeta recortada se ven rotos.
+  setTimeout(function(){ if(t0===null) fin(); }, 2500);
+})();
+</script>
+"""
+    i = html.rindex('</body>')
+    return html[:i] + js + html[i:]
+
+
 def titulo(html, t):
     return re.sub(r'<title>[^<]*</title>', f'<title>{t}</title>', html, count=1)
 
@@ -328,6 +406,7 @@ def build_home_1():
     h = sin_menu(h); h = sin_andamiaje(h)
     h = quitar(h, '<section class="ingredients"', 'section')
     h = quitar(h, '<section class="why"', 'section')
+    h = sin_costura(h, '.track{padding-bottom:0}')
     h = rutas(h, 'raiz'); h = fuente_externa(h)
     h, _n = enlaces_wix(h); h = enlaces_externos(h)
     h = titulo(h, 'TradeCorp')
@@ -343,6 +422,8 @@ def build_home_2():
     h = quitar(h, '<div class="tp">', 'div')
     h = quitar(h, '<div class="tp-marquee"', 'div')
     h = sin_guion(h, GUION_INTRO)          # aqui no hay hero que animar
+    h = sin_costura(h, '.ingredients{padding-top:0}\n.why{padding-bottom:0}')
+    h = autoplay_home2(h)
     h = rutas(h, 'raiz'); h = fuente_externa(h)
     h, _n = enlaces_wix(h); h = enlaces_externos(h)
     h = titulo(h, 'Our ingredients — TradeCorp')
@@ -366,6 +447,7 @@ def build_home_3():
     # Fuera el guion: manda el `background:var(--salvia)` del CSS.
     h = sin_guion(h, GUION_WHY)
     h = sin_guion(h, GUION_INTRO)          # aqui no hay hero que animar
+    h = sin_costura(h, '.why{padding-top:0}')
     h = rutas(h, 'raiz'); h = fuente_externa(h)
     h, _n = enlaces_wix(h); h = enlaces_externos(h)
     h = titulo(h, 'Trusted partners — TradeCorp')
