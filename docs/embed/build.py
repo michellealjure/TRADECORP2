@@ -454,7 +454,33 @@ def build_home_3():
     return cabecera(h, 'home-3')
 
 
+def build_home_entero():
+    """El home completo en una sola caja — para comparar contra las tres.
+
+    OJO con el hero: mide 100vh, y dentro de un iframe `vh` es el alto del
+    IFRAME, no el de la pantalla. En una caja de 2.600px el hero se estira a
+    2.600px."""
+    h = _home()
+    h = sin_menu(h); h = sin_andamiaje(h)
+    h = autoplay_home2(h)
+    # El hero mide 100vh, y dentro de un iframe `vh` es el alto del IFRAME: en
+    # una caja de 2.600px el hero se estiraba a 2.600px (medido). Se le fija un
+    # alto en px. No se pierde nada frente a las tres cajas: alli `100vh`
+    # tampoco seguia la pantalla del visitante, seguia el alto que Michelle le
+    # daba a la seccion — este es el mismo numero, escrito de forma explicita.
+    h = sin_costura(h, '.track,html.intro-auto .track,html.intro-collapsed .track,'
+                       'html:not(.intro-armed) .track{height:900px}\n'
+                       '@media (max-width:640px){.track,html.intro-auto .track,'
+                       'html.intro-collapsed .track,html:not(.intro-armed) .track'
+                       '{height:760px}}')
+    h, _n = enlaces_wix(h); h = enlaces_externos(h)
+    h = rutas(h, 'raiz'); h = fuente_externa(h)
+    h = titulo(h, 'TradeCorp')
+    return cabecera(h, 'home-entero')
+
+
 RECETAS = {
+    'home-entero': build_home_entero,
     'home-1': build_home_1,
     'home-2': build_home_2,
     'home-3': build_home_3,

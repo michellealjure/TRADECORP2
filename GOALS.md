@@ -2835,3 +2835,36 @@ tarjetas con `clip-path:none`.
 llegar el visitante. Si Wix carga los iframes de golpe al abrir la pagina, el
 movimiento se gasta antes de que nadie lo vea. Saberlo requiere Velo — que es la
 misma pieza que hace falta para el alto del catalogo.
+
+### El home en una sola caja: se puede, pero hay que fijar el hero (2026-08-31)
+
+Michelle preguntó si mejor dejarlo todo junto. Construido `home-entero.html`
+para compararlo de verdad en vez de responder de memoria.
+
+**Lo que muerde: el hero mide `100vh`, y dentro de un iframe `vh` es el alto del
+IFRAME, no el de la pantalla.** Medido en una caja de 2.600 px: el hero se
+estiraba a **2.600 px** y el documento entero a 4.426. Un hero de casi tres
+pantallas.
+
+Arreglado fijándole un alto en px (900 escritorio / 760 móvil). **No se pierde
+nada frente a las tres cajas:** allí `100vh` tampoco seguía la pantalla del
+visitante, seguía el alto que Michelle le da a la sección. Es el mismo número,
+sólo que escrito de forma explícita.
+
+| | Una caja | Tres cajas |
+|---|---|---|
+| Alto escritorio | 2.726 | 900 + 1.211 + 487 = 2.598 |
+| Alto móvil | 3.092 | 844 + 1.818 + 404 = 3.066 |
+| Altos que fijar en Wix | 1 | 3 |
+| Costuras que pueden fallar | 0 | 2 |
+| Meter contenido de Wix en medio | no | sí |
+| Peso | 351 KB de golpe | 86 + 299 + 40, independientes |
+
+**Lo que NO cambia:** las animaciones. El scroll de Wix no llega al iframe en
+ninguno de los dos casos, así que siguen reproduciéndose por tiempo. Juntarlo no
+las devuelve.
+
+**Y lo que se descartó:** el iframe a altura de pantalla con scroll interno. Ese
+SÍ devolvería las animaciones nativas, pero deja dos scrolls apilados — el
+visitante llega al final del iframe y el scroll «salta» a la página de Wix para
+alcanzar el footer. No tiene arreglo elegante.
