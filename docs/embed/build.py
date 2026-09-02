@@ -476,7 +476,9 @@ def build_home_entero():
     # 780 y no 900: el contenido del hero termina en 719px (copy + banda de
     # valores), asi que 900 dejaba 180px de crema muerta antes de
     # "Our most requested ingredients" — el hueco que reporto Michelle.
-    ALTO, ALTO_MOVIL = 780, 760
+    # 745 y no 780: el contenido del hero acaba en 719 (banda de valores incluida),
+    # asi que 780 dejaba 61px de cola. Con 745 quedan 26, que es aire, no hueco.
+    ALTO, ALTO_MOVIL = 745, 745
     _t = ('.track,html.intro-auto .track,html.intro-collapsed .track,'
           'html:not(.intro-armed) .track')
     h = sin_costura(h, '%s{height:%dpx}\n.stage{height:%dpx}\n'

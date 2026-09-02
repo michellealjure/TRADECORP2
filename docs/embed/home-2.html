@@ -194,7 +194,9 @@ h1{font-family:var(--font-display);font-weight:500;font-size:var(--t-xl);
 /* Ritmo vertical en la escala --sp-*, toda en vw (auditoria 2026-08-31).
    Antes el home y el About separaban secciones con vh y el portafolio y el
    Contact con vw: en una ventana baja unas paginas se comprimian y otras no. */
-.ingredients{background:var(--crema);padding:var(--sp-3) 0 var(--sp-1);overflow:hidden}
+/* sp-2 arriba y no sp-3: entre la banda de valores y este titulo habia 147px y
+   se leia como un corte. Con esto y los 35px menos de cola del hero quedan 78. */
+.ingredients{background:var(--crema);padding:var(--sp-2) 0 var(--sp-1);overflow:hidden}
 /* El título crece al entrar: --tsc lo escribe el JS en cada frame de scroll. */
 .ing-title{font-family:var(--font-display);font-weight:400;font-size:var(--t-xl);letter-spacing:var(--track-display);
   color:var(--cafe);text-align:center;margin:0 0 20px;line-height:1.1;padding:0 var(--pad-x);
