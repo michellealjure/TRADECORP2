@@ -135,9 +135,12 @@ window.TCScroll=(function(){
      el iframe crea barra propia y hay dos barras peleando; si sobra, queda
      crema muerta. Aqui se publica la altura real y Velo la recoge con
      onMessage. Si nadie escucha, no pasa nada. */
+  var ultimoAlto=-1;
   function avisarAltura(){
     if(window.self===window.top) return;
     var h=Math.ceil(document.body.getBoundingClientRect().height);
+    if(h===ultimoAlto || h<1) return;   // no repetir lo mismo
+    ultimoAlto=h;
     try{ parent.postMessage({tcAlto:h}, '*'); }catch(e){}
   }
   addEventListener('load', avisarAltura);
@@ -145,6 +148,13 @@ window.TCScroll=(function(){
   if(window.ResizeObserver){
     try{ new ResizeObserver(avisarAltura).observe(document.body); }catch(e){}
   }
+  // Ademas del observador, un repaso cada medio segundo. Parece redundante y no
+  // lo es: el ResizeObserver se estrangula igual que rAF cuando la pestana esta
+  // en segundo plano, y en el catalogo de ingredientes la altura cambia de 8.308
+  // a 783 con un filtro. Si ese aviso se pierde, la caja de Wix se queda con el
+  // alto viejo y reaparece la segunda barra. Comparar dos numeros dos veces por
+  // segundo no cuesta nada, y solo se publica cuando cambia de verdad.
+  setInterval(avisarAltura, 500);
 
   return {
     // Alto de la ventana del visitante contra el que medir el progreso.
