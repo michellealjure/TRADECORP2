@@ -45,6 +45,11 @@
          el contenido se movia de sitio al navegar, y en direccion distinta segun
          el tamano de la pantalla;
        - el ritmo vertical iba en vh en el home y el About y en vw en las otras
+       - (2026-09-02) el About se quedo sin convertir. Dentro del iframe de Wix
+         los 20 clamp(px,vh,px) se iban TODOS a su maximo — 398px de aire de mas
+         en la pagina — porque 1vh ahi son 13,6px y no 9. Convertidos a vw con
+         el factor 900/1440 = 0.625: mismo pixel a 1440x900, pero ya no depende
+         de una altura que dentro del embed no significa nada.
          dos, asi que en una ventana baja unas paginas se comprimian y otras no.
          La escala --sp-* va toda en vw. */
     --content-max:1180px;
@@ -350,7 +355,7 @@ html.dir-a .ab-a,html.dir-b .ab-b,html.dir-c .ab-c{display:block}
    ancha y baja (100/23) deja fuera la parte alta de las puertas, que es donde esta
    la numeracion mal generada, y conserva los camiones enteros a lo ancho. */
 .abA-hero{position:relative;aspect-ratio:100/21;max-height:460px;overflow:hidden;
-  background:var(--oliva);margin-bottom:clamp(10px,1.6vh,20px)}
+  background:var(--oliva);margin-bottom:clamp(10px,1vw,20px)}
 .abA-hero .hv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
   /* Encuadre vertical, con dos limites por los dos lados:
      - por debajo del ~62% entran las puertas del muelle, que llevan numeros mal
@@ -389,7 +394,7 @@ html.dir-a .ab-a,html.dir-b .ab-b,html.dir-c .ab-c{display:block}
 /* El boton va pegado a la nota de "Stock ships...", no empujado al fondo de la
    columna: con margin-top:auto quedaba alineado con los pilares pero caia fuera
    de la primera pantalla en viewports bajos. */
-.abA-row--2 aside .ab-cta{margin-top:clamp(18px,2.4vh,28px);align-self:center}
+.abA-row--2 aside .ab-cta{margin-top:clamp(18px,1.5vw,28px);align-self:center}
 /* El ultimo parrafo arrastraba su margen inferior y la fila terminaba 14px mas
    abajo que el texto, asi que el boton no cuadraba con "Built on three things". */
 .abA-row--2 > div > .ab-p:last-of-type{margin-bottom:0}
@@ -411,48 +416,48 @@ html.dir-a .ab-a,html.dir-b .ab-b,html.dir-c .ab-c{display:block}
 
 /* ---------- B · ESTRUCTURADA ---------- */
 .abB-top{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,64px);
-  align-items:end;padding:clamp(40px,6vh,76px) 0 clamp(24px,3.4vh,38px)}
+  align-items:end;padding:clamp(40px,3.75vw,76px) 0 clamp(24px,2.125vw,38px)}
 .abB-top h1{font-size:clamp(40px,5.2vw,74px);line-height:1.02}
 .abB-shot{aspect-ratio:21/8;border-radius:16px;overflow:hidden;background:var(--oliva)}
 .abB-shot video{width:100%;height:100%;object-fit:cover;display:block}
 .abB-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0;
-  margin-top:clamp(40px,6vh,72px)}
-.abB-cell{padding:clamp(26px,3.4vh,40px) clamp(20px,2.6vw,44px);
+  margin-top:clamp(40px,3.75vw,72px)}
+.abB-cell{padding:clamp(26px,2.125vw,40px) clamp(20px,2.6vw,44px);
   border-top:1px solid rgba(56,41,21,.22)}
 .abB-cell:nth-child(odd){border-right:1px solid rgba(56,41,21,.22);padding-left:0}
 .abB-cell:nth-child(even){padding-right:0}
 .abB-cell h3{font-family:var(--font-display);font-weight:500;font-size:var(--t-md);
   color:var(--cafe);margin:0 0 10px}
 .abB-steps{display:grid;grid-template-columns:repeat(4,1fr);
-  border-top:1px solid rgba(56,41,21,.22);margin-top:clamp(48px,7vh,84px)}
-.abB-step{padding:clamp(22px,3vh,34px) clamp(16px,1.8vw,28px) 0;
+  border-top:1px solid rgba(56,41,21,.22);margin-top:clamp(48px,4.375vw,84px)}
+.abB-step{padding:clamp(22px,1.875vw,34px) clamp(16px,1.8vw,28px) 0;
   border-left:1px solid rgba(56,41,21,.16)}
 .abB-step:first-child{border-left:0;padding-left:0}
 .abB-step b{display:block;font-family:var(--font-display);font-weight:500;
   font-size:var(--t-md);color:var(--salvia-deep);margin-bottom:8px}
 .abB-step h3{font-family:var(--font-display);font-weight:500;font-size:var(--t-base);
   color:var(--cafe);margin:0 0 8px}
-.abB-end{text-align:center;padding:clamp(56px,9vh,104px) 0 clamp(72px,11vh,140px)}
+.abB-end{text-align:center;padding:clamp(56px,5.625vw,104px) 0 clamp(72px,6.875vw,140px)}
 
 /* ---------- C · MODULAR ---------- */
-.abC-band{background:var(--oliva);color:var(--crema);padding:clamp(64px,10vh,132px) 0}
+.abC-band{background:var(--oliva);color:var(--crema);padding:clamp(64px,6.25vw,132px) 0}
 .abC-band h1{color:var(--crema);font-size:clamp(42px,5.6vw,80px);line-height:1.04;max-width:18ch}
 .abC-band p{font-family:var(--font-body);font-weight:300;font-size:var(--t-md);
   line-height:1.6;color:var(--salvia);max-width:52ch;margin:22px 0 0}
 .abC-nums{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,3vw,48px);
-  padding:clamp(44px,7vh,84px) 0;border-bottom:1px solid rgba(56,41,21,.22)}
+  padding:clamp(44px,4.375vw,84px) 0;border-bottom:1px solid rgba(56,41,21,.22)}
 .abC-num b{display:block;font-family:var(--font-display);font-weight:500;
   font-size:clamp(46px,6vw,88px);line-height:1;color:var(--oliva);letter-spacing:-.03em}
 .abC-num span{display:block;margin-top:10px;font-family:var(--font-body);font-weight:300;
   font-size:var(--t-sm);color:var(--cafe);opacity:.8}
 .abC-alt{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,72px);
-  align-items:center;padding:clamp(44px,7vh,84px) 0}
+  align-items:center;padding:clamp(44px,4.375vw,84px) 0}
 .abC-alt:nth-of-type(even) .abC-fig{order:2}
 .abC-fig{aspect-ratio:4/3;border-radius:16px;overflow:hidden;background:var(--salvia-veil)}
 .abC-fig img,.abC-fig video{width:100%;height:100%;object-fit:cover;display:block}
-.abC-steps{background:var(--salvia-veil);padding:clamp(52px,8vh,104px) 0}
+.abC-steps{background:var(--salvia-veil);padding:clamp(52px,5vw,104px) 0}
 .abC-track{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(16px,2vw,32px);
-  margin-top:clamp(28px,4vh,48px);position:relative}
+  margin-top:clamp(28px,2.5vw,48px);position:relative}
 .abC-track::before{content:'';position:absolute;left:0;right:0;top:17px;
   border-top:1px dashed rgba(56,41,21,.35)}
 .abC-st b{position:relative;display:grid;place-items:center;width:34px;height:34px;
@@ -460,7 +465,7 @@ html.dir-a .ab-a,html.dir-b .ab-b,html.dir-c .ab-c{display:block}
   font-family:var(--font-display);font-weight:500;font-size:15px}
 .abC-st h3{font-family:var(--font-display);font-weight:500;font-size:var(--t-base);
   color:var(--cafe);margin:16px 0 6px}
-.abC-end{text-align:center;padding:clamp(56px,9vh,110px) 0 clamp(72px,11vh,140px)}
+.abC-end{text-align:center;padding:clamp(56px,5.625vw,110px) 0 clamp(72px,6.875vw,140px)}
 
 
 
@@ -492,7 +497,7 @@ html.anim.go .r4{transition-delay:.38s}
    mismo recurso que separa las filas de esta direccion— para que se lean como apoyo
    del parrafo y no como otro titular. */
 .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,32px);
-  margin-top:clamp(20px,2.6vh,30px)}
+  margin-top:clamp(20px,1.625vw,30px)}
 .pillars .pil-t{display:block;font-family:var(--font-display);font-weight:500;
   font-size:var(--t-md);letter-spacing:var(--track-tight);color:var(--cafe)}
 /* La mascara recorta la palabra para la variante "cortina". El padding/margen
@@ -508,7 +513,7 @@ html.anim.go .r4{transition-delay:.38s}
 /* Sin filete y sin relleno superior: el bloque sube justo a donde estaba la
    linea. La separacion con los pilares la da ahora el relleno inferior de la
    fila anterior (peticion de Michelle, 2026-08-31). */
-.abA-row--how{grid-template-columns:1fr;gap:clamp(16px,2.4vh,28px);
+.abA-row--how{grid-template-columns:1fr;gap:clamp(16px,1.5vw,28px);
   border-top:0;padding-top:0}
 .how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,1.6vw,24px)}
 .fwrap{min-width:0}
@@ -776,7 +781,7 @@ html:not(.dir-a) #ship-tog{display:none}
       <div class="abB-cell"><p class="ab-lbl">Where we ship from</p><h3>Miami, FL &amp; Atlanta, GA</h3><p class="ab-p" style="margin:0">Two US warehouses, so stock ships from whichever sits closer to you.</p></div>
       <div class="abB-cell"><p class="ab-lbl">How we order</p><h3>No minimums, samples first</h3><p class="ab-p" style="margin:0">Try before you commit, and order the quantity you actually need.</p></div>
     </div>
-    <p class="ab-lbl" style="margin-top:clamp(44px,6vh,80px)">How we work</p>
+    <p class="ab-lbl" style="margin-top:clamp(44px,3.75vw,80px)">How we work</p>
     <div class="abB-steps"><div class='abB-step'><b>01</b><h3>Reach out</h3><p class='ab-p' style='font-size:var(--t-sm);margin:0'>Ready to quote or have a question? We&rsquo;re here. Send us an email or fill out the form. Response within 24h.</p></div><div class='abB-step'><b>02</b><h3>Request a sample</h3><p class='ab-p' style='font-size:var(--t-sm);margin:0'>Browse our portfolio. If you don&rsquo;t find it, request what you need &mdash; we&rsquo;ll source it.</p></div><div class='abB-step'><b>03</b><h3>Place your order</h3><p class='ab-p' style='font-size:var(--t-sm);margin:0'>No minimums required.</p></div><div class='abB-step'><b>04</b><h3>Receive delivery</h3><p class='ab-p' style='font-size:var(--t-sm);margin:0'>Shipped from FL &amp; GA. Our location means you get your ingredients faster.</p></div></div>
     <div class="abB-end">
       <h2 class="ab-h" style="font-size:clamp(26px,3vw,42px);margin-bottom:24px">Ready when you are.</h2>
