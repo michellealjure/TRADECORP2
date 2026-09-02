@@ -101,7 +101,7 @@ body{font-family:var(--font-body)}
    hueco del centro, porque el texto no lo llena.
    Alineado abajo y no centrado: el bloque pesa hacia el pie del verde, como en la
    referencia. El padding lo despega del borde. */
-.hero-copy{flex:1 1 auto;max-width:650px;padding-bottom:clamp(20px,4.5vh,52px)}
+.hero-copy{flex:1 1 auto;max-width:650px;padding-bottom:clamp(20px,2.812vw,52px)}
 /* El ancho sale del alto: la O mide exactamente lo mismo que el verde visible, y su
    borde derecho cae en el gutter porque .media es el último ítem de .card-in. */
 .media{flex:0 0 auto;width:auto;display:flex;align-items:center;justify-content:flex-end}
@@ -145,7 +145,7 @@ h1{font-family:var(--font-display);font-weight:500;font-size:var(--t-xl);
 .band{position:absolute;left:0;right:0;top:calc(38px + var(--o-h,478px));
   bottom:auto;z-index:1;opacity:0;
   max-width:calc(var(--content-max) + var(--pad-x)*2);margin:0 auto;
-  padding:clamp(30px,4.8vh,56px) var(--pad-x);
+  padding:clamp(30px,3vw,56px) var(--pad-x);
   display:grid;grid-template-columns:repeat(4,1fr);gap:0;
   will-change:opacity,transform}
 /* La superficie se dibuja con un ::before porque las columnas de la banda están
@@ -208,7 +208,7 @@ h1{font-family:var(--font-display);font-weight:500;font-size:var(--t-xl);
 /* Ritmo tomado de la referencia de Michelle y redondeado a la retícula de 4px:
    título -> subtítulo 26px, subtítulo -> iconos 68px. El segundo hueco tiene que
    ser claramente mayor que el primero, o el subtítulo se lee pegado a las tarjetas. */
-  color:var(--oliva);text-align:center;margin:0 0 clamp(36px,5.1vh,46px);padding:0 var(--pad-x)}
+  color:var(--oliva);text-align:center;margin:0 0 clamp(36px,3.188vw,46px);padding:0 var(--pad-x)}
 /* El hueco real hasta el verde no es sólo este margen: el carril mete 8px y la
    tarjeta otros 36 de relleno invisible (es más grande que el círculo para que la
    foto pueda crecer en hover). Los tres suman, por eso se sentía tan lejos. */
@@ -381,7 +381,7 @@ h1{font-family:var(--font-display);font-weight:500;font-size:var(--t-xl);
 @media (max-width:920px){
   /* not enough room beside the copy — drop the media so text stays readable */
   .media{display:none}
-  .hero-copy{max-width:none;padding-bottom:clamp(16px,3vh,32px)}
+  .hero-copy{max-width:none;padding-bottom:clamp(16px,1.875vw,32px)}
   /* El recorte de la tarjeta entra 38px y el gutter sólo 20: el texto quedaba
      cortado 18px por la izquierda. Aire suficiente para librar el borde. */
   .card-in{padding:0 calc(var(--pad-x) + 12px)}
@@ -401,7 +401,7 @@ h1{font-family:var(--font-display);font-weight:500;font-size:var(--t-xl);
 .why-inner{max-width:var(--content-max);margin:0 auto}
 .why-title{font-family:var(--font-display);font-weight:400;font-size:var(--t-xl);letter-spacing:var(--track-display);
   color:var(--cafe);text-align:center;margin:0;line-height:1.1}
-.why-title-line{display:block;height:1px;width:100%;margin:clamp(20px,3vh,28px) 0 clamp(36px,6vh,60px);
+.why-title-line{display:block;height:1px;width:100%;margin:clamp(20px,1.875vw,28px) 0 clamp(36px,3.75vw,60px);
   background:rgba(56,41,21,.2)}
 .why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,2.4vw,32px)}
 .why-card{position:relative;overflow:hidden;border-radius:24px;background:#eae4d1;
@@ -423,7 +423,7 @@ h1{font-family:var(--font-display);font-weight:500;font-size:var(--t-xl);
 }
 
 /* ===== Trusted partners (inside .why) — moving quote carousel ===== */
-.tp{margin-top:clamp(48px,7vh,96px)}
+.tp{margin-top:clamp(48px,4.375vw,96px)}
 /* A sangre. El carril cuelga directamente de .why (no de .why-inner) y solo
    anula el padding lateral de la seccion, que es lo que la separa del borde de
    la ventana. Asi las tarjetas nacen y mueren en el margen de la PANTALLA, no en
@@ -431,7 +431,7 @@ h1{font-family:var(--font-display);font-weight:500;font-size:var(--t-xl);
    Se hace con margenes negativos y no con 100vw a proposito: 100vw incluye el
    ancho de la barra de scroll, asi que en Windows se pasa de largo y descentra
    la seccion entera. */
-.tp-marquee{margin:clamp(28px,4.5vh,48px) calc(-1 * var(--pad-x)) 0;overflow:hidden}
+.tp-marquee{margin:clamp(28px,2.812vw,48px) calc(-1 * var(--pad-x)) 0;overflow:hidden}
 .tp-marquee:focus-visible{outline:2px solid var(--cafe);outline-offset:4px;border-radius:8px}
 .tp-track{display:flex;align-items:stretch;width:max-content;animation:tp-scroll 55s linear infinite;will-change:transform}
 /* :focus-visible y no :focus-within: el carril lleva tabindex, asi que un CLIC
