@@ -568,10 +568,7 @@ def build_home_entero():
     # espera antes de «Our most requested ingredients».
     # 680 en movil: la banda va anclada abajo, asi que bajar este numero sube
     # la banda Y recorta el verde que sobra debajo del boton, de una vez.
-    # 760 en movil: la O paso a ir ARRIBA del rotulo, y esa columna centrada
-    # ocupa mas alto que la version con la O metida en el marco. Con 680 el
-    # contenido se salia por arriba y la O quedaba cortada.
-    ALTO, ALTO_MOVIL = 745, 760
+    ALTO, ALTO_MOVIL = 745, 680
     _t = ('.track,html.intro-auto .track,html.intro-collapsed .track,'
           'html:not(.intro-armed) .track')
     h = sin_costura(h, '%s{height:%dpx}\n.stage{height:%dpx}\n'
