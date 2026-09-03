@@ -429,7 +429,14 @@ h1{font-family:var(--font-display);font-weight:500;font-size:var(--t-xl);
    ponerlos en la misma fila solo con flex. El rotulo se estrecha para que caiga
    en dos lineas y no pase por debajo de la O. */
 @media (max-width:720px){
-  .card-in{display:block;position:relative}
+  /* ── UN SOLO margen para toda la pagina ──────────────────────────────────
+     Medido antes de tocar: el hero entraba a 32, la banda de valores y «Why
+     buyers» a 20, y los titulos del carrusel a 0 con su propio relleno. Tres
+     ejes distintos, asi que nada se alineaba al bajar — eso es lo que se veia
+     torcido. 24 es el valor de nutritionformulators.com y cae justo entre los
+     dos nuestros. */
+  :root{--pad-x:24px}
+  .card-in{display:block;position:relative;padding-left:24px;padding-right:24px}
   /* right:var(--pad-x) y no 0: con 0 la O llegaba al borde de la PANTALLA
      (x=375) mientras el texto para en 343, asi que la esquina redondeada de la
      tarjeta se la comia. Ahora su borde derecho cae en la misma linea que el
@@ -437,7 +444,7 @@ h1{font-family:var(--font-display);font-weight:500;font-size:var(--t-xl);
   /* 32px, que es el relleno REAL de .card-in en movil — no var(--pad-x), que
      ahi vale 20 y dejaba la O doce pixeles fuera del texto. Con esto su borde
      derecho cae exactamente en la misma linea que el titular (343). */
-  .media{display:flex;position:absolute;top:0;right:32px;height:80px;width:auto;
+  .media{display:flex;position:absolute;top:0;right:24px;height:80px;width:auto;
     z-index:3;pointer-events:none}
   .lens{height:100%;width:auto}
   /* `.eyebrow .corte-movil` y no `.corte-movil` a secas: la regla que lo oculta
@@ -464,7 +471,10 @@ h1{font-family:var(--font-display);font-weight:500;font-size:var(--t-xl);
      que el navegador reparta: text-wrap:balance iguala el largo de las lineas y
      evita huerfanas. */
   .hero-copy h1 br{display:none}
-  .hero-copy h1{margin-bottom:14px;text-wrap:balance}
+  /* Interlineado 1.3 y no 1.13: a 30px en un telefono, 34 dejaba las tres
+     lineas amontonadas. La referencia usa 40 sobre 30 — ese aire es la mitad
+     de por que se lee mejor que la nuestra. */
+  .hero-copy h1{margin-bottom:20px;line-height:1.3;text-wrap:balance}
   /* La descripcion tambien se equilibra: tres lineas centradas y desflecadas
      eran justo lo que se veia raro. */
   .hero-copy .sub{text-wrap:balance}
