@@ -423,7 +423,54 @@ h1{font-family:var(--font-display);font-weight:500;font-size:var(--t-xl);
   color:var(--cafe);margin:0;line-height:1.6}
 .why-card-media{flex:1 1 0;overflow:hidden}
 .why-card-media img{width:100%;height:100%;object-fit:cover;display:block}
-@media (max-width:760px){ .why-grid{grid-template-columns:1fr;max-width:460px;margin:0 auto} }
+/* ── Hero en movil ───────────────────────────────────────────────────────────
+   La "O" vuelve, pequena y arriba a la derecha, junto al rotulo. Va en absoluto
+   porque .media y .eyebrow viven en contenedores distintos y no hay forma de
+   ponerlos en la misma fila solo con flex. El rotulo se estrecha para que caiga
+   en dos lineas y no pase por debajo de la O. */
+@media (max-width:720px){
+  .card-in{display:block;position:relative}
+  /* right:var(--pad-x) y no 0: con 0 la O llegaba al borde de la PANTALLA
+     (x=375) mientras el texto para en 343, asi que la esquina redondeada de la
+     tarjeta se la comia. Ahora su borde derecho cae en la misma linea que el
+     texto. */
+  /* 32px, que es el relleno REAL de .card-in en movil — no var(--pad-x), que
+     ahi vale 20 y dejaba la O doce pixeles fuera del texto. Con esto su borde
+     derecho cae exactamente en la misma linea que el titular (343). */
+  .media{display:flex;position:absolute;top:0;right:32px;width:88px;
+    z-index:3;pointer-events:none}
+  .lens{height:auto;width:100%}
+  /* `.eyebrow .corte-movil` y no `.corte-movil` a secas: la regla que lo oculta
+     va mas abajo en la hoja, y a igual especificidad gana la ultima. */
+  .eyebrow .corte-movil{display:inline}
+  /* Ritmo del hero. Antes era 18 / 20 / 28: los dos primeros casi iguales, asi
+     que el rotulo se leia pegado al titular y no como lo que es, una etiqueta.
+     Ahora 24 / 14 / 32 — la etiqueta se separa, el titular y su descripcion se
+     juntan porque son una sola idea, y antes de los botones hay un corte claro. */
+  .eyebrow{max-width:calc(100% - 108px);margin-bottom:24px}
+  .hero-copy h1{margin-bottom:14px}
+  .hero-copy .sub{margin-bottom:32px}
+  /* Botones centrados y a lo ancho: en un telefono el objetivo pulsable
+     importa mas que la alineacion a la izquierda. */
+  .ctas{justify-content:center}
+  .ctas .btn{flex:1 1 100%;text-align:center}
+  /* Los valores dejan de compartir reticula: con subgrid la fila del titulo
+     medía lo que el titulo MAS ALTO, asi que los de una linea arrastraban un
+     renglon vacio antes de su descripcion. */
+  .band>div{grid-row:auto;grid-template-rows:none;display:block}
+  .band h2{min-height:0;margin-bottom:6px}
+}
+
+@media (max-width:760px){
+  .why-grid{grid-template-columns:1fr;max-width:460px;margin:0 auto;gap:16px}
+  /* En una sola columna el reparto 50/50 entre texto y foto dejaba un vacio
+     enorme en la mitad de arriba, y cada tarjeta ocupaba casi una pantalla
+     entera: tres pantallas para leer seis lineas. En movil la tarjeta se
+     ajusta a su texto y la foto pasa a ser una franja. */
+  .why-card{min-height:0}
+  .why-card-top{flex:0 0 auto;justify-content:flex-start}
+  .why-card-media{flex:0 0 150px}
+}
 @media (prefers-reduced-motion:reduce){
   .why{background:#a6bf85 !important}
   .why-curve{transform:none !important}
@@ -507,10 +554,6 @@ html.intro-armed .card{opacity:0}
 html.intro-armed .band{opacity:0}
 html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer frame */
 .why-card{clip-path:none}
-
-/* Bordes del embed: el aire entre cajas lo pone Wix (build.py) */
-.ingredients{padding-top:0}
-.why{padding-bottom:0}
 </style>
 
 <script>
@@ -530,6 +573,10 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
     // barra de scroll interna. Con ?driver=scroll vuelve el comportamiento
     // anterior, para poder comparar los dos.
     var porScroll = /[?&]driver=scroll\b/.test(location.search);
+    // El intro SI se reproduce en movil: es el unico motion que se conserva
+    // ahi (Michelle, 2026-09-03). Los otros dos —el titulo que crece y el
+    // despliegue verde— se apagan, porque en un telefono estorban mas de lo que
+    // aportan y retrasan la lectura.
     if(!done && !reduce){
       document.documentElement.className += ' intro-armed';
       if(!porScroll) document.documentElement.className += ' intro-auto';
@@ -546,7 +593,7 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
 
 <section class="ingredients" aria-label="Our most requested ingredients">
   <h2 class="ing-title">Our most requested ingredients</h2>
-  <p class="ing-sub">Drag or hover to explore each ingredient</p>
+  <p class="ing-sub"><span class="con-raton">Drag or hover</span><span class="con-dedo">Swipe</span> to explore each ingredient</p>
   <div class="ing-carousel" tabindex="0" role="group" aria-label="Ingredient carousel">
     <div class="ing-track">
       <article class="ing img-1" tabindex="0">
@@ -742,7 +789,12 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
   function applyFrame(p){ p=cl(p); var c=mix(p); sec.style.backgroundColor=c; if(path) path.setAttribute('fill',c); curve.style.transform='translateY('+((1-p)*100)+'px)'; }
   window.applyWhyFrame=applyFrame;
 
-  if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+  // En movil este despliegue no corre: Michelle deja solo el motion del hero.
+  // Aqui el verde y las tarjetas entran ya puestos, que es lo que interesa en un
+  // telefono — leer sin esperar.
+  var quieto = (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+            || innerWidth <= 720;
+  if(quieto){
     applyFrame(1); cards.forEach(function(c){c.style.clipPath='none';}); return;
   }
 
@@ -775,7 +827,9 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
   var sec=document.querySelector('.ingredients'); if(!sec) return;
   var car=sec.querySelector('.ing-carousel'), trk=sec.querySelector('.ing-track');
   var title=sec.querySelector('.ing-title');
-  var slow=window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // idem: en movil el titulo entra a su tamano final, sin crecer.
+  var slow=(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)
+        || innerWidth <= 720;
 
   /* --- 1. el título crece con el scroll --- */
   var tick=false;
@@ -908,6 +962,21 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
 </script>
 
 
+<style>
+/* «hover» no existe en un telefono, y «swipe» no significa nada con raton.
+   Se decide por capacidad del dispositivo, no por ancho: una ventana estrecha
+   en un portatil sigue teniendo raton. */
+.con-dedo{display:none}
+@media (hover:none){ .con-raton{display:none} .con-dedo{display:inline} }
+
+/* El corte del rotulo es una decision de composicion del movil: en escritorio
+   «Nutraceutical raw materials» cabe de sobra en una linea. */
+.corte-movil{display:none}
+
+/* Bordes del embed: el aire entre cajas lo pone Wix (build.py) */
+.ingredients{padding-top:0}
+.why{padding-bottom:0}
+</style>
 
 <script>
 /* Reproduccion por tiempo — sustituye al scroll dentro del embed (build.py) */
