@@ -548,11 +548,14 @@ h1{font-family:var(--font-display);font-weight:500;font-size:var(--t-xl);
   /* 56px arriba y abajo del carril eran el sitio que necesita el levantamiento
      del hover. En un telefono no hay hover, asi que son 112px de vacio entre el
      subtitulo y los ingredientes. */
-  .ing-track{padding:12px 0}
-  /* 240x155 en vez de 240x189: el contenido (icono, nombre y detalle) mide unos
-     120, asi que sobraban ~60px al fondo de cada tarjeta y los ingredientes se
-     veian sueltos unos de otros. */
-  .ing{aspect-ratio:240/155}
+  .ing-track{padding:6px 0}
+  /* 168 de ancho, no 240: el icono mide 48 y con tarjetas de 240 quedaban a 244px
+     unos de otros — casi 200px de vacio entre ingredientes. Con 168 caben mas de
+     dos en pantalla y la distancia entre iconos baja a 172. El alto va a mano
+     porque el contenido (icono, nombre a tres lineas y detalle) ronda 130. */
+  .ing{width:168px;aspect-ratio:auto;height:150px}
+  .ing-title{margin-bottom:10px}
+  .ing-sub .ing-todos{margin-top:6px}
 }
 
 @media (max-width:760px){
