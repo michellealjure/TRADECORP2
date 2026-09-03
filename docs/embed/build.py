@@ -563,7 +563,12 @@ def build_home_entero():
     # "Our most requested ingredients" — el hueco que reporto Michelle.
     # 745 y no 780: el contenido del hero acaba en 719 (banda de valores incluida),
     # asi que 780 dejaba 61px de cola. Con 745 quedan 26, que es aire, no hueco.
-    ALTO, ALTO_MOVIL = 745, 745
+    # En movil el hero es mas corto: se quito «Explore our ingredients» y la
+    # banda respira menos, asi que 705 deja el mismo aire con 40px menos de
+    # espera antes de «Our most requested ingredients».
+    # 680 en movil: la banda va anclada abajo, asi que bajar este numero sube
+    # la banda Y recorta el verde que sobra debajo del boton, de una vez.
+    ALTO, ALTO_MOVIL = 745, 680
     _t = ('.track,html.intro-auto .track,html.intro-collapsed .track,'
           'html:not(.intro-armed) .track')
     h = sin_costura(h, '%s{height:%dpx}\n.stage{height:%dpx}\n'

@@ -437,9 +437,9 @@ h1{font-family:var(--font-display);font-weight:500;font-size:var(--t-xl);
   /* 32px, que es el relleno REAL de .card-in en movil — no var(--pad-x), que
      ahi vale 20 y dejaba la O doce pixeles fuera del texto. Con esto su borde
      derecho cae exactamente en la misma linea que el titular (343). */
-  .media{display:flex;position:absolute;top:0;right:32px;width:88px;
+  .media{display:flex;position:absolute;top:0;right:32px;height:80px;width:auto;
     z-index:3;pointer-events:none}
-  .lens{height:auto;width:100%}
+  .lens{height:100%;width:auto}
   /* `.eyebrow .corte-movil` y no `.corte-movil` a secas: la regla que lo oculta
      va mas abajo en la hoja, y a igual especificidad gana la ultima. */
   .eyebrow .corte-movil{display:inline}
@@ -450,12 +450,24 @@ h1{font-family:var(--font-display);font-weight:500;font-size:var(--t-xl);
   /* El rotulo y la O son UN marco, no dos piezas sueltas: la pildora ocupa
      todo el ancho del texto y la O se apoya en su extremo derecho. El relleno
      de la derecha reserva su sitio para que las palabras no pasen por debajo. */
-  .eyebrow{display:block;width:100%;max-width:none;
-    padding-right:104px;margin-bottom:20px}
+  /* El rotulo crece hasta el alto de la O para que sean UNA pieza: la O ya no
+     sobresale del marco, se apoya dentro. 80px es el alto de dos lineas de
+     rotulo con aire, y la O se iguala a ese numero. */
+  .eyebrow{display:flex;align-items:center;width:100%;max-width:none;
+    min-height:80px;padding-top:0;padding-bottom:0;
+    padding-right:104px;margin-bottom:18px}
   /* Hero centrado: con un solo boton la columna pide eje central. El titular
      sube (20 en vez de 24) para quedar mas cerca de su marco. */
   .hero-copy{text-align:center}
-  .hero-copy h1{margin-bottom:14px}
+  /* El <br> viene del escritorio, donde parte la frase en dos lineas limpias.
+     Centrado y en 375px dejaba «supply.» sola en su renglon. Se anula y se deja
+     que el navegador reparta: text-wrap:balance iguala el largo de las lineas y
+     evita huerfanas. */
+  .hero-copy h1 br{display:none}
+  .hero-copy h1{margin-bottom:14px;text-wrap:balance}
+  /* La descripcion tambien se equilibra: tres lineas centradas y desflecadas
+     eran justo lo que se veia raro. */
+  .hero-copy .sub{text-wrap:balance}
   .hero-copy .sub{margin-bottom:28px}
   /* El rotulo mantiene su texto a la izquierda: centrarlo dentro de una pildora
      con 104px de reserva a la derecha lo dejaria descolocado. */
@@ -468,6 +480,29 @@ h1{font-family:var(--font-display);font-weight:500;font-size:var(--t-xl);
      resalta mucho mas que el crema, que se confunde con la tarjeta de valores
      que viene justo debajo. */
   .ctas .btn{background:var(--salvia);color:var(--cafe)}
+  /* La banda respira menos: 30px arriba y abajo eran 60 de los 277 que mide,
+     y en un telefono ese aire retrasa la seccion siguiente sin aportar nada. */
+  .band{padding-top:20px;padding-bottom:20px}
+
+  /* ── Carrusel de ingredientes ─────────────────────────────────────────────
+     Sin «Explore» por tarjeta y sin el movimiento de hover: en un telefono no
+     hay raton que lo dispare, y el boton multiplicaba los objetivos pulsables
+     sin llevar a ningun sitio distinto — los cinco iban al mismo catalogo.
+     En su lugar, un solo enlace debajo del subtitulo. */
+  .ing-explore{display:none}
+  .ing:hover .ing-media,
+  .ing:hover .ing-copy,
+  .ing:hover .ing-info,
+  .ing:has(:focus-visible) .ing-info{transform:none}
+  .ing:hover + .ing,
+  .ing:has(+ .ing:hover){--nudge:0px}
+  /* `.ing-sub .ing-todos` y no la clase sola: la regla que lo oculta va mas
+     abajo en la hoja y a igual especificidad ganaria ella. Es la segunda vez
+     que pasa en este bloque — cualquier cosa que se muestre SOLO en movil
+     necesita un selector mas especifico que el que la oculta. */
+  .ing-sub .ing-todos{display:inline-block;margin-top:10px;
+    font-family:var(--font-body);font-weight:400;font-size:var(--t-sm);
+    color:var(--oliva);text-decoration:underline;text-underline-offset:4px}
   /* Botones centrados y a lo ancho: en un telefono el objetivo pulsable
      importa mas que la alineacion a la izquierda. */
   .ctas{justify-content:center}
@@ -622,7 +657,7 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
       <div class="card-in">
         <div class="hero-copy">
           <p class="eyebrow">Nutraceutical<br class="corte-movil"> raw materials</p>
-          <h1>Your nutraceutical supply.<br>Ready when you are.</h1>
+          <h1>Your nutraceutical supply. <br>Ready when you are.</h1>
           <p class="sub">Premium raw materials, always in stock. Shipped from FL &amp; GA &mdash; faster than you expect.</p>
           <div class="ctas">
             <a target="_blank" rel="noopener" data-tc-form="muestra" class="btn" href="https://sebastian3428.wixforms.com/f/7500962626122286101">Request a <b>FREE</b> sample</a>
@@ -1304,6 +1339,10 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
 /* El corte del rotulo es una decision de composicion del movil: en escritorio
    «Nutraceutical raw materials» cabe de sobra en una linea. */
 .corte-movil{display:none}
+
+/* «or explore them all» es solo del movil: en escritorio cada tarjeta lleva su
+   propio «Explore» y el enlace sobraria. */
+.ing-todos{display:none}
 
 /* Bordes del embed: el aire entre cajas lo pone Wix (build.py) */
 .track{padding-bottom:0}
