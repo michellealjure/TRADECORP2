@@ -387,7 +387,12 @@ h1{font-family:var(--font-display);font-weight:500;font-size:var(--t-xl);
   .card-in{padding:0 calc(var(--pad-x) + 12px)}
 }
 @media (max-width:720px){
-  .band{grid-template-columns:repeat(2,1fr)}
+  /* gap:0 funciona en una fila de cuatro, donde las rayas hacen de
+     separacion. En dos columnas hacen falta dos cosas: aire ENTRE filas, y
+     que el primero de CADA fila pierda la raya y la sangria. Sin lo segundo
+     el tercer valor salia indentado y montado sobre el segundo. */
+  .band{grid-template-columns:repeat(2,1fr);gap:clamp(20px,5vw,30px) 0}
+  .band>div:nth-child(odd){padding-left:0;border-left:0}
 }
 @media (prefers-reduced-motion:reduce){
   .track{height:100vh}
@@ -837,7 +842,10 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
     // Bail out and let the next resize/rAF re-measure instead.
     if(sr.width<1 || sr.height<1){ return false; }
     stageW=sr.width; stageH=sr.height;
-    restW = stageW<=720 ? stageW*0.82 : Math.min(stageW*0.54,660);
+    // 0.60 y no 0.82 en movil: al 82% del ancho el logo llenaba la pantalla
+    // entera y el intro se leia como una portada, no como una entrada.
+    // En escritorio son 0.54, asi que 0.60 lo deja apenas por encima.
+    restW = stageW<=720 ? stageW*0.60 : Math.min(stageW*0.54,660);
     var bb=counter.getBBox();
     cx=bb.x+bb.width/2; cy=bb.y+bb.height/2;
     // rest camera: the whole logo, rendered restW wide, centred

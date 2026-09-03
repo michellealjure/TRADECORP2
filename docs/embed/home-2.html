@@ -390,7 +390,12 @@ h1{font-family:var(--font-display);font-weight:500;font-size:var(--t-xl);
   .card-in{padding:0 calc(var(--pad-x) + 12px)}
 }
 @media (max-width:720px){
-  .band{grid-template-columns:repeat(2,1fr)}
+  /* gap:0 funciona en una fila de cuatro, donde las rayas hacen de
+     separacion. En dos columnas hacen falta dos cosas: aire ENTRE filas, y
+     que el primero de CADA fila pierda la raya y la sangria. Sin lo segundo
+     el tercer valor salia indentado y montado sobre el segundo. */
+  .band{grid-template-columns:repeat(2,1fr);gap:clamp(20px,5vw,30px) 0}
+  .band>div:nth-child(odd){padding-left:0;border-left:0}
 }
 @media (prefers-reduced-motion:reduce){
   .track{height:100vh}
