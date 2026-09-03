@@ -568,7 +568,18 @@ def build_home_entero():
     # espera antes de «Our most requested ingredients».
     # 680 en movil: la banda va anclada abajo, asi que bajar este numero sube
     # la banda Y recorta el verde que sobra debajo del boton, de una vez.
-    ALTO, ALTO_MOVIL = 745, 680
+    # 660: el borde de abajo de la tarjeta cae en 'track - 250', asi que con 680
+    # sobraban 19px de verde bajo el boton. Con 660 el boton remata el marco.
+    # 702, medido: el borde de abajo de la tarjeta cae en 'track - 353' (16 de
+    # inset + 337 de hueco de la banda), y el boton termina en 349. 349+353=702.
+    # 744, resuelto en vez de tanteado. El contenido va CENTRADO en el marco,
+    # asi que subir el track N baja el boton solo N/2, mientras el borde de la
+    # tarjeta baja N entero. Igualando 'track-353' con '19+track/2' sale 744:
+    # ahi el boton y el borde de abajo caen los dos en 391.
+    # 784: el contenido del hero mide 407 + 24 de relleno arriba = 431, y el
+    # borde de abajo de la tarjeta cae en 'track - 353'. 431 + 353 = 784, asi
+    # que el boton remata el marco y el rotulo no se corta arriba.
+    ALTO, ALTO_MOVIL = 745, 784
     _t = ('.track,html.intro-auto .track,html.intro-collapsed .track,'
           'html:not(.intro-armed) .track')
     h = sin_costura(h, '%s{height:%dpx}\n.stage{height:%dpx}\n'
