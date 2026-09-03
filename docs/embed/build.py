@@ -225,6 +225,10 @@ FORMULARIOS = {
     # About: «...have a question? Send us an email or fill out the form.»
     # La frase pregunta, asi que el formulario que toca es el de preguntas.
     'fill out the form': (_F_PREGUNTA, _NUEVA_PESTANA, 'pregunta'),
+    # About, reverso de la tarjeta «03 · Place your order». Es el momento de la
+    # pagina en que alguien decide pedir: ahi el formulario que toca es el de
+    # cotizacion, no la pagina de contacto (Michelle, 2026-09-02).
+    'No minimums required.': (_F_COTIZACION, _NUEVA_PESTANA, 'cotizacion'),
     # 'Get in touch' NO va aqui a proposito (decision de Michelle, 2026-09-02):
     # lleva a la seccion de Contact, no a un formulario. Su href original ya
     # apunta a la pagina de contacto, asi que basta con no mapearlo.

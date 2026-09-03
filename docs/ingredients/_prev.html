@@ -655,8 +655,12 @@ var FICHAS = {"Amla||45% Tannins":"amla-45-tannins.pdf","Arjuna||*":"arjuna.pdf"
         // Accion secundaria, en su propia linea: pegada al titulo le robaba peso.
         '<a class="pf-info" href="#">Product info</a>' +
         '<div class="pf-shot' + (slug?'':' pf-shot--none') + '"' +
-          (slug ? ' style="background-image:url(../assets/portfolio/' + slug + '.jpg)' +
-                   (SHOT_FIX[slug] ? ';' + SHOT_FIX[slug] : '') + '"' : '') + '>' +
+          // La foto va en data-bg y NO en background-image: son 40 fotos y 2,2 MB,
+          // y puestas de golpe se piden las 39 al abrir la pagina. Las carga
+          // perezosas() segun se acercan. El ajuste de encuadre si va inline,
+          // que es barato y evita un salto cuando la foto entra.
+          (slug ? ' data-bg="../assets/portfolio/' + slug + '.jpg"' +
+                   (SHOT_FIX[slug] ? ' style="' + SHOT_FIX[slug] + '"' : '') : '') + '>' +
           '<a class="pf-quote" href="../contact/_prev.html">Quote today</a>' +
         '</div>' +
       '</div></article>';
@@ -675,6 +679,41 @@ var FICHAS = {"Amla||45% Tannins":"amla-45-tannins.pdf","Arjuna||*":"arjuna.pdf"
         grid.hidden = false;
         grid.innerHTML = list.map(cardHTML).join('');
       }
+      perezosas();
+    }
+
+    /* Carga diferida de las fotos ────────────────────────────────────────────
+       40 fotos, 2,2 MB. Como van de fondo CSS no valen `loading="lazy"`, asi
+       que se cargan con IntersectionObserver, que SI atraviesa el iframe de Wix
+       y se actualiza con el scroll de la pagina de arriba (comprobado el
+       2026-09-02). Con 800px de margen entran antes de que se vean.
+       La reja se repinta al filtrar, asi que se vuelve a observar cada vez. */
+    var ojo = null, cargadaAlguna = false;
+    function cargar(el){
+      var u = el.getAttribute('data-bg');
+      if(!u) return;
+      el.style.backgroundImage = 'url(' + u + ')';
+      el.removeAttribute('data-bg');
+      cargadaAlguna = true;
+    }
+    function todas(){
+      [].forEach.call(grid.querySelectorAll('.pf-shot[data-bg]'), cargar);
+    }
+    function perezosas(){
+      if(ojo){ ojo.disconnect(); ojo = null; }
+      var pend = grid.querySelectorAll('.pf-shot[data-bg]');
+      if(!pend.length) return;
+      if(!('IntersectionObserver' in window)){ todas(); return; }
+      ojo = new IntersectionObserver(function(es){
+        es.forEach(function(e){
+          if(e.isIntersecting){ cargar(e.target); ojo.unobserve(e.target); }
+        });
+      }, {rootMargin:'800px 0px'});
+      [].forEach.call(pend, function(el){ ojo.observe(el); });
+      // Red de seguridad estrecha: si a los 5s no ha entrado NI UNA, es que el
+      // observador no esta funcionando y se cargan todas. No se dispara en el
+      // caso bueno, porque ahi las primeras entran de inmediato.
+      setTimeout(function(){ if(!cargadaAlguna) todas(); }, 5000);
     }
 
     function debounce(fn, ms){
