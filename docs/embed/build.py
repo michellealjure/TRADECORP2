@@ -378,6 +378,7 @@ def build_contact():
     h = sin_menu(h); h = sin_andamiaje(h)
     # El titulo y los dos botones los pone Michelle en Wix.
     h = quitar(h, '<header class="head">', 'header')
+    h = sin_costura(h, '.contact-section{padding-top:0}')
     h = rutas(h, 'sub'); h = fuente_externa(h)
     h, _n = enlaces_wix(h); h, _f = enlaces_formularios(h); h = enlaces_externos(h)
     h = titulo(h, 'Contact — TradeCorp')
@@ -389,6 +390,9 @@ def build_ingredients():
     h = sin_menu(h); h = sin_andamiaje(h)
     # El titulo lo pone Michelle en Wix.
     h = quitar(h, '<h1 class="title">', 'h1')
+    # El titulo lo pone Wix ENCIMA, asi que nuestros 80px de arriba se suman a
+    # los suyos y queda un vacio enorme entre su titulo y el buscador.
+    h = sin_costura(h, '.section{padding-top:0}')
     h = rutas(h, 'sub'); h = fuente_externa(h)
     h, _n = enlaces_wix(h); h, _f = enlaces_formularios(h); h = enlaces_externos(h)
     h = titulo(h, 'Ingredients — TradeCorp')
@@ -439,6 +443,10 @@ def build_about():
     h = quitar(h, '<div class="ab ab-c"', 'div')
     # "Tell us what you need" lo pone Michelle en Wix.
     h = quitar(h, '<div class="abA-end">', 'div')
+    # 80px debajo de las tarjetas + el margen de la seccion «Tell us what you
+    # need» que Michelle pone en Wix = un hueco enorme. El aire entre cajas lo
+    # pone Wix.
+    h = sin_costura(h, '.abA-row--how{padding-bottom:0}')
     h = sin_listeners_muertos(h); h = sin_css_conmutadores(h)
     h = rutas(h, 'about'); h = fuente_externa(h)
     h, _n = enlaces_wix(h); h, _f = enlaces_formularios(h); h = enlaces_externos(h)
@@ -562,6 +570,12 @@ def build_home_entero():
                        '@media (max-width:640px){%s{height:%dpx}\n'
                        '.stage{height:%dpx}}'
                        % (_t, ALTO, ALTO, _t, ALTO_MOVIL, ALTO_MOVIL))
+    # La caja de Wix siempre mide un poco mas que el contenido, y ese sobrante
+    # se pintaba en crema — una franja beige entre el verde y el pie. Dandole el
+    # verde al lienzo (html, no body), lo que sobre continua la seccion de
+    # «Trusted partners» en vez de cortarla. Funciona a cualquier ancho, que es
+    # mas de lo que consigue cuadrar la altura de la caja a mano.
+    h = sin_costura(h, 'html{background:var(--salvia)}')
     h, _n = enlaces_wix(h); h, _f = enlaces_formularios(h); h = enlaces_externos(h)
     h = rutas(h, 'raiz'); h = fuente_externa(h)
     h = titulo(h, 'TradeCorp')
