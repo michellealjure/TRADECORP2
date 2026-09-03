@@ -446,7 +446,10 @@ h1{font-family:var(--font-display);font-weight:500;font-size:var(--t-xl);
   /* 32px, que es el relleno REAL de .card-in en movil — no var(--pad-x), que
      ahi vale 20 y dejaba la O doce pixeles fuera del texto. Con esto su borde
      derecho cae exactamente en la misma linea que el titular (343). */
-  .media{display:flex;position:absolute;top:0;right:24px;height:80px;width:auto;
+  /* top:32 y no 0: .card-in arranca en y=0 pero el borde visible de la tarjeta
+     esta en 16, asi que con 0 la O se salia del marco. 32 la alinea con el
+     rotulo, que es donde tiene que estar. */
+  .media{display:flex;position:absolute;top:24px;right:24px;height:80px;width:auto;
     z-index:3;pointer-events:none}
   .lens{height:100%;width:auto}
   /* `.eyebrow .corte-movil` y no `.corte-movil` a secas: la regla que lo oculta
@@ -534,13 +537,22 @@ h1{font-family:var(--font-display);font-weight:500;font-size:var(--t-xl);
      2x2 las rayas no logran agrupar: cada valor se lee mejor como su propia
      pieza. */
   .band{gap:12px;padding-left:24px;padding-right:24px}
-  .band>div{background:var(--crema);border:0;border-radius:16px;padding:16px 18px}
+  /* Tarjetas en salvia sobre el crema de la pagina. Antes era al reves —tarjetas
+     crema sobre una franja verde— y la franja competia con el hero, que ya es
+     verde. Asi el verde queda solo donde hay contenido. */
+  .band::before{background:transparent}
+  .band>div{background:var(--salvia);border:0;border-radius:16px;padding:16px 18px}
+  .band h2,.band p{color:var(--cafe)}
   .band>div:nth-child(odd){padding-left:18px}
 
   /* 56px arriba y abajo del carril eran el sitio que necesita el levantamiento
      del hover. En un telefono no hay hover, asi que son 112px de vacio entre el
      subtitulo y los ingredientes. */
   .ing-track{padding:12px 0}
+  /* 240x155 en vez de 240x189: el contenido (icono, nombre y detalle) mide unos
+     120, asi que sobraban ~60px al fondo de cada tarjeta y los ingredientes se
+     veian sueltos unos de otros. */
+  .ing{aspect-ratio:240/155}
 }
 
 @media (max-width:760px){

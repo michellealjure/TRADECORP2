@@ -579,7 +579,9 @@ def build_home_entero():
     # 784: el contenido del hero mide 407 + 24 de relleno arriba = 431, y el
     # borde de abajo de la tarjeta cae en 'track - 353'. 431 + 353 = 784, asi
     # que el boton remata el marco y el rotulo no se corta arriba.
-    ALTO, ALTO_MOVIL = 745, 784
+    # 776: quedaban 8px de oliva bajo el boton. Michelle quiere que el boton sea
+    # lo ultimo del marco, asi que 784 - 8.
+    ALTO, ALTO_MOVIL = 745, 776
     _t = ('.track,html.intro-auto .track,html.intro-collapsed .track,'
           'html:not(.intro-armed) .track')
     h = sin_costura(h, '%s{height:%dpx}\n.stage{height:%dpx}\n'
