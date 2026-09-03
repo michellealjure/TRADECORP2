@@ -444,9 +444,27 @@ h1{font-family:var(--font-display);font-weight:500;font-size:var(--t-xl);
      que el rotulo se leia pegado al titular y no como lo que es, una etiqueta.
      Ahora 24 / 14 / 32 — la etiqueta se separa, el titular y su descripcion se
      juntan porque son una sola idea, y antes de los botones hay un corte claro. */
-  .eyebrow{max-width:calc(100% - 108px);margin-bottom:24px}
+  /* El rotulo y la O son UN marco, no dos piezas sueltas: la pildora ocupa
+     todo el ancho del texto y la O se apoya en su extremo derecho. El relleno
+     de la derecha reserva su sitio para que las palabras no pasen por debajo. */
+  .eyebrow{display:block;width:100%;max-width:none;
+    padding-right:104px;margin-bottom:20px}
+  /* Hero centrado: con un solo boton la columna pide eje central. El titular
+     sube (20 en vez de 24) para quedar mas cerca de su marco. */
+  .hero-copy{text-align:center}
   .hero-copy h1{margin-bottom:14px}
-  .hero-copy .sub{margin-bottom:32px}
+  .hero-copy .sub{margin-bottom:28px}
+  /* El rotulo mantiene su texto a la izquierda: centrarlo dentro de una pildora
+     con 104px de reserva a la derecha lo dejaria descolocado. */
+  .eyebrow{text-align:left}
+  /* «Explore our ingredients» se va del hero en movil: el catalogo esta en el
+     menu de Wix y en cada tarjeta del carrusel de abajo. Con un solo boton la
+     accion principal deja de competir consigo misma. */
+  .ctas .btn:last-child{display:none}
+  /* Y el que queda pasa al verde salvia de la marca: sobre el oliva del hero
+     resalta mucho mas que el crema, que se confunde con la tarjeta de valores
+     que viene justo debajo. */
+  .ctas .btn{background:var(--salvia);color:var(--cafe)}
   /* Botones centrados y a lo ancho: en un telefono el objetivo pulsable
      importa mas que la alineacion a la izquierda. */
   .ctas{justify-content:center}
