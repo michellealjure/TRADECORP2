@@ -69,30 +69,78 @@ window.TCScroll=(function(){
      en el banco de pruebas: el hero daba visible=true ratio=0.61 y las
      secciones de mas abajo visible=false, con la pagina padre sin desplazar.
 
-     Observando el propio <body>, `intersectionRect` viene en coordenadas del
-     embed: su borde superior ES la posicion del scroll y su alto ES el alto
-     real de la ventana. Las dos incognitas que antes tenia que suponer
-     (VENTANA=800, CABECERA=110) dejan de hacer falta.
+     OJO: observar el propio <body> NO sirve, aunque lo pareciera. Dentro del
+     iframe el body SIEMPRE intersecta, asi que el observador habla una vez y
+     no vuelve, y su intersectionRect no da la franja visible (medido el
+     2026-09-04: visH=0 y vh() devolvia el alto del embed entero). Por eso las
+     animaciones quedaban congeladas en el ultimo fotograma.
+     Lo que SI cruza la frontera de un iframe de otro origen es el
+     `isIntersecting` de cada elemento — es la base de las APIs de visibilidad
+     de anuncios. Asi que se siembra una ESCALERA de testigos de 1px cada 20:
+     los que estan a la vista dicen donde empieza y donde acaba la franja
+     visible, con resolucion de 20px. Entre peldano y peldano interpola la
+     rueda, y el siguiente peldano corrige.
 
      Los umbrales densos son para que avise a menudo: IntersectionObserver solo
      habla cuando se cruza uno. Entre aviso y aviso interpola la rueda, y el
      siguiente aviso corrige — asi no hay deriva acumulada, que es lo que hacia
      que la animacion fuese bien en un sentido y se quedase pegada en el otro. */
   var faroPuesto=false;
+  var PASO=20, testigos=[], escalera=null, vistos={};
+
+  function sembrar(){
+    if(escalera && escalera.parentNode) escalera.parentNode.removeChild(escalera);
+    testigos=[]; vistos={};
+    escalera=document.createElement('div');
+    escalera.setAttribute('aria-hidden','true');
+    escalera.style.cssText='position:absolute;top:0;left:0;width:1px;height:0;'+
+                           'pointer-events:none;z-index:-1;overflow:visible';
+    var n=Math.ceil(doc.scrollHeight/PASO);
+    for(var i=0;i<n;i++){
+      var t=document.createElement('div');
+      t.style.cssText='position:absolute;left:0;width:1px;height:1px;top:'+(i*PASO)+'px';
+      t.setAttribute('data-i', i);
+      escalera.appendChild(t); testigos.push(t);
+    }
+    document.body.appendChild(escalera);
+    return n;
+  }
+
   function encenderFaro(){
     if(faroPuesto || !window.IntersectionObserver) return;
     faroPuesto=true;
-    var u=[]; for(var i=0;i<=500;i++) u.push(i/500);
+    var n=sembrar(), io;
     try{
-      new IntersectionObserver(function(es){
-        var e=es[es.length-1];
-        if(!e.isIntersecting) return;
-        var r=e.intersectionRect;
-        if(!r || r.height<40) return;      // franja absurda: no fiarse
-        hayFaro=true; visTop=r.top; visH=r.height;
+      io=new IntersectionObserver(function(es){
+        for(var i=0;i<es.length;i++){
+          var k=es[i].target.getAttribute('data-i');
+          if(k===null) continue;
+          if(es[i].isIntersecting) vistos[k]=1; else delete vistos[k];
+        }
+        var min=Infinity, max=-1;
+        for(var j in vistos){ var v=+j; if(v<min)min=v; if(v>max)max=v; }
+        if(max<0) return;                      // nada a la vista: no tocar
+        hayFaro=true;
+        visTop=min*PASO;
+        visH=(max-min+1)*PASO;
         avisar();
-      },{threshold:u}).observe(document.body);
-    }catch(err){}
+      });
+    }catch(err){ return; }
+    for(var i=0;i<n;i++) io.observe(testigos[i]);
+    faroIO=io;
+  }
+  var faroIO=null;
+  // Resembrar cuando cambia el alto: los peldanos son posiciones absolutas y si
+  // el contenido crece (el catalogo con un filtro, por ejemplo) faltarian abajo.
+  var altoSembrado=0;
+  function revisarEscalera(){
+    if(!faroPuesto) return;
+    var h=doc.scrollHeight;
+    if(Math.abs(h-altoSembrado) < PASO*4) return;
+    altoSembrado=h;
+    if(faroIO){ try{ faroIO.disconnect(); }catch(e){} }
+    faroPuesto=false; faroIO=null;
+    encenderFaro();
   }
   if(embed) encenderFaro();
 
@@ -125,6 +173,7 @@ window.TCScroll=(function(){
     var antes=embed;
     medir();
     if(embed) encenderFaro();
+    revisarEscalera();
     if(embed!==antes) avisar();
   }
   addEventListener('load', revisarModo);

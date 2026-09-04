@@ -353,9 +353,14 @@ def autoplay_home2(html):
    de ingredientes y las tarjetas de «Why buyers» compartian reloj, y el que
    quedaba fuera de pantalla se reproducia sin publico. */
 (function(){
-  // Bandera para el scrub por scroll, que vive en el preview y viaja al embed:
-  // aqui manda el tiempo, y si los dos escriben el mismo clip-path se pelean.
-  window.tcPorTiempo = true;
+  /* Este reproductor es el PLAN B, no el plan A.
+     Si el faro de TCScroll esta vivo —la escalera de testigos mide la franja
+     visible aunque el iframe no se desplace— el movimiento va con el scroll,
+     igual que en escritorio, y aqui no hay nada que hacer. Reproducir por
+     tiempo era un parche: Michelle lo describio exacto, «como si fuera video de
+     un segundo», porque eso es literalmente lo que era.
+     Solo si a los 1200ms no hay faro se toma el mando. */
+  window.tcPorTiempo = false;
 
   var menos = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -409,28 +414,45 @@ def autoplay_home2(html):
   function easeOut(x){ return 1-Math.pow(1-x,3); }
   function tramo(p,a,b){ var k=(p-a)/(b-a); return k<0?0:k>1?1:k; }
 
-  // ── Titulo de ingredientes ──────────────────────────────────────────────
-  var secIng = document.querySelector('.ingredients');
-  var title  = secIng && secIng.querySelector('.ing-title');
-  if(title) reproductor(secIng, 900,
-    function(p){ title.style.setProperty('--tsc',(0.74+0.26*easeOut(p)).toFixed(4)); },
-    function(){ title.style.setProperty('--tsc','1'); });
+  function armar(){
+    window.tcPorTiempo = true;
 
-  // ── Why buyers: color, onda y tarjetas ──────────────────────────────────
-  var why   = document.getElementById('why');
-  var cards = why ? [].slice.call(why.querySelectorAll('.why-card')) : [];
-  if(why) reproductor(why, 1500,
-    function(p){
-      if(window.applyWhyFrame) window.applyWhyFrame(easeOut(tramo(p,0.10,0.70)));
-      cards.forEach(function(c,i){
-        var ck=easeOut(tramo(p, 0.30+i*0.10, 0.85+i*0.10));
-        c.style.clipPath='inset(0 0 '+((1-ck)*100).toFixed(1)+'% 0 round 24px)';
+    // ── Titulo de ingredientes ────────────────────────────────────────────
+    var secIng = document.querySelector('.ingredients');
+    var title  = secIng && secIng.querySelector('.ing-title');
+    if(title) reproductor(secIng, 900,
+      function(p){ title.style.setProperty('--tsc',(0.74+0.26*easeOut(p)).toFixed(4)); },
+      function(){ title.style.setProperty('--tsc','1'); });
+
+    // ── Why buyers: color, onda y tarjetas ────────────────────────────────
+    var why   = document.getElementById('why');
+    var cards = why ? [].slice.call(why.querySelectorAll('.why-card')) : [];
+    if(why) reproductor(why, 1500,
+      function(p){
+        if(window.applyWhyFrame) window.applyWhyFrame(easeOut(tramo(p,0.10,0.70)));
+        cards.forEach(function(c,i){
+          var ck=easeOut(tramo(p, 0.30+i*0.10, 0.85+i*0.10));
+          c.style.clipPath='inset(0 0 '+((1-ck)*100).toFixed(1)+'% 0 round 24px)';
+        });
+      },
+      function(){
+        if(window.applyWhyFrame) window.applyWhyFrame(1);
+        cards.forEach(function(c){ c.style.clipPath='none'; });
       });
-    },
-    function(){
-      if(window.applyWhyFrame) window.applyWhyFrame(1);
-      cards.forEach(function(c){ c.style.clipPath='none'; });
-    });
+  }
+
+  function hayFaro(){
+    try{ return window.TCScroll && TCScroll.diagnostico().modo === 'embed+faro'; }
+    catch(e){ return false; }
+  }
+  if(menos){ armar(); return; }
+  // Dos comprobaciones: el faro tarda un par de fotogramas en dar el primer
+  // aviso, y en una conexion lenta el guion puede correr antes de que el
+  // observador se asiente.
+  setTimeout(function(){
+    if(hayFaro()) return;
+    setTimeout(function(){ if(!hayFaro()) armar(); }, 1500);
+  }, 1200);
 })();
 </script>
 """
