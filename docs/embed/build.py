@@ -581,7 +581,9 @@ def build_home_entero():
     # que el boton remata el marco y el rotulo no se corta arriba.
     # 776: quedaban 8px de oliva bajo el boton. Michelle quiere que el boton sea
     # lo ultimo del marco, asi que 784 - 8.
-    ALTO, ALTO_MOVIL = 745, 776
+    # 794: con 776 el boton quedaba pegado al borde y se leia como cortado.
+    # 18px de aire es lo que hace falta para que respire sin volver al hueco.
+    ALTO, ALTO_MOVIL = 745, 794
     _t = ('.track,html.intro-auto .track,html.intro-collapsed .track,'
           'html:not(.intro-armed) .track')
     h = sin_costura(h, '%s{height:%dpx}\n.stage{height:%dpx}\n'

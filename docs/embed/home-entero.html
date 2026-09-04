@@ -554,7 +554,27 @@ h1{font-family:var(--font-display);font-weight:500;font-size:var(--t-xl);
      dos en pantalla y la distancia entre iconos baja a 172. El alto va a mano
      porque el contenido (icono, nombre a tres lineas y detalle) ronda 130. */
   .ing{width:168px;aspect-ratio:auto;height:150px}
+  /* 64px abajo, no 16: la curva de «Why buyers» mide 56 y se dibuja POR ENCIMA
+     de su seccion, asi que con 16 de aire se comia las tarjetas de ingredientes.
+     Esto es «el motion se come el de ingredients» que reporto Michelle. */
+  .ingredients{padding-bottom:64px}
+  /* 1,2 y no 1,3: el titular del hero son tres lineas de una frase y aguanta el
+     aire; este son dos palabras, y ahi el mismo interlineado se lee como un
+     hueco entre ellas. */
+  .ing-title,.why-title{line-height:1.2}
   .ing-title{margin-bottom:10px}
+  .ing-sub .ing-desliza{display:inline-block;margin-left:8px;color:var(--oliva);
+    font-weight:500;letter-spacing:.06em;animation:desliza 1.6s ease-in-out infinite}
+  /* «Why buyers» y testimonios, mas contenidos. */
+  .why-card-media{flex:0 0 118px}
+  .why-card-top{padding:16px 18px}
+  .why-card-desc{line-height:1.45}
+  /* `.tp-track .tp-quote` y no la clase sola: este bloque de movil vive a media
+     hoja y la regla base de .tp-quote esta MAS ABAJO, asi que a igual
+     especificidad ganaba ella. Es la tercera vez que pasa aqui — cualquier cosa
+     que se ajuste solo en movil necesita ganarle al selector que la define. */
+  .tp-track .tp-quote{width:224px;padding:16px 18px;margin-right:12px}
+  .tp-track .tp-quote-text{line-height:1.45}
   .ing-sub .ing-todos{margin-top:6px}
 }
 
@@ -757,7 +777,7 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
 
 <section class="ingredients" aria-label="Our most requested ingredients">
   <h2 class="ing-title">Our most requested ingredients</h2>
-  <p class="ing-sub"><span class="con-raton">Drag or hover</span><span class="con-dedo">Swipe</span> to explore each ingredient<a target="_top" class="ing-todos" href="https://www.tcorpi.com/ingredients">or explore them all</a></p>
+  <p class="ing-sub"><span class="con-raton">Drag or hover</span><span class="con-dedo">Swipe</span> to explore each ingredient<span class="ing-desliza" aria-hidden="true">&#8250;&#8250;</span><a target="_top" class="ing-todos" href="https://www.tcorpi.com/ingredients">or explore them all</a></p>
   <div class="ing-carousel" tabindex="0" role="group" aria-label="Ingredient carousel">
     <div class="ing-track">
       <article class="ing img-1" tabindex="0">
@@ -1530,6 +1550,17 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
   },{rootMargin:'160px'}).observe(car);
 
   car.addEventListener('scroll',function(){ if(!drag) wrap(); },{passive:true});
+  // El arrastre tactil NO pasa por el manejador de puntero —ahi se deja el
+  // scroll nativo—, asi que `drag` seguia en false y el bucle escribia
+  // scrollLeft en CADA fotograma mientras el dedo arrastraba. El carril se
+  // resistia y parecia que no se dejaba mover. Se pausa al tocar y se reanuda
+  // 1,2s despues de soltar, para no cortar la inercia del dedo.
+  var reanudar=null;
+  car.addEventListener('touchstart',function(){ drag=true; clearTimeout(reanudar); },{passive:true});
+  car.addEventListener('touchend',function(){
+    clearTimeout(reanudar);
+    reanudar=setTimeout(function(){ drag=false; }, 1200);
+  },{passive:true});
 
   var sx=0, sl=0, moved=0, pid=null;
   // UMBRAL antes de capturar el puntero, y no al apoyar el raton.
@@ -1589,11 +1620,15 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
    propio «Explore» y el enlace sobraria. */
 .ing-todos{display:none}
 
+.ing-desliza{display:none}
+@keyframes desliza{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
+@media (prefers-reduced-motion:reduce){.ing-desliza{animation:none}}
+
 /* Bordes del embed: el aire entre cajas lo pone Wix (build.py) */
 .track,html.intro-auto .track,html.intro-collapsed .track,html:not(.intro-armed) .track{height:745px}
 .stage{height:745px}
-@media (max-width:640px){.track,html.intro-auto .track,html.intro-collapsed .track,html:not(.intro-armed) .track{height:776px}
-.stage{height:776px}}
+@media (max-width:640px){.track,html.intro-auto .track,html.intro-collapsed .track,html:not(.intro-armed) .track{height:794px}
+.stage{height:794px}}
 
 /* Bordes del embed: el aire entre cajas lo pone Wix (build.py) */
 html{background:var(--salvia)}
