@@ -1426,7 +1426,7 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
 })();
 </script>
 
-<script src="../assets/tcscroll.js?v=88ce0fa8"></script>
+<script src="../assets/tcscroll.js?v=aff8ebe2"></script>
 
 <script>
 /* Why TradeCorp? — scroll-driven curved reveal + card entrance.
@@ -1457,23 +1457,89 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
   }
 
   var ticking=false, maxCardP=[0,0,0];
+
+  /* ── Abrir sin condiciones ────────────────────────────────────────────────
+     Ultimo recurso: deja las tarjetas y el verde puestos y desengancha el
+     scrub. Se llama cuando el desplegado no puede funcionar, nunca antes. */
+  var abierto=false;
+  function abrirTodo(conTransicion){
+    if(abierto) return; abierto=true;
+    for(var i=0;i<maxCardP.length;i++) maxCardP[i]=1;
+    applyFrame(1);
+    cards.forEach(function(c){
+      if(conTransicion) c.style.transition='clip-path .6s cubic-bezier(.16,.84,.44,1)';
+      c.style.clipPath='inset(0 0 0% 0 round 24px)';
+    });
+  }
+
+  /* ── Nada se oculta hasta saber que el scrub esta vivo ────────────────────
+     Antes read() escribia el recorte SIEMPRE, asi que en cuanto cargaba el
+     guion las tarjetas quedaban ocultas. Dentro de un iframe de Wix la rueda y
+     el dedo solo llegan si el visitante los hace ENCIMA del embed: si arrastra
+     la barra, o desplaza tocando la cabecera de Wix, no llega ninguna senal y
+     se quedaban ocultas para siempre. Ese es el «why buyers sale vacio», y no
+     se arreglaba recargando porque el estado de partida era identico.
+     Ahora la primera lectura solo toma referencia. Mientras la seccion no se
+     MUEVA respecto a lo que se ve, no se toca nada y manda el CSS, que las
+     deja visibles. */
+  var ref=null, vivo=false;
+
   function read(){
     ticking=false;
+    // En el embed manda el reproductor por tiempo que inyecta build.py: si los
+    // dos escriben el mismo clip-path se pelean y el resultado depende de quien
+    // llegue ultimo.
+    if(window.tcPorTiempo){ abierto=true; return; }
+    if(abierto) return;
     var rt=TCScroll.top(sec), vh=TCScroll.vh();
+    if(ref===null){ ref=rt; return; }
+    if(!vivo){ if(Math.abs(rt-ref)<2) return; vivo=true; }
     applyFrame((vh-rt)/(vh*0.5));                    // section colour + curve
     // cards unfold top->down as they scroll up; sticky (does not re-fold)
     var start=vh*0.92, end=vh*0.45;
+    var todasAbiertas=true;
     cards.forEach(function(c,i){
       var t=TCScroll.top(c);
       var cp=cl((start - i*70 - t)/(start-end));     // slight left-to-right stagger
       if(cp>maxCardP[i]) maxCardP[i]=cp;
+      if(maxCardP[i]<0.999) todasAbiertas=false;
       c.style.clipPath='inset(0 0 '+((1-maxCardP[i])*100).toFixed(2)+'% 0 round 24px)';
     });
+    // Terminado: nada que recalcular en cada fotograma. Esto es la mitad del
+    // «se traba»: sin esto seguia midiendo cuatro rectangulos y reescribiendo
+    // cuatro estilos en cada gesto durante el resto de la visita.
+    if(todasAbiertas && (vh-rt)/(vh*0.5) >= 1){ abierto=true; TCScroll.off && TCScroll.off(onScroll); }
   }
-  function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(read); } }
+  function onScroll(){ if(!ticking && !abierto){ ticking=true; requestAnimationFrame(read); } }
   TCScroll.on(onScroll);                             // rueda dentro del embed, scroll fuera
   window.addEventListener('resize',onScroll,{passive:true});
   window.addEventListener('tc:intro-done',onScroll);   // track collapse moves positions
+
+  /* ── Red de seguridad ─────────────────────────────────────────────────────
+     IntersectionObserver SI cruza la frontera del iframe y se actualiza con el
+     scroll de la pagina de arriba (medido el 2026-09-02: visible=false con el
+     padre en 0, visible=true con el padre en 689). Si una tarjeta lleva 900ms
+     a la vista y el scrub no la ha abierto —porque no le llegan senales, o
+     porque TCScroll devuelve numeros que no sirven— se abre igual.
+     El retraso es a proposito: cuando el scrub SI funciona ya la ha abierto y
+     esto no hace nada. */
+  if(window.IntersectionObserver){
+    var espera=null;
+    var io=new IntersectionObserver(function(es){
+      var aLaVista=false;
+      for(var i=0;i<es.length;i++) if(es[i].isIntersecting) aLaVista=true;
+      if(aLaVista){
+        if(espera===null) espera=setTimeout(function(){
+          if(!abierto && maxCardP[0]<0.999){ abrirTodo(true); }
+          io.disconnect();
+        }, 900);
+      }else if(espera!==null){ clearTimeout(espera); espera=null; }
+    },{threshold:0.15});
+    cards.forEach(function(c){ io.observe(c); });
+  }else{
+    abrirTodo(false);
+  }
+
   read();
 })();
 
@@ -1768,44 +1834,107 @@ html{background:var(--salvia)}
 </style>
 
 <script>
-/* Reproduccion por tiempo — sustituye al scroll dentro del embed (build.py) */
+/* Reproduccion por tiempo — sustituye al scroll dentro del embed (build.py).
+   Dentro de un iframe de Wix la pagina no se desplaza, asi que la animacion no
+   puede ir atada a la posicion y se reproduce por tiempo. Dos fallos que
+   costaron caro y quedan resueltos aqui (2026-09-04):
+
+   1) NO arranca al cargar. Antes empezaba con la pagina, duraba 1,5s y
+      terminaba mucho antes de que el visitante bajara hasta la seccion: el
+      motion existia pero no lo veia nadie. Ahora cada bloque espera a estar a
+      la vista — IntersectionObserver SI cruza la frontera del iframe.
+
+   2) La red de seguridad cubre «empezo y se paro», no solo «nunca empezo».
+      requestAnimationFrame se suspende cuando la pestana pasa a segundo plano
+      o el iframe sale de pantalla. Si eso ocurria DESPUES del primer fotograma
+      la animacion se congelaba a medias y las tarjetas quedaban recortadas al
+      100% —invisibles— para el resto de la visita; recargar no cambiaba nada
+      porque el estado de partida era identico. Es el «why buyers sale vacio».
+      Ahora el plazo se arma con reloj de pared, que sigue corriendo aunque rAF
+      no, y ademas se remata al volver a la pestana.
+
+   Y son DOS reproductores independientes, no uno: con un solo hilo, el titulo
+   de ingredientes y las tarjetas de «Why buyers» compartian reloj, y el que
+   quedaba fuera de pantalla se reproducia sin publico. */
 (function(){
-  var sec   = document.querySelector('.ingredients');
-  var title = sec && sec.querySelector('.ing-title');
-  var why   = document.getElementById('why');
-  var cards = why ? [].slice.call(why.querySelectorAll('.why-card')) : [];
-  if(!title && !why) return;
+  // Bandera para el scrub por scroll, que vive en el preview y viaja al embed:
+  // aqui manda el tiempo, y si los dos escriben el mismo clip-path se pelean.
+  window.tcPorTiempo = true;
 
-  function fin(){
-    if(title) title.style.setProperty('--tsc','1');
-    if(window.applyWhyFrame) window.applyWhyFrame(1);
-    cards.forEach(function(c){ c.style.clipPath='none'; });
-  }
-  if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches){
-    fin(); return;
+  var menos = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Un reproductor: espera a que `diana` este a la vista, dibuja durante `dur`
+     y garantiza el remate pase lo que pase. */
+  function reproductor(diana, dur, dibujar, rematar){
+    if(!diana) return;
+    var acabado=false, plazo=null, t0=null;
+    function fin(){
+      if(acabado) return; acabado=true;
+      if(plazo){ clearTimeout(plazo); plazo=null; }
+      rematar();
+    }
+    if(menos){ fin(); return; }
+    function paso(ts){
+      if(acabado) return;
+      if(t0===null) t0=ts;
+      var p=(ts-t0)/dur;
+      if(p>=1){ fin(); return; }
+      dibujar(p);
+      requestAnimationFrame(paso);
+    }
+    function arrancar(){
+      if(acabado || plazo) return;
+      // Reloj de pared: no depende de rAF, asi que un rAF suspendido no puede
+      // dejar esto a medias.
+      plazo = setTimeout(fin, dur + 1200);
+      requestAnimationFrame(paso);
+    }
+    document.addEventListener('visibilitychange', function(){
+      if(!document.hidden && plazo && !acabado) fin();
+    });
+    if(window.IntersectionObserver){
+      var io = new IntersectionObserver(function(es){
+        for(var i=0;i<es.length;i++) if(es[i].isIntersecting){
+          try{ io.disconnect(); }catch(e){}
+          arrancar(); return;
+        }
+      },{threshold:0.12});
+      io.observe(diana);
+      // Si el observador no dice nada (navegador raro, iframe que no reporta),
+      // se arranca igual: mas vale verlo tarde que no verlo nunca.
+      setTimeout(function(){
+        if(!plazo && !acabado){ try{ io.disconnect(); }catch(e){} arrancar(); }
+      }, 6000);
+    }else{
+      arrancar();
+    }
   }
 
-  var DUR=1500, t0=null;
   function easeOut(x){ return 1-Math.pow(1-x,3); }
   function tramo(p,a,b){ var k=(p-a)/(b-a); return k<0?0:k>1?1:k; }
 
-  function paso(ts){
-    if(t0===null) t0=ts;
-    var p=(ts-t0)/DUR;
-    if(p>=1){ fin(); return; }
-    var k=easeOut(p);
-    if(title) title.style.setProperty('--tsc',(0.74+0.26*k).toFixed(4));
-    if(window.applyWhyFrame) window.applyWhyFrame(easeOut(tramo(p,0.10,0.70)));
-    cards.forEach(function(c,i){
-      var ck=easeOut(tramo(p, 0.30+i*0.10, 0.85+i*0.10));
-      c.style.clipPath='inset(0 0 '+((1-ck)*100).toFixed(1)+'% 0 round 24px)';
+  // ── Titulo de ingredientes ──────────────────────────────────────────────
+  var secIng = document.querySelector('.ingredients');
+  var title  = secIng && secIng.querySelector('.ing-title');
+  if(title) reproductor(secIng, 900,
+    function(p){ title.style.setProperty('--tsc',(0.74+0.26*easeOut(p)).toFixed(4)); },
+    function(){ title.style.setProperty('--tsc','1'); });
+
+  // ── Why buyers: color, onda y tarjetas ──────────────────────────────────
+  var why   = document.getElementById('why');
+  var cards = why ? [].slice.call(why.querySelectorAll('.why-card')) : [];
+  if(why) reproductor(why, 1500,
+    function(p){
+      if(window.applyWhyFrame) window.applyWhyFrame(easeOut(tramo(p,0.10,0.70)));
+      cards.forEach(function(c,i){
+        var ck=easeOut(tramo(p, 0.30+i*0.10, 0.85+i*0.10));
+        c.style.clipPath='inset(0 0 '+((1-ck)*100).toFixed(1)+'% 0 round 24px)';
+      });
+    },
+    function(){
+      if(window.applyWhyFrame) window.applyWhyFrame(1);
+      cards.forEach(function(c){ c.style.clipPath='none'; });
     });
-    requestAnimationFrame(paso);
-  }
-  requestAnimationFrame(paso);
-  // Red de seguridad: si rAF no corre (pestaña de fondo), nada puede quedarse
-  // a medio pintar — el verde a medias o una tarjeta recortada se ven rotos.
-  setTimeout(function(){ if(t0===null) fin(); }, 2500);
 })();
 </script>
 </body>

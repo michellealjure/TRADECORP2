@@ -330,44 +330,107 @@ def autoplay_home2(html):
     bucle simplemente pinta encima."""
     js = """
 <script>
-/* Reproduccion por tiempo — sustituye al scroll dentro del embed (build.py) */
+/* Reproduccion por tiempo — sustituye al scroll dentro del embed (build.py).
+   Dentro de un iframe de Wix la pagina no se desplaza, asi que la animacion no
+   puede ir atada a la posicion y se reproduce por tiempo. Dos fallos que
+   costaron caro y quedan resueltos aqui (2026-09-04):
+
+   1) NO arranca al cargar. Antes empezaba con la pagina, duraba 1,5s y
+      terminaba mucho antes de que el visitante bajara hasta la seccion: el
+      motion existia pero no lo veia nadie. Ahora cada bloque espera a estar a
+      la vista — IntersectionObserver SI cruza la frontera del iframe.
+
+   2) La red de seguridad cubre «empezo y se paro», no solo «nunca empezo».
+      requestAnimationFrame se suspende cuando la pestana pasa a segundo plano
+      o el iframe sale de pantalla. Si eso ocurria DESPUES del primer fotograma
+      la animacion se congelaba a medias y las tarjetas quedaban recortadas al
+      100% —invisibles— para el resto de la visita; recargar no cambiaba nada
+      porque el estado de partida era identico. Es el «why buyers sale vacio».
+      Ahora el plazo se arma con reloj de pared, que sigue corriendo aunque rAF
+      no, y ademas se remata al volver a la pestana.
+
+   Y son DOS reproductores independientes, no uno: con un solo hilo, el titulo
+   de ingredientes y las tarjetas de «Why buyers» compartian reloj, y el que
+   quedaba fuera de pantalla se reproducia sin publico. */
 (function(){
-  var sec   = document.querySelector('.ingredients');
-  var title = sec && sec.querySelector('.ing-title');
-  var why   = document.getElementById('why');
-  var cards = why ? [].slice.call(why.querySelectorAll('.why-card')) : [];
-  if(!title && !why) return;
+  // Bandera para el scrub por scroll, que vive en el preview y viaja al embed:
+  // aqui manda el tiempo, y si los dos escriben el mismo clip-path se pelean.
+  window.tcPorTiempo = true;
 
-  function fin(){
-    if(title) title.style.setProperty('--tsc','1');
-    if(window.applyWhyFrame) window.applyWhyFrame(1);
-    cards.forEach(function(c){ c.style.clipPath='none'; });
-  }
-  if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches){
-    fin(); return;
+  var menos = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Un reproductor: espera a que `diana` este a la vista, dibuja durante `dur`
+     y garantiza el remate pase lo que pase. */
+  function reproductor(diana, dur, dibujar, rematar){
+    if(!diana) return;
+    var acabado=false, plazo=null, t0=null;
+    function fin(){
+      if(acabado) return; acabado=true;
+      if(plazo){ clearTimeout(plazo); plazo=null; }
+      rematar();
+    }
+    if(menos){ fin(); return; }
+    function paso(ts){
+      if(acabado) return;
+      if(t0===null) t0=ts;
+      var p=(ts-t0)/dur;
+      if(p>=1){ fin(); return; }
+      dibujar(p);
+      requestAnimationFrame(paso);
+    }
+    function arrancar(){
+      if(acabado || plazo) return;
+      // Reloj de pared: no depende de rAF, asi que un rAF suspendido no puede
+      // dejar esto a medias.
+      plazo = setTimeout(fin, dur + 1200);
+      requestAnimationFrame(paso);
+    }
+    document.addEventListener('visibilitychange', function(){
+      if(!document.hidden && plazo && !acabado) fin();
+    });
+    if(window.IntersectionObserver){
+      var io = new IntersectionObserver(function(es){
+        for(var i=0;i<es.length;i++) if(es[i].isIntersecting){
+          try{ io.disconnect(); }catch(e){}
+          arrancar(); return;
+        }
+      },{threshold:0.12});
+      io.observe(diana);
+      // Si el observador no dice nada (navegador raro, iframe que no reporta),
+      // se arranca igual: mas vale verlo tarde que no verlo nunca.
+      setTimeout(function(){
+        if(!plazo && !acabado){ try{ io.disconnect(); }catch(e){} arrancar(); }
+      }, 6000);
+    }else{
+      arrancar();
+    }
   }
 
-  var DUR=1500, t0=null;
   function easeOut(x){ return 1-Math.pow(1-x,3); }
   function tramo(p,a,b){ var k=(p-a)/(b-a); return k<0?0:k>1?1:k; }
 
-  function paso(ts){
-    if(t0===null) t0=ts;
-    var p=(ts-t0)/DUR;
-    if(p>=1){ fin(); return; }
-    var k=easeOut(p);
-    if(title) title.style.setProperty('--tsc',(0.74+0.26*k).toFixed(4));
-    if(window.applyWhyFrame) window.applyWhyFrame(easeOut(tramo(p,0.10,0.70)));
-    cards.forEach(function(c,i){
-      var ck=easeOut(tramo(p, 0.30+i*0.10, 0.85+i*0.10));
-      c.style.clipPath='inset(0 0 '+((1-ck)*100).toFixed(1)+'% 0 round 24px)';
+  // ── Titulo de ingredientes ──────────────────────────────────────────────
+  var secIng = document.querySelector('.ingredients');
+  var title  = secIng && secIng.querySelector('.ing-title');
+  if(title) reproductor(secIng, 900,
+    function(p){ title.style.setProperty('--tsc',(0.74+0.26*easeOut(p)).toFixed(4)); },
+    function(){ title.style.setProperty('--tsc','1'); });
+
+  // ── Why buyers: color, onda y tarjetas ──────────────────────────────────
+  var why   = document.getElementById('why');
+  var cards = why ? [].slice.call(why.querySelectorAll('.why-card')) : [];
+  if(why) reproductor(why, 1500,
+    function(p){
+      if(window.applyWhyFrame) window.applyWhyFrame(easeOut(tramo(p,0.10,0.70)));
+      cards.forEach(function(c,i){
+        var ck=easeOut(tramo(p, 0.30+i*0.10, 0.85+i*0.10));
+        c.style.clipPath='inset(0 0 '+((1-ck)*100).toFixed(1)+'% 0 round 24px)';
+      });
+    },
+    function(){
+      if(window.applyWhyFrame) window.applyWhyFrame(1);
+      cards.forEach(function(c){ c.style.clipPath='none'; });
     });
-    requestAnimationFrame(paso);
-  }
-  requestAnimationFrame(paso);
-  // Red de seguridad: si rAF no corre (pestaña de fondo), nada puede quedarse
-  // a medio pintar — el verde a medias o una tarjeta recortada se ven rotos.
-  setTimeout(function(){ if(t0===null) fin(); }, 2500);
 })();
 </script>
 """

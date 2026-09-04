@@ -223,6 +223,13 @@ window.TCScroll=(function(){
       return hayFaro ? (t - visTop) : (t + CABECERA - virt);
     },
     on: function(fn){ subs.push(fn); fn(); },
+    // Para poder DARSE DE BAJA. Una animacion que ya termino no tiene nada que
+    // recalcular, y sin esto seguia corriendo en cada gesto durante el resto de
+    // la visita: cuatro getBoundingClientRect y cuatro escrituras de estilo por
+    // fotograma, por cada animacion terminada. Es parte del «se traba».
+    off: function(fn){
+      for(var i=subs.length-1;i>=0;i--) if(subs[i]===fn) subs.splice(i,1);
+    },
     esEmbed: function(){ return embed; },
     // Para poder mirar por dentro sin adivinar.
     diagnostico: function(){

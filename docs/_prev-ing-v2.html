@@ -1461,23 +1461,89 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
   }
 
   var ticking=false, maxCardP=[0,0,0];
+
+  /* ── Abrir sin condiciones ────────────────────────────────────────────────
+     Ultimo recurso: deja las tarjetas y el verde puestos y desengancha el
+     scrub. Se llama cuando el desplegado no puede funcionar, nunca antes. */
+  var abierto=false;
+  function abrirTodo(conTransicion){
+    if(abierto) return; abierto=true;
+    for(var i=0;i<maxCardP.length;i++) maxCardP[i]=1;
+    applyFrame(1);
+    cards.forEach(function(c){
+      if(conTransicion) c.style.transition='clip-path .6s cubic-bezier(.16,.84,.44,1)';
+      c.style.clipPath='inset(0 0 0% 0 round 24px)';
+    });
+  }
+
+  /* ── Nada se oculta hasta saber que el scrub esta vivo ────────────────────
+     Antes read() escribia el recorte SIEMPRE, asi que en cuanto cargaba el
+     guion las tarjetas quedaban ocultas. Dentro de un iframe de Wix la rueda y
+     el dedo solo llegan si el visitante los hace ENCIMA del embed: si arrastra
+     la barra, o desplaza tocando la cabecera de Wix, no llega ninguna senal y
+     se quedaban ocultas para siempre. Ese es el «why buyers sale vacio», y no
+     se arreglaba recargando porque el estado de partida era identico.
+     Ahora la primera lectura solo toma referencia. Mientras la seccion no se
+     MUEVA respecto a lo que se ve, no se toca nada y manda el CSS, que las
+     deja visibles. */
+  var ref=null, vivo=false;
+
   function read(){
     ticking=false;
+    // En el embed manda el reproductor por tiempo que inyecta build.py: si los
+    // dos escriben el mismo clip-path se pelean y el resultado depende de quien
+    // llegue ultimo.
+    if(window.tcPorTiempo){ abierto=true; return; }
+    if(abierto) return;
     var rt=TCScroll.top(sec), vh=TCScroll.vh();
+    if(ref===null){ ref=rt; return; }
+    if(!vivo){ if(Math.abs(rt-ref)<2) return; vivo=true; }
     applyFrame((vh-rt)/(vh*0.5));                    // section colour + curve
     // cards unfold top->down as they scroll up; sticky (does not re-fold)
     var start=vh*0.92, end=vh*0.45;
+    var todasAbiertas=true;
     cards.forEach(function(c,i){
       var t=TCScroll.top(c);
       var cp=cl((start - i*70 - t)/(start-end));     // slight left-to-right stagger
       if(cp>maxCardP[i]) maxCardP[i]=cp;
+      if(maxCardP[i]<0.999) todasAbiertas=false;
       c.style.clipPath='inset(0 0 '+((1-maxCardP[i])*100).toFixed(2)+'% 0 round 24px)';
     });
+    // Terminado: nada que recalcular en cada fotograma. Esto es la mitad del
+    // «se traba»: sin esto seguia midiendo cuatro rectangulos y reescribiendo
+    // cuatro estilos en cada gesto durante el resto de la visita.
+    if(todasAbiertas && (vh-rt)/(vh*0.5) >= 1){ abierto=true; TCScroll.off && TCScroll.off(onScroll); }
   }
-  function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(read); } }
+  function onScroll(){ if(!ticking && !abierto){ ticking=true; requestAnimationFrame(read); } }
   TCScroll.on(onScroll);                             // rueda dentro del embed, scroll fuera
   window.addEventListener('resize',onScroll,{passive:true});
   window.addEventListener('tc:intro-done',onScroll);   // track collapse moves positions
+
+  /* ── Red de seguridad ─────────────────────────────────────────────────────
+     IntersectionObserver SI cruza la frontera del iframe y se actualiza con el
+     scroll de la pagina de arriba (medido el 2026-09-02: visible=false con el
+     padre en 0, visible=true con el padre en 689). Si una tarjeta lleva 900ms
+     a la vista y el scrub no la ha abierto —porque no le llegan senales, o
+     porque TCScroll devuelve numeros que no sirven— se abre igual.
+     El retraso es a proposito: cuando el scrub SI funciona ya la ha abierto y
+     esto no hace nada. */
+  if(window.IntersectionObserver){
+    var espera=null;
+    var io=new IntersectionObserver(function(es){
+      var aLaVista=false;
+      for(var i=0;i<es.length;i++) if(es[i].isIntersecting) aLaVista=true;
+      if(aLaVista){
+        if(espera===null) espera=setTimeout(function(){
+          if(!abierto && maxCardP[0]<0.999){ abrirTodo(true); }
+          io.disconnect();
+        }, 900);
+      }else if(espera!==null){ clearTimeout(espera); espera=null; }
+    },{threshold:0.15});
+    cards.forEach(function(c){ io.observe(c); });
+  }else{
+    abrirTodo(false);
+  }
+
   read();
 })();
 
