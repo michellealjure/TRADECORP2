@@ -68,6 +68,12 @@
     /* Un solo gris calido, 5,6:1 sobre blanco. Reemplaza a #8a7961 (4,21:1),
        #9a9075 (3,17:1) y #b3ab98 (2,28:1), que no pasaban el minimo AA. */
     --gris:#6f6252;
+    /* Estaba en uso en cuatro sitios de esta pagina (.abC-steps, .abC-fig,
+       .ship-2 .ship-card y ahora el marco de How we work) pero nunca se
+       habia definido AQUI: solo existe en el home. Sin definicion,
+       var(--salvia-veil) resuelve a nada y el fondo salia transparente.
+       Mismo valor que en el home: salvia al 22% sobre crema. */
+    --salvia-veil:#dbdcc0;
     --pin:#b0392a;
 
   }
@@ -642,6 +648,79 @@ html.ship-1 .ship-1,html.ship-2 .ship-2,html.ship-3 .ship-3{display:block}
   .abB-step{border-left:0;padding-left:0;border-top:1px solid rgba(56,41,21,.16)}
   .abC-track::before{display:none}
   .abC-alt:nth-of-type(even) .abC-fig{order:0}
+}
+
+/* ── About en movil — auditoria del 2026-09-04 ───────────────────────────────
+   Va A PROPOSITO al final de la hoja: es la misma leccion del home, donde los
+   ajustes de movil escritos a media hoja perdian contra las reglas base de mas
+   abajo. Desde aqui ganan a igual especificidad. */
+@media (max-width:720px){
+
+  /* 1 — El marco de los camiones media 83px de alto (aspect-ratio 100/21 a 393
+     de ancho) y el titular 64: no cabia, y por eso «Who we are» salia partido
+     entre el crema de arriba y el video. El marco sube a 230 y el titular baja
+     a 44, que deja aire a los dos lados. */
+  .abA-hero{aspect-ratio:auto;height:230px}
+  .abA-hero h1{font-size:44px;bottom:16px}
+
+  /* 2 — ESCALA DE INTERLINEADO. La misma del home, con una excepcion razonada:
+       titulares 1.10 · titulos de tarjeta 1.15 · texto corrido 1.40
+     1.40 y no 1.32 como en el home porque aqui los parrafos corren cuatro y
+     cinco lineas, no dos. Lo que habia era 1.65 en el cuerpo —el hueco entre
+     renglones se leia mas que las propias lineas— y `normal` sin decidir en
+     rotulos y pilares. */
+  .ab-h{line-height:1.1}
+  .ab-p{line-height:1.4}
+  .ab-lbl{line-height:1.3}
+  .pillars .pil-t{line-height:1.15}
+  .fdesc{line-height:1.4}
+
+  /* 3 — «Our promise»: los tres pilares en fila, no apilados. Son UNA idea
+     —«tres cosas que no negociamos»— y en columna, cada uno con su filete
+     encima, se leian como tres apartados sueltos y ocupaban media pantalla.
+     Como fichas caben en un renglon y se leen como el triple que son. */
+  .pillars{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+  .pillars>div{flex:0 0 auto}
+  .pillars .ab-rule{display:none}
+  .pillars .pil-m{margin-top:0;padding-bottom:0;margin-bottom:0}
+  .pillars .pil-t{background:var(--salvia-veil);border-radius:999px;
+    padding:8px 16px;font-size:15px}
+
+  /* 4 — «How we work»: un solo marco con los cuatro pasos a la vista.
+     Antes eran cuatro tarjetas que habia que TOCAR para voltear. En un telefono
+     nadie descubre que una tarjeta se voltea, asi que TODO el contenido util
+     —a quien escribir, que pedir, que no hay minimos— quedaba escondido detras
+     de un gesto que nadie hace.
+     Ahora es un diagrama vertical dentro de un mismo marco: numero, titulo y
+     texto en cada renglon, y el filete entre renglones hace de hilo. Jerarquia
+     de color: el numero en oliva sobre crema (lo mas fuerte, marca el orden),
+     el titulo en cafe, el texto en cafe mas ligero, y el marco en salvia-veil
+     para separarse del crema de la pagina sin competir con el. */
+  .how-grid{display:block;background:var(--salvia-veil);border-radius:20px;
+    padding:2px 18px}
+  /* Sin entrada escalonada: dentro de un mismo marco no aporta nada, y si la
+     transicion no llega a correr los cuatro pasos se quedan invisibles
+     (medido: opacidad 0,04 y detenida). En un telefono manda leer. */
+  .fwrap{opacity:1 !important;transform:none !important}
+  .fcard{aspect-ratio:auto;perspective:none;box-shadow:none;border-radius:0;
+    padding:18px 0}
+  .fwrap + .fwrap .fcard{border-top:1px solid rgba(56,41,21,.16)}
+  /* transform:none en .fin y position:static en las caras: las dos dejan de ser
+     anverso y reverso y pasan a ser las dos columnas de la fila. */
+  .fin{transform:none !important;transform-style:flat;
+    display:grid;grid-template-columns:36px 1fr;gap:14px;align-items:start}
+  .fface{position:static;inset:auto;transform:none;border-radius:0;padding:0;
+    overflow:visible;backface-visibility:visible;-webkit-backface-visibility:visible}
+  /* Del anverso solo sirve el numero: el titulo ya viene en el reverso y
+     repetirlo dejaba la misma palabra dos veces en la misma fila. */
+  .ffront{display:block;background:transparent;border:0;text-align:left}
+  .ffront .ftit{display:none}
+  .fback{display:block;background:transparent;color:var(--cafe);text-align:left}
+  .fnum{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;
+    background:var(--oliva);color:var(--crema);font-size:14px;margin:0}
+  .fback-in .ftit{font-size:18px;margin:0 0 6px}
+  .fdesc{font-size:14px}
+  .fdesc a{color:var(--oliva)}
 }
 
 /* Bordes del embed: el aire entre cajas lo pone Wix (build.py) */
