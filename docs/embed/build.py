@@ -583,7 +583,10 @@ def build_home_entero():
     # lo ultimo del marco, asi que 784 - 8.
     # 794: con 776 el boton quedaba pegado al borde y se leia como cortado.
     # 18px de aire es lo que hace falta para que respire sin volver al hueco.
-    ALTO, ALTO_MOVIL = 745, 794
+    # 720 y no 794: la banda de valores va anclada al PIE del stage y el hero al
+    # techo, asi que el sobrante del stage se convertia en hueco entre el boton
+    # y las cuatro cajas — 74px. Con 720 quedan 36 (el hero va centrado, asi que el hueco baja a la mitad).
+    ALTO, ALTO_MOVIL = 745, 720
     _t = ('.track,html.intro-auto .track,html.intro-collapsed .track,'
           'html:not(.intro-armed) .track')
     h = sin_costura(h, '%s{height:%dpx}\n.stage{height:%dpx}\n'

@@ -789,7 +789,7 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
 
 <section class="ingredients" aria-label="Our most requested ingredients">
   <h2 class="ing-title">Our most requested ingredients</h2>
-  <p class="ing-sub"><span class="con-raton">Drag or hover</span><span class="con-dedo">Swipe</span> to explore each ingredient<span class="ing-desliza" aria-hidden="true">&#8250;&#8250;</span><a class="ing-todos" href="ingredients/_prev.html">or explore them all</a></p>
+  <p class="ing-sub"><span class="con-raton">Drag or hover</span><span class="con-dedo">Swipe</span><span class="ing-sub-larga"> to explore each ingredient</span><span class="ing-desliza" aria-hidden="true">&#8250;&#8250;</span><a class="ing-todos" href="ingredients/_prev.html">or explore all our ingredients</a></p>
   <div class="ing-carousel" tabindex="0" role="group" aria-label="Ingredient carousel">
     <div class="ing-track">
       <article class="ing img-1" tabindex="0">
@@ -1645,6 +1645,11 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
    monta 1px sobre la seccion y la costura desaparece. Va fuera del bloque de
    movil porque el defecto existe en las dos versiones. */
 .why-curve{bottom:calc(100% - 1px)}
+/* El JS baja la onda hasta 100px DENTRO de la seccion mientras se desplaza
+   (translateY). Con el titulo ya subido al borde, se lo comia. El contenido se
+   pinta por encima; la onda lleva el mismo color que la seccion, asi que no
+   cambia nada mas. */
+.why-inner{position:relative;z-index:1}
 
 /* ── Movil: auditoria de interlineado y densidad (2026-09-04) ────────────────
    Este bloque va A PROPOSITO al final de la hoja. Los ajustes de movil vivian a
@@ -1672,15 +1677,24 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
   .tp-quote-name{line-height:1.2}
   .tp-quote-role{line-height:1.3}
 
-  /* Solo «Swipe ... >>». El enlace repetia el mismo destino que el menu y metia
-     un segundo renglon entre el subtitulo y las tarjetas. */
-  .ing-sub .ing-todos{display:none}
-  .ing-sub{margin-bottom:24px}
+  /* «Swipe >> or explore all our ingredients» en un solo renglon: se cae la
+     parte larga («to explore each ingredient»), que en escritorio si se lee. */
+  .ing-sub .ing-sub-larga{display:none}
+  .ing-sub .ing-todos{display:inline;margin-top:0;margin-left:8px}
+  /* La caja de la tarjeta empieza 18px POR ENCIMA del icono (lleva relleno
+     invisible para el levantamiento del hover), asi que 24px de margen se leian
+     como 6. */
+  .ing-sub{margin-bottom:56px}
+
+  /* «Free sample» es el unico titulo de una linea: sin reservar las dos, su
+     bajada subia y las cuatro cajas dejaban de alinear. 2,3em = dos renglones
+     al interlineado 1,15 de arriba. */
+  .band h2{min-height:2.3em}
 
   /* El titulo estaba a 72px del borde y la onda se dibuja 56px POR ENCIMA de la
      seccion: quedaba un bloque suelto en medio del verde. Sube hasta el
      arranque del arco. */
-  .why{padding-top:20px;padding-bottom:40px}
+  .why{padding-top:30px;padding-bottom:40px}
   .why-title-line{margin:14px 0 20px}
 
   /* La foto debajo del texto hacia cada tarjeta casi tan alta como la pantalla:
