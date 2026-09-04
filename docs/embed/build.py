@@ -19,7 +19,7 @@ Y se cambian dos cosas:
     y no donde vivia su preview.
 """
 
-import os, re, sys
+import hashlib, io, os, re, sys
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))   # docs/
 SALIDA = os.path.join(RAIZ, 'embed')
@@ -128,7 +128,24 @@ def rutas(html, origen):
         html = re.sub(r'(?<!\.\./)url\(assets/', 'url(../about/assets/', html)
     # 'sub' (ingredients, contact) ya usan ../assets/ y siguen a la misma
     # profundidad desde embed/, asi que no hay nada que cambiar.
-    return html
+    return sello_version(html)
+
+
+def sello_version(html):
+    """Le pone ?v=<hash> a tcscroll.js.
+
+    Sin esto, el navegador del visitante se queda con la copia vieja del motor
+    de scroll hasta que expire su cache: se publica un arreglo y quien ya haya
+    entrado sigue viendo el fallo. Pasa igual en GitHub Pages que en Wix. El
+    numero sale del contenido del propio archivo, asi que cambia solo cuando el
+    archivo cambia y no hay que acordarse de subirlo a mano."""
+    ruta = os.path.join(RAIZ, 'assets', 'tcscroll.js')
+    try:
+        with io.open(ruta, 'rb') as f:
+            marca = hashlib.sha1(f.read()).hexdigest()[:8]
+    except IOError:
+        return html
+    return html.replace('assets/tcscroll.js"', 'assets/tcscroll.js?v=%s"' % marca)
 
 
 # ─────────────────────────────────────────────────────────────────────────────

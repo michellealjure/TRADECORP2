@@ -41,7 +41,16 @@ window.TCScroll=(function(){
   var VENTANA=800, CABECERA=110, RENDIRSE=45000;   // solo para el plan B
 
   function medir(){
-    embed = doc.scrollHeight <= window.innerHeight + 4;
+    // `self !== top` PRIMERO, y la comparacion de alturas solo como respaldo.
+    // Comparar alturas era una carrera perdida: Wix fija el alto de la caja
+    // DESPUES de cargar (Velo lo recibe por onMessage), asi que en el primer
+    // medir() scrollHeight todavia era mayor que innerHeight, embed salia
+    // false, el faro no se encendia nunca y `top()` devolvia un rect.top que
+    // dentro del iframe es constante. Progreso siempre igual = animacion
+    // congelada en el ultimo fotograma. Medido el 2026-09-04 en el banco:
+    // modo "pagina" y vh 2543 (el alto del embed entero) en vez de 741.
+    // Dentro de un iframe SIEMPRE es un embed; no hay nada que deducir.
+    embed = (window.self !== window.top) || doc.scrollHeight <= window.innerHeight + 4;
     tope  = Math.max(0, doc.scrollHeight - VENTANA + CABECERA);
   }
   function avisar(){
@@ -69,8 +78,10 @@ window.TCScroll=(function(){
      habla cuando se cruza uno. Entre aviso y aviso interpola la rueda, y el
      siguiente aviso corrige — asi no hay deriva acumulada, que es lo que hacia
      que la animacion fuese bien en un sentido y se quedase pegada en el otro. */
+  var faroPuesto=false;
   function encenderFaro(){
-    if(!window.IntersectionObserver) return;
+    if(faroPuesto || !window.IntersectionObserver) return;
+    faroPuesto=true;
     var u=[]; for(var i=0;i<=500;i++) u.push(i/500);
     try{
       new IntersectionObserver(function(es){
@@ -107,6 +118,17 @@ window.TCScroll=(function(){
   if(embed) setTimeout(function(){
     if(!hubo && !hayFaro){ virt=tope; avisar(); }
   }, RENDIRSE);
+
+  // El modo se vuelve a mirar, no se decide una sola vez: si algo cambia el
+  // alto de la caja despues de cargar, el faro se enciende en cuanto procede.
+  function revisarModo(){
+    var antes=embed;
+    medir();
+    if(embed) encenderFaro();
+    if(embed!==antes) avisar();
+  }
+  addEventListener('load', revisarModo);
+  setInterval(revisarModo, 500);
 
   addEventListener('resize', function(){ medir(); avisar(); }, {passive:true});
   addEventListener('scroll', function(){ if(!embed) avisar(); }, {passive:true});
