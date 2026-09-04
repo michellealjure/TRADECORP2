@@ -674,12 +674,7 @@ html.ship-1 .ship-1,html.ship-2 .ship-2,html.ship-3 .ship-3{display:block}
                        Quedan 5px de margen. */
   .abA-hero{aspect-ratio:auto;height:108px}
   .abA-hero .hv{inset:auto;left:0;top:-100px;width:100%;height:230px}
-  /* Sin `bottom` propio: hereda el -.06em de la regla base, que es lo que
-     apoya la linea de base justo en el borde del marco (con `bottom:0` la
-     fuente deja su descendente como un hueco de ~10px y no llega al borde).
-     54 y no 44: cabe de sobra en un renglon —mide 300 de los 393— y a 44 se
-     veia pequeno contra la banda de camiones. */
-  .abA-hero h1{font-size:54px}
+  .abA-hero h1{font-size:44px;bottom:16px}
 
   /* 2 — ESCALA DE INTERLINEADO. La misma del home, con una excepcion razonada:
        titulares 1.10 · titulos de tarjeta 1.15 · texto corrido 1.40
