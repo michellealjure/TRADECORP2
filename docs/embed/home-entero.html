@@ -438,11 +438,12 @@ h1{font-family:var(--font-display);font-weight:500;font-size:var(--t-xl);
   :root{--pad-x:24px}
   /* padding-top: el contenido arranca en y=0 y el borde visible de la tarjeta
      esta en 16, asi que el rotulo se cortaba. 24 le da 8px de aire. */
-  /* justify-content:flex-start y 32 de relleno: el contenido se apoya en el
-     borde de arriba de la tarjeta con 16px de verde, siempre los mismos,
-     mida lo que mida el titular. */
+  /* justify-content:flex-start: el contenido se apoya arriba, no centrado.
+     48 de relleno y no 32: el recorte de la tarjeta empieza en 16 y su esquina
+     tiene 28 de radio, asi que con 32 el rotulo caia a 8px del borde visible —
+     dentro de la curva— y se veia descuadrado. 48 lo deja a 32, ya fuera. */
   .card{justify-content:flex-start}
-  .card-in{display:block;position:relative;padding:32px 24px 0}
+  .card-in{display:block;position:relative;padding:48px 24px 0}
   /* right:var(--pad-x) y no 0: con 0 la O llegaba al borde de la PANTALLA
      (x=375) mientras el texto para en 343, asi que la esquina redondeada de la
      tarjeta se la comia. Ahora su borde derecho cae en la misma linea que el
@@ -453,7 +454,10 @@ h1{font-family:var(--font-display);font-weight:500;font-size:var(--t-xl);
   /* top:32 y no 0: .card-in arranca en y=0 pero el borde visible de la tarjeta
      esta en 16, asi que con 0 la O se salia del marco. 32 la alinea con el
      rotulo, que es donde tiene que estar. */
-  .media{display:flex;position:absolute;top:24px;right:24px;height:80px;width:auto;
+  /* top:48 y no 24: .media va en absoluto, asi que el relleno de .card-in no la
+     baja. Con 24 quedaba a 8px del borde visible y la esquina redondeada le
+     cortaba el circulo. */
+  .media{display:flex;position:absolute;top:48px;right:24px;height:80px;width:auto;
     z-index:3;pointer-events:none}
   .lens{height:100%;width:auto}
   /* `.eyebrow .corte-movil` y no `.corte-movil` a secas: la regla que lo oculta
@@ -1704,9 +1708,10 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
      descuenta abajo. */
   .tp{margin-top:52px}
   .tp-marquee{margin-top:8px}
-  /* stretch igualaba todas las tarjetas a la mas alta y las cortas quedaban con
-     un bloque de blanco muerto debajo. Cada una a su alto. */
-  .tp-track{align-items:flex-start;animation-duration:90s}
+  /* Vuelven al mismo alto: los bordes desiguales se leian como un serrucho. El
+     blanco muerto de las citas cortas se compensa con una letra mas pequena. */
+  .tp-track{align-items:stretch;animation-duration:90s}
+  .tp-track .tp-quote-text{font-size:14px}
   /* 186 + 12 de separacion = 384 en una pantalla de 390: dos completas. */
   /* Dos tarjetas completas SIEMPRE: 178 en un telefono de 390, y menos en uno
      mas estrecho. Con 178 fijos, a 360 la segunda se cortaba. */
@@ -1733,11 +1738,18 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
   .tp-avatar{width:34px;height:34px;font-size:13px}
 }
 
+/* En telefonos estrechos el titular parte en mas lineas y el verde bajo el boton
+   bajaba de 28px a 6 — sin cortarse, pero sin margen. Se recupera del aire entre
+   la bajada y el boton, que ahi sobra. No toca los 393 del telefono de Michelle. */
+@media (max-width:374px){
+  .hero-copy .sub{margin-bottom:16px}
+}
+
 /* Bordes del embed: el aire entre cajas lo pone Wix (build.py) */
 .track,html.intro-auto .track,html.intro-collapsed .track,html:not(.intro-armed) .track{height:745px}
 .stage{height:745px}
-@media (max-width:640px){.track,html.intro-auto .track,html.intro-collapsed .track,html:not(.intro-armed) .track{height:730px}
-.stage{height:730px}}
+@media (max-width:640px){.track,html.intro-auto .track,html.intro-collapsed .track,html:not(.intro-armed) .track{height:740px}
+.stage{height:740px}}
 
 /* Bordes del embed: el aire entre cajas lo pone Wix (build.py) */
 html{background:var(--salvia)}
