@@ -473,9 +473,14 @@ h1{font-family:var(--font-display);font-weight:500;font-size:var(--t-xl);
   /* El rotulo crece hasta el alto de la O para que sean UNA pieza: la O ya no
      sobresale del marco, se apoya dentro. 80px es el alto de dos lineas de
      rotulo con aire, y la O se iguala a ese numero. */
-  .eyebrow{display:flex;align-items:center;width:100%;max-width:none;
+  /* La pildora se cine al texto y la O queda A SU LADO. Antes iba a todo el
+     ancho con 104px de relleno reservados, asi que la O caia ENCIMA de su
+     extremo redondeado —83px de solape— y se veia un circulo encajado en el
+     borde, con la linea de la pildora cruzandolo. */
+  .eyebrow{display:flex;align-items:center;width:fit-content;
+    max-width:calc(100% - 100px);
     min-height:80px;padding-top:0;padding-bottom:0;
-    padding-right:104px;margin-bottom:18px}
+    padding-right:24px;margin-bottom:18px}
   /* Hero centrado: con un solo boton la columna pide eje central. El titular
      sube (20 en vez de 24) para quedar mas cerca de su marco. */
   .hero-copy{text-align:center}
@@ -1519,7 +1524,9 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
   /* Vuelven al mismo alto: los bordes desiguales se leian como un serrucho. El
      blanco muerto de las citas cortas se compensa con una letra mas pequena. */
   .tp-track{align-items:stretch;animation-duration:90s}
-  .tp-track .tp-quote-text{font-size:14px}
+  /* 13px y no 14: con 178 de ancho, a 14 la tarjeta se iba a 221 de alto —muy
+     vertical. A 13 se acerca al cuadrado sin perder legibilidad. */
+  .tp-track .tp-quote-text{font-size:13px}
   /* 186 + 12 de separacion = 384 en una pantalla de 390: dos completas. */
   /* Dos tarjetas completas SIEMPRE: 178 en un telefono de 390, y menos en uno
      mas estrecho. Con 178 fijos, a 360 la segunda se cortaba. */
