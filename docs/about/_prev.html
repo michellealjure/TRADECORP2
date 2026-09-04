@@ -713,7 +713,13 @@ html:not(.dir-a) #ship-tog{display:none}
                        Quedan 5px de margen. */
   .abA-hero{aspect-ratio:auto;height:108px}
   .abA-hero .hv{inset:auto;left:0;top:-100px;width:100%;height:230px}
-  .abA-hero h1{font-size:44px;bottom:16px}
+  /* Como en escritorio: sin `bottom` propio, hereda el -.06em de la regla base
+     y la linea de base se apoya en el borde inferior del marco. Con `bottom:0`
+     la fuente deja su descendente como un hueco de ~10px y no llega al borde.
+     56px: mide 311 de los 393 (79% del ancho), la misma proporcion que en
+     escritorio. El marco del video NO se toca — sigue en 108px con la franja
+     100-208. */
+  .abA-hero h1{font-size:56px}
 
   /* 2 — ESCALA DE INTERLINEADO. La misma del home, con una excepcion razonada:
        titulares 1.10 · titulos de tarjeta 1.15 · texto corrido 1.40
