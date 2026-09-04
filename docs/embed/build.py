@@ -586,7 +586,7 @@ def build_home_entero():
     # 720 y no 794: la banda de valores va anclada al PIE del stage y el hero al
     # techo, asi que el sobrante del stage se convertia en hueco entre el boton
     # y las cuatro cajas — 74px. Con 720 quedan 36 (el hero va centrado, asi que el hueco baja a la mitad).
-    ALTO, ALTO_MOVIL = 745, 720
+    ALTO, ALTO_MOVIL = 745, 730
     _t = ('.track,html.intro-auto .track,html.intro-collapsed .track,'
           'html:not(.intro-armed) .track')
     h = sin_costura(h, '%s{height:%dpx}\n.stage{height:%dpx}\n'
