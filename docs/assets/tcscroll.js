@@ -25,6 +25,46 @@
    Fuera del iframe (el preview, y cualquier pagina que se desplace de verdad)
    no se toca nada: devuelve pageYOffset e innerHeight igual que siempre.
    ───────────────────────────────────────────────────────────────────────────── */
+/* ─────────────────────────────────────────────────────────────────────────────
+   Videos que no aparezcan de golpe (movil)
+
+   Un <video> no pinta nada hasta que decodifica su primer fotograma, y entonces
+   aparece de golpe — a veces un segundo largo despues de que el resto de la
+   pagina ya este puesta. En un telefono, con la conexion mas lenta, se nota
+   mucho: primero el marco vacio, luego un salto.
+
+   Se atenua con `filter:opacity()` y NO con `opacity` a secas. Es a proposito:
+   la opacidad de los dos videos del hero de About la escribe el encadenado por
+   JS en cada fotograma (.hv-a / .hv-b), y si los dos escribieran la misma
+   propiedad se pelearian. `filter` y `opacity` se multiplican, asi que conviven
+   sin tocarse.
+
+   La regla que oculta se inyecta desde AQUI y no desde la hoja de estilos: si
+   este guion no llega a correr, los videos se ven — nunca al reves.
+   Y hay plazo de 3s por si el video no llega a tener datos (red caida, formato
+   no soportado): mostrarlo sin transicion es mucho mejor que no mostrarlo.
+   ───────────────────────────────────────────────────────────────────────────── */
+(function(){
+  var vids=[].slice.call(document.querySelectorAll('video'));
+  if(!vids.length) return;
+  if(!(window.matchMedia && matchMedia('(max-width:720px)').matches)) return;
+
+  var st=document.createElement('style');
+  st.textContent='video{filter:opacity(0);transition:filter .6s ease}'+
+                 'video.tc-listo{filter:opacity(1)}';
+  document.head.appendChild(st);
+
+  vids.forEach(function(v){
+    var puesto=false;
+    function ver(){ if(puesto) return; puesto=true; v.classList.add('tc-listo'); }
+    if(v.readyState>=2){ ver(); return; }          // ya tenia datos
+    v.addEventListener('loadeddata', ver, {once:true});
+    v.addEventListener('canplay',    ver, {once:true});
+    v.addEventListener('error',      ver, {once:true});
+    setTimeout(ver, 3000);
+  });
+})();
+
 window.TCScroll=(function(){
   var doc=document.documentElement;
   var subs=[], pend=false, embed=false;
