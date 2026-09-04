@@ -1722,7 +1722,12 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
   /* 186 + 12 de separacion = 384 en una pantalla de 390: dos completas. */
   /* Dos tarjetas completas SIEMPRE: 178 en un telefono de 390, y menos en uno
      mas estrecho. Con 178 fijos, a 360 la segunda se cortaba. */
-  .tp-track .tp-quote{width:min(178px, calc((100vw - 28px) / 2))}
+  /* margin-left:0 — .tp-quote es un <figure> y trae 40px de margen izquierdo del
+     navegador que nunca se anularon: la hoja solo fijaba el derecho. Por eso la
+     separacion real eran 46px y no los 12 escritos. Ahora son 10 de verdad, y el
+     ancho se recalcula para que sigan cabiendo dos completas. */
+  .tp-track .tp-quote{width:min(178px, calc((100vw - 26px) / 2));
+    margin-left:0;margin-right:10px}
 
   /* El titulo estaba a 72px del borde y la onda se dibuja 56px POR ENCIMA de la
      seccion: quedaba un bloque suelto en medio del verde. Sube hasta el
