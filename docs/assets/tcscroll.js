@@ -296,6 +296,50 @@ window.TCScroll=(function(){
     try{ parent.postMessage({tcAbrir:a.getAttribute('data-tc-form')}, '*'); }catch(err){}
   });
 
+  /* ── Volver atras ────────────────────────────────────────────────────────
+     Al ir a otra pagina y volver, el navegador puede restaurar esta del
+     bfcache: la REANUDA, no la vuelve a cargar. `load` y `DOMContentLoaded` no
+     se disparan otra vez —y de `load` cuelgan la escalera del faro, el aviso de
+     altura a Wix, el arranque de los videos y el reparto de las fotos—, los
+     <video> vuelven pausados, y cualquier animacion que quedara a medias se
+     queda exactamente como estaba. Eso es el «a veces no carga» al devolverse:
+     no falla nada, simplemente no vuelve a correr nada.
+     Aqui se rehace lo justo para dejarlo todo consistente. */
+  addEventListener('pageshow', function(e){
+    if(!e.persisted) return;
+
+    // 1. El faro: las posiciones cambiaron mientras no estabamos y el
+    //    observador viejo puede venir con datos de antes. Se resiembra.
+    medir();
+    if(embed){
+      if(faroIO){ try{ faroIO.disconnect(); }catch(_){} }
+      faroPuesto=false; faroIO=null; altoSembrado=0;
+      encenderFaro();
+    }
+    avisar();                       // que el scrub recalcule desde la posicion real
+
+    // 2. Wix necesita que le repitan el alto de la caja.
+    ultimoAlto=-1; avisarAltura();
+
+    // 3. Los videos. Al restaurar vuelven pausados, y los que se aplazaron en
+    //    movil pueden no tener src todavia: aqui ya no hay nada que aplazar.
+    //    Solo se re-arrancan los que SIEMPRE deberian estar corriendo —el
+    //    primero del lente y los que llevan autoplay—: el segundo video del
+    //    hero de About va pausado a proposito hasta que le toca en el
+    //    encadenado, y arrancarlo lo romperia.
+    window.tcVideoOk = true;
+    [].forEach.call(document.querySelectorAll('video'), function(v){
+      if(!v.src && v.dataset && v.dataset.src) v.src = v.dataset.src;
+      v.classList.add('tc-listo');
+    });
+    [].forEach.call(document.querySelectorAll('video[autoplay], #lensSrc video:first-of-type'),
+      function(v){ if(v.paused){ var pr=v.play(); if(pr && pr.catch) pr.catch(function(){}); } });
+
+    // 4. Las fotos de los ingredientes, por si se restauro antes de soltarlas.
+    var ing=document.querySelector('.ingredients');
+    if(ing) ing.classList.add('ing-fotos');
+  });
+
   return {
     // Alto de la ventana del visitante contra el que medir el progreso.
     vh: function(){

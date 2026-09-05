@@ -1334,6 +1334,13 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
   }
 
   // Locks the composed hero and tears the intro down for good.
+  /* Al volver atras, si la pagina se restaura del bfcache con el intro a medias
+     —logo puesto y hero todavia invisible— nada lo reanuda: el intro va por
+     scroll o por reproduccion automatica, y ninguno de los dos vuelve a
+     arrancar. Se remata aqui. Es el caso peor de «a veces no carga»: la caja
+     entera aparece vacia. */
+  addEventListener('pageshow', function(e){ if(e.persisted && !done) finish(); });
+
   function finish(){
     if(done) return;
     done=true; running=false;
@@ -1398,14 +1405,30 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
   function timeDriver(){
     running=true;
     var t0=null;
+    /* PLAZO DE RELOJ DE PARED. requestAnimationFrame se suspende cuando la
+       pestana pasa a segundo plano, cuando el iframe sale de pantalla o
+       mientras el navegador esta ocupado terminando de cargar. Si se paraba
+       entre p=0,52 y p=0,56 —el tramo en el que el logo ya se apago
+       (`zoom.opacity = p>0.52 ? 0 : 1`) y el hero todavia no ha aparecido
+       (`card.opacity = seg(p, 0.45, 0.56)`)— la caja entera se quedaba en crema
+       vacio, sin logo y sin hero, para siempre. Eso es lo que veia Michelle al
+       recargar, y no se arreglaba recargando otra vez porque el estado de
+       partida era el mismo.
+       setTimeout no depende de rAF: pase lo que pase, el intro termina. */
+    var plazo = setTimeout(finish, AUTO_MS + 1500);
     function paso(ts){
-      if(done) return;
+      if(done){ clearTimeout(plazo); return; }
       if(t0===null) t0=ts;
       var p=(ts-t0)/AUTO_MS;
-      if(p>=1){ finish(); return; }
+      if(p>=1){ clearTimeout(plazo); finish(); return; }
       applyFrame(p);
       requestAnimationFrame(paso);
     }
+    /* Y si la pestana vuelve a primer plano con el intro a medias, se remata en
+       vez de reanudar: reanudar desde un fotograma viejo da un salto feo. */
+    document.addEventListener('visibilitychange', function(){
+      if(!document.hidden && !done && running) finish();
+    });
     applyFrame(0);
     requestAnimationFrame(paso);
   }
@@ -1498,7 +1521,7 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
 })();
 </script>
 
-<script src="../assets/tcscroll.js?v=3d32b1e5"></script>
+<script src="../assets/tcscroll.js?v=2396bca1"></script>
 
 <script>
 /* Why TradeCorp? — scroll-driven curved reveal + card entrance.
