@@ -734,6 +734,20 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
   }catch(e){ document.documentElement.className += ' intro-armed intro-auto'; }
 })();
 </script>
+
+<style>
+/* Reglas del embed (build.py). EN EL <head>, no al final del
+   documento: `rindex` metia esto en el ULTIMO <style>, que vive dentro del
+   body y se analiza DESPUES de que arranquen los guiones. Entre ellas va el
+   anclaje `.stage{height:745px}`, asi que cuando el hero se medía a si mismo
+   el marco todavia valia 100vh — y dentro del iframe de Wix eso son 2.543px,
+   no el alto de la ventana. Ese numero se quedaba pegado, `--extra` salia
+   1.835 y el recorte de la tarjeta borraba el hero entero: la caja se veia
+   en crema vacio con la banda de valores flotando abajo.
+   Fuera de un iframe 100vh ES la ventana, el error casi se cancela y por eso
+   solo se rompia publicado. Medido y corregido el 2026-09-04. */
+.track{padding-bottom:0}
+</style>
 </head>
 <body>
 
@@ -950,7 +964,22 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
     // entero — 3.092px medidos el 2026-09-02 — y no el del lienzo del hero.
     // Con 3.092 el sobrante salia 2.486px y el recorte de la tarjeta
     // (inset(... 2576px ...), linea ~1053) se comia el hero completo.
-    var avail=(stageH||innerHeight) - 2*INSET - bot;
+    /* Se lee el alto REAL del stage en este momento, y `innerHeight` deja de ser
+       el respaldo.
+       El respaldo era veneno dentro del iframe de Wix: ahi innerHeight vale el
+       alto del EMBED ENTERO —2.543 medidos el 2026-09-04 en el banco— y no el
+       del lienzo del hero, que mide 745. Con 2.543, `avail` sale ~2.200, el
+       verde se topa en LENS.greenMax=480 y `lensExtra` queda en ~1.720; el
+       recorte de la tarjeta se va a 2.027px sobre una tarjeta de 745 y el hero
+       desaparece del todo. La banda no depende de eso, por eso se veia ella
+       sola sobre el crema vacio: es exactamente la captura que mando Michelle.
+       Y no bastaba con `stageH||`: esta funcion tambien la dispara el
+       ResizeObserver del lienzo, que puede llegar ANTES de que measure() haya
+       escrito stageH. Si en ese momento no hay alto, no se inventa: se sale y
+       ya volvera con el siguiente aviso. */
+    var hStage = stageH || (stage ? stage.getBoundingClientRect().height : 0);
+    if(!hStage){ return; }
+    var avail=hStage - 2*INSET - bot;
     var padX=Math.min(Math.max(20, innerWidth*0.046), 76);
     var gutter=Math.max(padX, (innerWidth-1180)/2);
     var contentW=innerWidth - 2*gutter;
@@ -1725,9 +1754,6 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
 @media (max-width:374px){
   .hero-copy .sub{margin-bottom:16px}
 }
-
-/* Bordes del embed: el aire entre cajas lo pone Wix (build.py) */
-.track{padding-bottom:0}
 </style>
 </body>
 </html>

@@ -414,6 +414,20 @@
   .grid{grid-template-columns:1fr}
 }
 </style>
+
+<style>
+/* Reglas del embed (build.py). EN EL <head>, no al final del
+   documento: `rindex` metia esto en el ULTIMO <style>, que vive dentro del
+   body y se analiza DESPUES de que arranquen los guiones. Entre ellas va el
+   anclaje `.stage{height:745px}`, asi que cuando el hero se medía a si mismo
+   el marco todavia valia 100vh — y dentro del iframe de Wix eso son 2.543px,
+   no el alto de la ventana. Ese numero se quedaba pegado, `--extra` salia
+   1.835 y el recorte de la tarjeta borraba el hero entero: la caja se veia
+   en crema vacio con la banda de valores flotando abajo.
+   Fuera de un iframe 100vh ES la ventana, el error casi se cancela y por eso
+   solo se rompia publicado. Medido y corregido el 2026-09-04. */
+.section{padding-top:0}
+</style>
 </head>
 <body>
 
@@ -935,9 +949,6 @@ var SPECS = {"Ashwagandha":{"descripcion":"Brown colored powder","secado":"Not m
 .pf-panel-nota a{color:var(--oliva)}
 .pf-info[aria-expanded="true"]{opacity:1;font-weight:500}
 @media (max-width:560px){.pf-cols{grid-template-columns:1fr}}
-
-/* Bordes del embed: el aire entre cajas lo pone Wix (build.py) */
-.section{padding-top:0}
 </style>
 <script src="../assets/tcscroll.js?v=2396bca1"></script>
 </body>

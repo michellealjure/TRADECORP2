@@ -750,8 +750,19 @@ html.ship-1 .ship-1,html.ship-2 .ship-2,html.ship-3 .ship-3{display:block}
   .fdesc{font-size:14px}
   .fdesc a{color:var(--oliva)}
 }
+</style>
 
-/* Bordes del embed: el aire entre cajas lo pone Wix (build.py) */
+<style>
+/* Reglas del embed (build.py). EN EL <head>, no al final del
+   documento: `rindex` metia esto en el ULTIMO <style>, que vive dentro del
+   body y se analiza DESPUES de que arranquen los guiones. Entre ellas va el
+   anclaje `.stage{height:745px}`, asi que cuando el hero se medía a si mismo
+   el marco todavia valia 100vh — y dentro del iframe de Wix eso son 2.543px,
+   no el alto de la ventana. Ese numero se quedaba pegado, `--extra` salia
+   1.835 y el recorte de la tarjeta borraba el hero entero: la caja se veia
+   en crema vacio con la banda de valores flotando abajo.
+   Fuera de un iframe 100vh ES la ventana, el error casi se cancela y por eso
+   solo se rompia publicado. Medido y corregido el 2026-09-04. */
 .abA-row--how{padding-bottom:0}
 </style>
 </head>

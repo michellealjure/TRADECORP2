@@ -734,6 +734,20 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
   }catch(e){ document.documentElement.className += ' intro-armed intro-auto'; }
 })();
 </script>
+
+<style>
+/* Reglas del embed (build.py). EN EL <head>, no al final del
+   documento: `rindex` metia esto en el ULTIMO <style>, que vive dentro del
+   body y se analiza DESPUES de que arranquen los guiones. Entre ellas va el
+   anclaje `.stage{height:745px}`, asi que cuando el hero se medía a si mismo
+   el marco todavia valia 100vh — y dentro del iframe de Wix eso son 2.543px,
+   no el alto de la ventana. Ese numero se quedaba pegado, `--extra` salia
+   1.835 y el recorte de la tarjeta borraba el hero entero: la caja se veia
+   en crema vacio con la banda de valores flotando abajo.
+   Fuera de un iframe 100vh ES la ventana, el error casi se cancela y por eso
+   solo se rompia publicado. Medido y corregido el 2026-09-04. */
+.why{padding-top:0}
+</style>
 </head>
 <body>
 
@@ -900,9 +914,6 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
 @media (max-width:374px){
   .hero-copy .sub{margin-bottom:16px}
 }
-
-/* Bordes del embed: el aire entre cajas lo pone Wix (build.py) */
-.why{padding-top:0}
 </style>
 </body>
 </html>

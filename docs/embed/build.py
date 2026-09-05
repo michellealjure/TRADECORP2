@@ -312,8 +312,21 @@ def sin_costura(html, reglas):
     Solo se tocan los bordes que dan a otra caja: el relleno interior se
     respeta, y en las secciones con fondo de color el que queda dentro tiene
     que seguir ahi o el color no llena el hueco."""
-    extra = '\n/* Bordes del embed: el aire entre cajas lo pone Wix (build.py) */\n' + reglas + '\n'
-    i = html.rindex('</style>')
+    extra = ('\n<style>\n/* Reglas del embed (build.py). EN EL <head>, no al final del\n'
+             '   documento: `rindex` metia esto en el ULTIMO <style>, que vive dentro del\n'
+             '   body y se analiza DESPUES de que arranquen los guiones. Entre ellas va el\n'
+             '   anclaje `.stage{height:745px}`, asi que cuando el hero se medía a si mismo\n'
+             '   el marco todavia valia 100vh — y dentro del iframe de Wix eso son 2.543px,\n'
+             '   no el alto de la ventana. Ese numero se quedaba pegado, `--extra` salia\n'
+             '   1.835 y el recorte de la tarjeta borraba el hero entero: la caja se veia\n'
+             '   en crema vacio con la banda de valores flotando abajo.\n'
+             '   Fuera de un iframe 100vh ES la ventana, el error casi se cancela y por eso\n'
+             '   solo se rompia publicado. Medido y corregido el 2026-09-04. */\n')
+    extra += reglas + '\n</style>\n'
+    i = html.find('</head>')
+    if i < 0:                      # sin <head>: se cae al comportamiento de antes
+        i = html.rindex('</style>')
+        return html[:i] + '\n' + reglas + '\n' + html[i:]
     return html[:i] + extra + html[i:]
 
 

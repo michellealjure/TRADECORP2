@@ -1146,7 +1146,22 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
     // entero — 3.092px medidos el 2026-09-02 — y no el del lienzo del hero.
     // Con 3.092 el sobrante salia 2.486px y el recorte de la tarjeta
     // (inset(... 2576px ...), linea ~1053) se comia el hero completo.
-    var avail=(stageH||innerHeight) - 2*INSET - bot;
+    /* Se lee el alto REAL del stage en este momento, y `innerHeight` deja de ser
+       el respaldo.
+       El respaldo era veneno dentro del iframe de Wix: ahi innerHeight vale el
+       alto del EMBED ENTERO —2.543 medidos el 2026-09-04 en el banco— y no el
+       del lienzo del hero, que mide 745. Con 2.543, `avail` sale ~2.200, el
+       verde se topa en LENS.greenMax=480 y `lensExtra` queda en ~1.720; el
+       recorte de la tarjeta se va a 2.027px sobre una tarjeta de 745 y el hero
+       desaparece del todo. La banda no depende de eso, por eso se veia ella
+       sola sobre el crema vacio: es exactamente la captura que mando Michelle.
+       Y no bastaba con `stageH||`: esta funcion tambien la dispara el
+       ResizeObserver del lienzo, que puede llegar ANTES de que measure() haya
+       escrito stageH. Si en ese momento no hay alto, no se inventa: se sale y
+       ya volvera con el siguiente aviso. */
+    var hStage = stageH || (stage ? stage.getBoundingClientRect().height : 0);
+    if(!hStage){ return; }
+    var avail=hStage - 2*INSET - bot;
     var padX=Math.min(Math.max(20, innerWidth*0.046), 76);
     var gutter=Math.max(padX, (innerWidth-1180)/2);
     var contentW=innerWidth - 2*gutter;
