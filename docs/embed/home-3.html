@@ -281,9 +281,19 @@ h1{font-family:var(--font-display);font-weight:500;font-size:var(--t-xl);
   will-change:opacity,transform;pointer-events:none}
 /* La foto vive como variable en el <article>: la usan la capa grande del hover y la
    figurita del reposo, sin repetir la URL ni duplicar la descarga. */
-.img-1{--photo:url(../assets/ing-collagen.jpg);--mask:url(../assets/ing-collagen-mask.png)}
-.img-2{--photo:url(../assets/ing-creatine.jpg);--mask:url(../assets/ing-creatine-mask.png)}
-.img-3{--photo:url(../assets/ing-cocoa.jpg);--mask:url(../assets/ing-cocoa-mask.png)}
+/* Las FOTOS (610 KB entre las cinco) van tras `.ing-fotos`, que pone el JS
+   cuando el carrusel se acerca a la pantalla. Las MASCARAS no: pesan 17 KB y
+   sin ellas la figurita sale como un cuadrado.
+   Medido a 393px: las fotos terminaban de bajar entre los 645 y los 1.044 ms,
+   compitiendo con la tipografia y el texto de un hero que ya estaba a la vista.
+   Si el JS no corre, `assets/tcscroll.js` las suelta igual al `load`: nunca se
+   quedan sin cargar. */
+.ing-fotos .img-1{--photo:url(../assets/ing-collagen.jpg)}
+.img-1{--mask:url(../assets/ing-collagen-mask.png)}
+.ing-fotos .img-2{--photo:url(../assets/ing-creatine.jpg)}
+.img-2{--mask:url(../assets/ing-creatine-mask.png)}
+.ing-fotos .img-3{--photo:url(../assets/ing-cocoa.jpg)}
+.img-3{--mask:url(../assets/ing-cocoa-mask.png)}
 /* Los dos magnesios se disolvían en el crema. Más brillante, no más oscuro: el
    crema es beige cálido, así que un blanco más puro se separa igual de bien y se ve
    limpio, mientras que oscurecerlos los volvía grises.
@@ -291,10 +301,12 @@ h1{font-family:var(--font-display);font-weight:500;font-size:var(--t-xl);
    pierde el grano. El CONTRASTE abre los blancos hacia arriba conservando las
    sombras que dibujan la textura del polvo.
    La creatina se queda como está — decisión de Michelle, 2026-08-31. */
-.img-4{--photo:url(../assets/ing-magnesium-oxide.jpg);--mask:url(../assets/ing-magnesium-oxide-mask.png);
+.ing-fotos .img-4{--photo:url(../assets/ing-magnesium-oxide.jpg)}
+.img-4{--mask:url(../assets/ing-magnesium-oxide-mask.png);
   --fig-tone:contrast(1.2) brightness(1.05) saturate(.92);
   --fig-zoom:300%}
-.img-5{--photo:url(../assets/ing-magnesium-citrate.jpg);--mask:url(../assets/ing-magnesium-citrate-mask.png);
+.ing-fotos .img-5{--photo:url(../assets/ing-magnesium-citrate.jpg)}
+.img-5{--mask:url(../assets/ing-magnesium-citrate-mask.png);
   --fig-tone:contrast(1.2) brightness(1.05) saturate(.92)}
 /* El color va en JPEG y la transparencia en una máscara gris aparte: un PNG con
    alfa a este tamaño pesaba 4 MB los cinco; así son 690 KB y el recorte es real,

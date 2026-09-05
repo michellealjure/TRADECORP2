@@ -281,9 +281,19 @@ h1{font-family:var(--font-display);font-weight:500;font-size:var(--t-xl);
   will-change:opacity,transform;pointer-events:none}
 /* La foto vive como variable en el <article>: la usan la capa grande del hover y la
    figurita del reposo, sin repetir la URL ni duplicar la descarga. */
-.img-1{--photo:url(../assets/ing-collagen.jpg);--mask:url(../assets/ing-collagen-mask.png)}
-.img-2{--photo:url(../assets/ing-creatine.jpg);--mask:url(../assets/ing-creatine-mask.png)}
-.img-3{--photo:url(../assets/ing-cocoa.jpg);--mask:url(../assets/ing-cocoa-mask.png)}
+/* Las FOTOS (610 KB entre las cinco) van tras `.ing-fotos`, que pone el JS
+   cuando el carrusel se acerca a la pantalla. Las MASCARAS no: pesan 17 KB y
+   sin ellas la figurita sale como un cuadrado.
+   Medido a 393px: las fotos terminaban de bajar entre los 645 y los 1.044 ms,
+   compitiendo con la tipografia y el texto de un hero que ya estaba a la vista.
+   Si el JS no corre, `assets/tcscroll.js` las suelta igual al `load`: nunca se
+   quedan sin cargar. */
+.ing-fotos .img-1{--photo:url(../assets/ing-collagen.jpg)}
+.img-1{--mask:url(../assets/ing-collagen-mask.png)}
+.ing-fotos .img-2{--photo:url(../assets/ing-creatine.jpg)}
+.img-2{--mask:url(../assets/ing-creatine-mask.png)}
+.ing-fotos .img-3{--photo:url(../assets/ing-cocoa.jpg)}
+.img-3{--mask:url(../assets/ing-cocoa-mask.png)}
 /* Los dos magnesios se disolvían en el crema. Más brillante, no más oscuro: el
    crema es beige cálido, así que un blanco más puro se separa igual de bien y se ve
    limpio, mientras que oscurecerlos los volvía grises.
@@ -291,10 +301,12 @@ h1{font-family:var(--font-display);font-weight:500;font-size:var(--t-xl);
    pierde el grano. El CONTRASTE abre los blancos hacia arriba conservando las
    sombras que dibujan la textura del polvo.
    La creatina se queda como está — decisión de Michelle, 2026-08-31. */
-.img-4{--photo:url(../assets/ing-magnesium-oxide.jpg);--mask:url(../assets/ing-magnesium-oxide-mask.png);
+.ing-fotos .img-4{--photo:url(../assets/ing-magnesium-oxide.jpg)}
+.img-4{--mask:url(../assets/ing-magnesium-oxide-mask.png);
   --fig-tone:contrast(1.2) brightness(1.05) saturate(.92);
   --fig-zoom:300%}
-.img-5{--photo:url(../assets/ing-magnesium-citrate.jpg);--mask:url(../assets/ing-magnesium-citrate-mask.png);
+.ing-fotos .img-5{--photo:url(../assets/ing-magnesium-citrate.jpg)}
+.img-5{--mask:url(../assets/ing-magnesium-citrate-mask.png);
   --fig-tone:contrast(1.2) brightness(1.05) saturate(.92)}
 /* El color va en JPEG y la transparencia en una máscara gris aparte: un PNG con
    alfa a este tamaño pesaba 4 MB los cinco; así son 690 KB y el recorte es real,
@@ -785,7 +797,7 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
     </div>
 
     <div id="lensSrc" style="position:absolute;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none" aria-hidden="true">
-      <video id="lvOil"   src="../assets/hero-oil.mp4"   muted loop playsinline preload="none"></video>
+      <video id="lvOil"   data-src="../assets/hero-oil.mp4"   muted loop playsinline preload="none"></video>
       <video id="lvScoop" data-src="../assets/hero-scoop.mp4" muted loop playsinline preload="none"></video>
       <video id="lvAmber" data-src="../assets/hero-amber.mp4" muted loop playsinline preload="none"></video>
       <video id="lvCocoa" data-src="../assets/hero-cocoa.mp4" muted loop playsinline preload="none"></video>
@@ -1066,6 +1078,16 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
             kb:0.88, ks:1.35, kh:-8, kc:1.12};
   var XF=1.2, TAIL=0.2;
 
+  /* En movil ningun video del lente se pide antes de que la pagina este pintada.
+     Medido: hero-oil.mp4 seguia bajando 1.447 KB a los 1.200 ms y se llevaba por
+     delante a la tipografia y al texto de un hero que ya estaba a la vista. La O
+     arranca vacia y el video entra despues con su desvanecido. */
+  window.tcVideoOk = !(window.matchMedia && matchMedia('(max-width:720px)').matches);
+  if(!window.tcVideoOk){
+    addEventListener('load', function(){ setTimeout(function(){ window.tcVideoOk=true; }, 200); });
+    setTimeout(function(){ window.tcVideoOk=true; }, 4000);   // por si `load` no llega
+  }
+
   var SEQ=[
     {el:'lvOil',   hold:3.5},
     {el:'lvOil',   hold:3.5},
@@ -1167,7 +1189,7 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
          pintar. Son los 5 segundos de crema. Ahora solo el primero viaja con la
          pagina; los otros tres se piden cuando la secuencia llega a ellos —y ya
          los pide con 0,8 s de antelacion, ver `nxt` arriba— asi que no se nota. */
-      if(!q.v.src && q.v.dataset && q.v.dataset.src){ q.v.src=q.v.dataset.src; }
+      if(!q.v.src && window.tcVideoOk && q.v.dataset && q.v.dataset.src){ q.v.src=q.v.dataset.src; }
       if(!lensWanted[el]){ try{ q.v.currentTime=0; }catch(e){} q.v.playbackRate=q.rate||1; }
       if(q.endAt && q.v.currentTime>=q.endAt+0.2){ if(!q.v.paused) q.v.pause(); }
       else if(q.v.paused) q.v.play().catch(function(){});
@@ -1437,12 +1459,21 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
      pintara nada: los 5 segundos de crema que reporto Michelle.
      Los otros tres los pide la propia secuencia del lente cuando les toca
      (SEQ -> q.v.play()), asi que no hay nada que perder. */
-  function kick(){ var p=vids[0].play(); if(p&&p.catch){p.catch(function(){});} }
+  function kick(){
+    if(!vids[0].src && window.tcVideoOk && vids[0].dataset && vids[0].dataset.src) vids[0].src=vids[0].dataset.src;
+    var p=vids[0].play(); if(p&&p.catch){p.catch(function(){});}
+  }
   /* Y en movil ni siquiera el primero antes de pintar: se espera a `load`, que
      es cuando el texto, la tipografia y los iconos ya estan puestos. El video
      entra despues con su desvanecido (ver assets/tcscroll.js). */
   var movil = window.matchMedia && matchMedia('(max-width:720px)').matches;
-  if(movil){ addEventListener('load', function(){ setTimeout(kick, 200); }); }
+  /* 500 y no 200: la bandera window.tcVideoOk se levanta en load+200, y si kick()
+     corriera antes no asignaria el src y la O dependeria de que el bucle del
+     lente pasara por ella. Aqui se asigna siempre. */
+  if(movil){
+    addEventListener('load', function(){ setTimeout(kick, 500); });
+    setTimeout(kick, 4300);                       // por si `load` no llega
+  }
   else { kick(); addEventListener('load', kick); }
   document.addEventListener('visibilitychange',function(){ if(!document.hidden){ kick(); } });
 })();
@@ -1508,10 +1539,6 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
 
   function read(){
     ticking=false;
-    // En el embed manda el reproductor por tiempo que inyecta build.py: si los
-    // dos escriben el mismo clip-path se pelean y el resultado depende de quien
-    // llegue ultimo.
-    if(window.tcPorTiempo){ abierto=true; return; }
     if(abierto) return;
     var rt=TCScroll.top(sec), vh=TCScroll.vh();
     if(ref===null){ ref=rt; return; }
@@ -1860,129 +1887,50 @@ html{background:var(--salvia)}
 </style>
 
 <script>
-/* Reproduccion por tiempo — sustituye al scroll dentro del embed (build.py).
-   Dentro de un iframe de Wix la pagina no se desplaza, asi que la animacion no
-   puede ir atada a la posicion y se reproduce por tiempo. Dos fallos que
-   costaron caro y quedan resueltos aqui (2026-09-04):
+/* Arranque de contenido diferido (build.py)
 
-   1) NO arranca al cargar. Antes empezaba con la pagina, duraba 1,5s y
-      terminaba mucho antes de que el visitante bajara hasta la seccion: el
-      motion existia pero no lo veia nadie. Ahora cada bloque espera a estar a
-      la vista — IntersectionObserver SI cruza la frontera del iframe.
+   Lo que ANTES habia aqui era un «reproductor por tiempo»: una animacion de 1,5s
+   que sustituia a la del scroll dentro del embed. Se retira, y esa es la parte
+   importante de este cambio.
 
-   2) La red de seguridad cubre «empezo y se paro», no solo «nunca empezo».
-      requestAnimationFrame se suspende cuando la pestana pasa a segundo plano
-      o el iframe sale de pantalla. Si eso ocurria DESPUES del primer fotograma
-      la animacion se congelaba a medias y las tarjetas quedaban recortadas al
-      100% —invisibles— para el resto de la visita; recargar no cambiaba nada
-      porque el estado de partida era identico. Es el «why buyers sale vacio».
-      Ahora el plazo se arma con reloj de pared, que sigue corriendo aunque rAF
-      no, y ademas se remata al volver a la pestana.
+   El problema no era ninguno de los mecanismos por separado, era tener TRES
+   escribiendo sobre las mismas propiedades: el scrub por scroll, el reproductor
+   por tiempo y las redes de seguridad de cada uno. Cual mandaba dependia de cuan
+   rapido cargara la pagina, de si el faro despertaba antes o despues de un plazo,
+   y de por donde desplazara el visitante. De ahi que «siguiera pasando»: no era
+   un fallo, eran varios estados posibles y solo uno era el bueno.
 
-   Y son DOS reproductores independientes, no uno: con un solo hilo, el titulo
-   de ingredientes y las tarjetas de «Why buyers» compartian reloj, y el que
-   quedaba fuera de pantalla se reproducia sin publico. */
+   Ahora hay UN mecanismo y UNA red:
+     · Manda el scrub por scroll de la pagina (TCScroll + la escalera de testigos).
+     · Si algo falla, el scrub no oculta nada —solo escribe cuando comprueba que
+       la seccion se mueve de verdad— y su IntersectionObserver abre las tarjetas
+       si a los 2,5s siguen cerradas.
+   El peor caso deja de ser «animacion de un segundo» o «seccion en blanco» y
+   pasa a ser «sin animacion, todo visible», que es el unico peor caso aceptable.
+
+   Aqui solo queda lo que no es animacion: soltar lo que se aplazo para que la
+   pagina pinte antes. */
 (function(){
-  /* Este reproductor es el PLAN B, no el plan A.
-     Si el faro de TCScroll esta vivo —la escalera de testigos mide la franja
-     visible aunque el iframe no se desplace— el movimiento va con el scroll,
-     igual que en escritorio, y aqui no hay nada que hacer. Reproducir por
-     tiempo era un parche: Michelle lo describio exacto, «como si fuera video de
-     un segundo», porque eso es literalmente lo que era.
-     Solo si a los 1200ms no hay faro se toma el mando. */
-  window.tcPorTiempo = false;
-
-  var menos = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  /* Un reproductor: espera a que `diana` este a la vista, dibuja durante `dur`
-     y garantiza el remate pase lo que pase. */
-  function reproductor(diana, dur, dibujar, rematar){
-    if(!diana) return;
-    var acabado=false, plazo=null, t0=null;
-    function fin(){
-      if(acabado) return; acabado=true;
-      if(plazo){ clearTimeout(plazo); plazo=null; }
-      rematar();
-    }
-    if(menos){ fin(); return; }
-    function paso(ts){
-      if(acabado) return;
-      if(t0===null) t0=ts;
-      var p=(ts-t0)/dur;
-      if(p>=1){ fin(); return; }
-      dibujar(p);
-      requestAnimationFrame(paso);
-    }
-    function arrancar(){
-      if(acabado || plazo) return;
-      // Reloj de pared: no depende de rAF, asi que un rAF suspendido no puede
-      // dejar esto a medias.
-      plazo = setTimeout(fin, dur + 1200);
-      requestAnimationFrame(paso);
-    }
-    document.addEventListener('visibilitychange', function(){
-      if(!document.hidden && plazo && !acabado) fin();
-    });
+  /* Las fotos de los ingredientes (610 KB) esperan a que el carrusel se acerque.
+     Y pase lo que pase se sueltan al `load`: si el observador no dijera nada, se
+     quedarian sin cargar, y eso es peor que cargarlas tarde. */
+  var sec=document.querySelector('.ingredients');
+  if(sec){
+    var puestas=false;
+    function soltarFotos(){ if(puestas) return; puestas=true; sec.classList.add('ing-fotos'); }
     if(window.IntersectionObserver){
-      var io = new IntersectionObserver(function(es){
+      var io=new IntersectionObserver(function(es){
         for(var i=0;i<es.length;i++) if(es[i].isIntersecting){
           try{ io.disconnect(); }catch(e){}
-          arrancar(); return;
+          soltarFotos(); return;
         }
-      },{threshold:0.12});
-      io.observe(diana);
-      // Si el observador no dice nada (navegador raro, iframe que no reporta),
-      // se arranca igual: mas vale verlo tarde que no verlo nunca.
-      setTimeout(function(){
-        if(!plazo && !acabado){ try{ io.disconnect(); }catch(e){} arrancar(); }
-      }, 6000);
+      },{rootMargin:'600px 0px'});
+      io.observe(sec);
+      addEventListener('load', function(){ setTimeout(soltarFotos, 800); });
     }else{
-      arrancar();
+      soltarFotos();
     }
   }
-
-  function easeOut(x){ return 1-Math.pow(1-x,3); }
-  function tramo(p,a,b){ var k=(p-a)/(b-a); return k<0?0:k>1?1:k; }
-
-  function armar(){
-    window.tcPorTiempo = true;
-
-    // ── Titulo de ingredientes ────────────────────────────────────────────
-    var secIng = document.querySelector('.ingredients');
-    var title  = secIng && secIng.querySelector('.ing-title');
-    if(title) reproductor(secIng, 900,
-      function(p){ title.style.setProperty('--tsc',(0.74+0.26*easeOut(p)).toFixed(4)); },
-      function(){ title.style.setProperty('--tsc','1'); });
-
-    // ── Why buyers: color, onda y tarjetas ────────────────────────────────
-    var why   = document.getElementById('why');
-    var cards = why ? [].slice.call(why.querySelectorAll('.why-card')) : [];
-    if(why) reproductor(why, 1500,
-      function(p){
-        if(window.applyWhyFrame) window.applyWhyFrame(easeOut(tramo(p,0.10,0.70)));
-        cards.forEach(function(c,i){
-          var ck=easeOut(tramo(p, 0.30+i*0.10, 0.85+i*0.10));
-          c.style.clipPath='inset(0 0 '+((1-ck)*100).toFixed(1)+'% 0 round 24px)';
-        });
-      },
-      function(){
-        if(window.applyWhyFrame) window.applyWhyFrame(1);
-        cards.forEach(function(c){ c.style.clipPath='none'; });
-      });
-  }
-
-  function hayFaro(){
-    try{ return window.TCScroll && TCScroll.diagnostico().modo === 'embed+faro'; }
-    catch(e){ return false; }
-  }
-  if(menos){ armar(); return; }
-  // Dos comprobaciones: el faro tarda un par de fotogramas en dar el primer
-  // aviso, y en una conexion lenta el guion puede correr antes de que el
-  // observador se asiente.
-  setTimeout(function(){
-    if(hayFaro()) return;
-    setTimeout(function(){ if(!hayFaro()) armar(); }, 1500);
-  }, 1200);
 })();
 </script>
 </body>

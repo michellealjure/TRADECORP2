@@ -330,129 +330,50 @@ def autoplay_home2(html):
     bucle simplemente pinta encima."""
     js = """
 <script>
-/* Reproduccion por tiempo — sustituye al scroll dentro del embed (build.py).
-   Dentro de un iframe de Wix la pagina no se desplaza, asi que la animacion no
-   puede ir atada a la posicion y se reproduce por tiempo. Dos fallos que
-   costaron caro y quedan resueltos aqui (2026-09-04):
+/* Arranque de contenido diferido (build.py)
 
-   1) NO arranca al cargar. Antes empezaba con la pagina, duraba 1,5s y
-      terminaba mucho antes de que el visitante bajara hasta la seccion: el
-      motion existia pero no lo veia nadie. Ahora cada bloque espera a estar a
-      la vista — IntersectionObserver SI cruza la frontera del iframe.
+   Lo que ANTES habia aqui era un «reproductor por tiempo»: una animacion de 1,5s
+   que sustituia a la del scroll dentro del embed. Se retira, y esa es la parte
+   importante de este cambio.
 
-   2) La red de seguridad cubre «empezo y se paro», no solo «nunca empezo».
-      requestAnimationFrame se suspende cuando la pestana pasa a segundo plano
-      o el iframe sale de pantalla. Si eso ocurria DESPUES del primer fotograma
-      la animacion se congelaba a medias y las tarjetas quedaban recortadas al
-      100% —invisibles— para el resto de la visita; recargar no cambiaba nada
-      porque el estado de partida era identico. Es el «why buyers sale vacio».
-      Ahora el plazo se arma con reloj de pared, que sigue corriendo aunque rAF
-      no, y ademas se remata al volver a la pestana.
+   El problema no era ninguno de los mecanismos por separado, era tener TRES
+   escribiendo sobre las mismas propiedades: el scrub por scroll, el reproductor
+   por tiempo y las redes de seguridad de cada uno. Cual mandaba dependia de cuan
+   rapido cargara la pagina, de si el faro despertaba antes o despues de un plazo,
+   y de por donde desplazara el visitante. De ahi que «siguiera pasando»: no era
+   un fallo, eran varios estados posibles y solo uno era el bueno.
 
-   Y son DOS reproductores independientes, no uno: con un solo hilo, el titulo
-   de ingredientes y las tarjetas de «Why buyers» compartian reloj, y el que
-   quedaba fuera de pantalla se reproducia sin publico. */
+   Ahora hay UN mecanismo y UNA red:
+     · Manda el scrub por scroll de la pagina (TCScroll + la escalera de testigos).
+     · Si algo falla, el scrub no oculta nada —solo escribe cuando comprueba que
+       la seccion se mueve de verdad— y su IntersectionObserver abre las tarjetas
+       si a los 2,5s siguen cerradas.
+   El peor caso deja de ser «animacion de un segundo» o «seccion en blanco» y
+   pasa a ser «sin animacion, todo visible», que es el unico peor caso aceptable.
+
+   Aqui solo queda lo que no es animacion: soltar lo que se aplazo para que la
+   pagina pinte antes. */
 (function(){
-  /* Este reproductor es el PLAN B, no el plan A.
-     Si el faro de TCScroll esta vivo —la escalera de testigos mide la franja
-     visible aunque el iframe no se desplace— el movimiento va con el scroll,
-     igual que en escritorio, y aqui no hay nada que hacer. Reproducir por
-     tiempo era un parche: Michelle lo describio exacto, «como si fuera video de
-     un segundo», porque eso es literalmente lo que era.
-     Solo si a los 1200ms no hay faro se toma el mando. */
-  window.tcPorTiempo = false;
-
-  var menos = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  /* Un reproductor: espera a que `diana` este a la vista, dibuja durante `dur`
-     y garantiza el remate pase lo que pase. */
-  function reproductor(diana, dur, dibujar, rematar){
-    if(!diana) return;
-    var acabado=false, plazo=null, t0=null;
-    function fin(){
-      if(acabado) return; acabado=true;
-      if(plazo){ clearTimeout(plazo); plazo=null; }
-      rematar();
-    }
-    if(menos){ fin(); return; }
-    function paso(ts){
-      if(acabado) return;
-      if(t0===null) t0=ts;
-      var p=(ts-t0)/dur;
-      if(p>=1){ fin(); return; }
-      dibujar(p);
-      requestAnimationFrame(paso);
-    }
-    function arrancar(){
-      if(acabado || plazo) return;
-      // Reloj de pared: no depende de rAF, asi que un rAF suspendido no puede
-      // dejar esto a medias.
-      plazo = setTimeout(fin, dur + 1200);
-      requestAnimationFrame(paso);
-    }
-    document.addEventListener('visibilitychange', function(){
-      if(!document.hidden && plazo && !acabado) fin();
-    });
+  /* Las fotos de los ingredientes (610 KB) esperan a que el carrusel se acerque.
+     Y pase lo que pase se sueltan al `load`: si el observador no dijera nada, se
+     quedarian sin cargar, y eso es peor que cargarlas tarde. */
+  var sec=document.querySelector('.ingredients');
+  if(sec){
+    var puestas=false;
+    function soltarFotos(){ if(puestas) return; puestas=true; sec.classList.add('ing-fotos'); }
     if(window.IntersectionObserver){
-      var io = new IntersectionObserver(function(es){
+      var io=new IntersectionObserver(function(es){
         for(var i=0;i<es.length;i++) if(es[i].isIntersecting){
           try{ io.disconnect(); }catch(e){}
-          arrancar(); return;
+          soltarFotos(); return;
         }
-      },{threshold:0.12});
-      io.observe(diana);
-      // Si el observador no dice nada (navegador raro, iframe que no reporta),
-      // se arranca igual: mas vale verlo tarde que no verlo nunca.
-      setTimeout(function(){
-        if(!plazo && !acabado){ try{ io.disconnect(); }catch(e){} arrancar(); }
-      }, 6000);
+      },{rootMargin:'600px 0px'});
+      io.observe(sec);
+      addEventListener('load', function(){ setTimeout(soltarFotos, 800); });
     }else{
-      arrancar();
+      soltarFotos();
     }
   }
-
-  function easeOut(x){ return 1-Math.pow(1-x,3); }
-  function tramo(p,a,b){ var k=(p-a)/(b-a); return k<0?0:k>1?1:k; }
-
-  function armar(){
-    window.tcPorTiempo = true;
-
-    // ── Titulo de ingredientes ────────────────────────────────────────────
-    var secIng = document.querySelector('.ingredients');
-    var title  = secIng && secIng.querySelector('.ing-title');
-    if(title) reproductor(secIng, 900,
-      function(p){ title.style.setProperty('--tsc',(0.74+0.26*easeOut(p)).toFixed(4)); },
-      function(){ title.style.setProperty('--tsc','1'); });
-
-    // ── Why buyers: color, onda y tarjetas ────────────────────────────────
-    var why   = document.getElementById('why');
-    var cards = why ? [].slice.call(why.querySelectorAll('.why-card')) : [];
-    if(why) reproductor(why, 1500,
-      function(p){
-        if(window.applyWhyFrame) window.applyWhyFrame(easeOut(tramo(p,0.10,0.70)));
-        cards.forEach(function(c,i){
-          var ck=easeOut(tramo(p, 0.30+i*0.10, 0.85+i*0.10));
-          c.style.clipPath='inset(0 0 '+((1-ck)*100).toFixed(1)+'% 0 round 24px)';
-        });
-      },
-      function(){
-        if(window.applyWhyFrame) window.applyWhyFrame(1);
-        cards.forEach(function(c){ c.style.clipPath='none'; });
-      });
-  }
-
-  function hayFaro(){
-    try{ return window.TCScroll && TCScroll.diagnostico().modo === 'embed+faro'; }
-    catch(e){ return false; }
-  }
-  if(menos){ armar(); return; }
-  // Dos comprobaciones: el faro tarda un par de fotogramas en dar el primer
-  // aviso, y en una conexion lenta el guion puede correr antes de que el
-  // observador se asiente.
-  setTimeout(function(){
-    if(hayFaro()) return;
-    setTimeout(function(){ if(!hayFaro()) armar(); }, 1500);
-  }, 1200);
 })();
 </script>
 """
