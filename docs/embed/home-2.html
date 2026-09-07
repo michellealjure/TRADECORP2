@@ -1223,6 +1223,9 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
 /* El corte del rotulo es una decision de composicion del movil: en escritorio
    «Nutraceutical raw materials» cabe de sobra en una linea. */
 .corte-movil{display:none}
+/* El salto de «Free sample» es solo del movil: en escritorio la tarjeta es
+   ancha y el titulo entra de sobra en una linea. */
+.corte-valor{display:none}
 
 /* «or explore them all» es solo del movil: en escritorio cada tarjeta lleva su
    propio «Explore» y el enlace sobraria. */
@@ -1348,10 +1351,11 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
   .ing:has(+ .ing:focus-within){--nudge:0px}
   .ing:focus,.ing:focus-visible{outline:none}
 
-  /* «Free sample» es el unico titulo de una linea, y la reserva de dos lo
-     dejaba pegado arriba de su caja. Centrado dentro de esa reserva queda a la
-     misma altura optica que los de dos lineas. */
-  .band h2{display:flex;align-items:center}
+  /* «Free sample» se parte en dos lineas como los demas titulos, en vez de
+     centrarse: asi las cuatro tarjetas tienen la misma forma y el texto sigue
+     alineado a la izquierda. Nada de display:flex aqui — un contenedor flex
+     ignora los <br>. */
+  .band h2 .corte-valor{display:inline}
 
   /* ── «Explore» en CADA ingrediente ────────────────────────────────────────
      El boton ya existia y llevaba al catalogo, pero en escritorio solo se
