@@ -1352,6 +1352,17 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
      dejaba pegado arriba de su caja. Centrado dentro de esa reserva queda a la
      misma altura optica que los de dos lineas. */
   .band h2{display:flex;align-items:center}
+
+  /* ── «Explore» en CADA ingrediente ────────────────────────────────────────
+     El boton ya existia y llevaba al catalogo, pero en escritorio solo se
+     distingue al pasar el raton y en movil estaba oculto. Michelle lo quiere
+     visible en las cinco tarjetas, asi que aqui se muestra siempre y se le da
+     sitio: la tarjeta pasa de 150 a 206 de alto.
+     Mas chico que en escritorio —13px y menos relleno— porque la tarjeta mide
+     168 de ancho y a tamano de escritorio el boton se comia la mitad. */
+  .ing-track .ing-explore{display:inline-block;margin-top:10px;
+    padding:7px 16px;font-size:13px}
+  .ing{height:206px}
 }
 
 /* En telefonos estrechos el titular parte en mas lineas y el verde bajo el boton
