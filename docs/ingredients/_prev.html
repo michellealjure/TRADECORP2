@@ -939,7 +939,71 @@ var SPECS = {"Ashwagandha":{"descripcion":"Brown colored powder","secado":"Not m
 .pf-panel-nota a{color:var(--oliva)}
 .pf-info[aria-expanded="true"]{opacity:1;font-weight:500}
 @media (max-width:560px){.pf-cols{grid-template-columns:1fr}}
+
+/* ── Buscador y filtros anclados en movil ────────────────────────────────────
+   El catalogo mide 24.620px: sin esto hay que volver arriba cada vez que se
+   quiere cambiar de filtro. */
+@media (max-width:720px){
+  /* Los filtros pasan de tres filas a una sola, deslizable de lado. Con tres
+     filas la barra medía 172px —un quinto de la pantalla— y anclarla habria
+     tapado mas catalogo del que deja ver. Asi baja a unos 100. */
+  #pills{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;padding-bottom:2px}
+  #pills::-webkit-scrollbar{display:none}
+  #pills .pill{flex:0 0 auto}
+
+  /* `position:sticky` sirve FUERA del iframe, donde la pagina se desplaza de
+     verdad. Dentro del embed de Wix no hace nada —el iframe es tan alto como
+     todo el contenido, asi que no hay scrollport contra el que pegarse— y ahi
+     entra el anclaje a mano del guion de mas abajo. Cada uno actua en un sitio,
+     no se pisan.
+     El fondo y el z-index son imprescindibles: sin ellos las tarjetas se ven
+     por debajo de la barra al pasar. */
+  .filter-bar{position:sticky;top:8px;z-index:20;
+    background:var(--crema);padding:8px 0}
+}
 </style>
 <script src="../assets/tcscroll.js"></script>
+<script>
+/* ── Anclaje a mano del buscador dentro del embed ────────────────────────────
+   Dentro del iframe de Wix la pagina NO se desplaza, asi que `position:sticky`
+   no se activa nunca. Se ancla con la unica medida fiable que hay ahi dentro:
+   TCScroll sabe que franja del embed esta a la vista (la escalera de testigos).
+   Se mueve con `transform` y no con `position:fixed` a proposito: asi la barra
+   conserva su sitio en el flujo y el catalogo no da un salto al anclarse. */
+(function(){
+  if(!window.TCScroll || !TCScroll.esEmbed()) return;   // fuera manda sticky
+  var bar=document.querySelector('.filter-bar'), grid=document.getElementById('grid');
+  if(!bar || !grid) return;
+  var AIRE=8, shift=0;
+  function movil(){ return window.matchMedia && matchMedia('(max-width:720px)').matches; }
+  function suelta(){ if(shift){ shift=0; bar.style.transform=''; } }
+  function pegar(){
+    /* Se comprueba en CADA aviso, no una sola vez: la caja de Wix cambia de alto
+       (Velo la ajusta al contenido) y con ella cambia quien manda.
+       Si el documento del iframe se desplaza por su cuenta —caja mas corta que
+       el contenido, que es como esta hoy Ingredients: 8.308 de caja para 24.845
+       de catalogo— entonces `position:sticky` funciona de fabrica y este guion
+       tiene que quitarse de en medio. Si los dos actuaran, el desplazamiento se
+       sumaria dos veces. */
+    var seDesplazaSolo = document.documentElement.scrollHeight > innerHeight + 4;
+    if(!movil() || seDesplazaSolo){ suelta(); return; }
+    // `top()` mide sobre la posicion ACTUAL, que ya lleva el desplazamiento
+    // aplicado: hay que descontarlo para saber donde estaria la barra sola.
+    var tNat = TCScroll.top(bar) - shift;
+    var s = tNat < AIRE ? (AIRE - tNat) : 0;
+    // Y que no se salga de su seccion: al final del catalogo se suelta.
+    var tope = (grid.getBoundingClientRect().bottom - bar.getBoundingClientRect().bottom) + shift - 16;
+    if(tope < 0) tope = 0;
+    if(s > tope) s = tope;
+    if(Math.abs(s-shift) > 0.5){
+      shift = s;
+      bar.style.transform = s ? 'translateY('+s.toFixed(1)+'px)' : '';
+    }
+  }
+  TCScroll.on(pegar);
+  addEventListener('resize', pegar, {passive:true});
+})();
+</script>
 </body>
 </html>
