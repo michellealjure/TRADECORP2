@@ -969,8 +969,21 @@ var SPECS = {"Ashwagandha":{"descripcion":"Brown colored powder","secado":"Not m
      o dejando un hueco por el que se ven las tarjetas.
      z-index 19, uno menos que la barra: si alguna vez se solaparan, la barra
      queda encima, que es lo que se espera. */
-  .counter{position:sticky;top:calc(8px + var(--barra-alto,113px));z-index:19;
-    background:var(--crema);margin:0;padding:2px 0 10px}
+  /* 6px y no 8: el contador se ancla DOS PIXELES MAS ARRIBA de donde acaba la
+     barra, para que solape en vez de tocar. Tocar exacto depende de que
+     `--barra-alto` acierte al pixel, y si se queda corto por poco aparece una
+     rendija por la que se ve el catalogo pasando por detras. Solapando, el peor
+     caso es que la barra —que va en z-index mayor— tape 2px del contador, que
+     no se nota. Sesgado a solapar, nunca a separar.
+     Y el box-shadow pinta 16px de crema POR ENCIMA del contador sin ocupar
+     sitio: si en algun telefono la medida se desviara mas, la banda sigue
+     tapada igual. Es la red, no el calculo. */
+  .counter{position:sticky;top:calc(6px + var(--barra-alto,113px));z-index:19;
+    background:var(--crema);margin:0;padding:2px 0 10px;
+    box-shadow:0 -16px 0 var(--crema)}
+  /* Lo mismo por arriba de la barra, por si asomara un hilo entre ella y el
+     borde de la pantalla. */
+  .filter-bar{box-shadow:0 -10px 0 var(--crema)}
 }
 </style>
 <script src="../assets/tcscroll.js"></script>
