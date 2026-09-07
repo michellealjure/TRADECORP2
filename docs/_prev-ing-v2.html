@@ -1928,6 +1928,36 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
   .tp-track .tp-quote{padding:14px 16px}
   .tp-quote-by{margin:0 0 10px}
   .tp-avatar{width:34px;height:34px;font-size:13px}
+
+  /* ── La tarjeta que tocas al deslizar ya no se queda en blanco ─────────────
+     En escritorio, pasar el raton sobre un ingrediente pone su contenido a
+     opacidad 0 y en su lugar sale la foto grande. En un telefono `:hover` SE
+     QUEDA PEGADO despues de tocar: la tarjeta que rozas al deslizar se quedaba
+     sin icono, sin nombre y sin detalle —y como en movil ya no sale la foto, se
+     quedaba literalmente vacia— hasta que tocabas otra cosa. Eso es «queda una
+     en blanco y pierde la secuencia».
+     Aqui el hover y el foco dejan de hacer nada sobre el contenido. */
+  .ing:hover .ing-copy,
+  .ing:focus .ing-copy,
+  .ing:focus-visible .ing-copy,
+  .ing:focus-within .ing-copy,
+  .ing:has(:focus-visible) .ing-copy{opacity:1}
+  .ing:hover .ing-info,
+  .ing:focus .ing-info,
+  .ing:focus-visible .ing-info,
+  .ing:focus-within .ing-info,
+  .ing:has(:focus-visible) .ing-info{transform:none}
+  /* Y las vecinas dejan de apartarse: ese desplazamiento tambien rompia la fila. */
+  .ing:hover + .ing,
+  .ing:has(+ .ing:hover),
+  .ing:focus-within + .ing,
+  .ing:has(+ .ing:focus-within){--nudge:0px}
+  .ing:focus,.ing:focus-visible{outline:none}
+
+  /* «Free sample» es el unico titulo de una linea, y la reserva de dos lo
+     dejaba pegado arriba de su caja. Centrado dentro de esa reserva queda a la
+     misma altura optica que los de dos lineas. */
+  .band h2{display:flex;align-items:center}
 }
 
 /* En telefonos estrechos el titular parte en mas lineas y el verde bajo el boton
