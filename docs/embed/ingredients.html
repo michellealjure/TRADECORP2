@@ -971,6 +971,16 @@ var SPECS = {"Ashwagandha":{"descripcion":"Brown colored powder","secado":"Not m
      por debajo de la barra al pasar. */
   .filter-bar{position:sticky;top:8px;z-index:20;
     background:var(--crema);padding:8px 0}
+
+  /* El contador se ancla JUSTO debajo de la barra. Su `top` no es un numero a
+     mano: sale de `--barra-alto`, que mide el guion sobre la barra real. Si la
+     barra cambia de alto —el buscador que se parte en dos lineas en una pantalla
+     estrecha, por ejemplo— el contador la sigue en vez de quedar montado encima
+     o dejando un hueco por el que se ven las tarjetas.
+     z-index 19, uno menos que la barra: si alguna vez se solaparan, la barra
+     queda encima, que es lo que se espera. */
+  .counter{position:sticky;top:calc(8px + var(--barra-alto,113px));z-index:19;
+    background:var(--crema);margin:0;padding:2px 0 10px}
 }
 </style>
 <script src="../assets/tcscroll.js?v=2396bca1"></script>
@@ -986,8 +996,11 @@ var SPECS = {"Ashwagandha":{"descripcion":"Brown colored powder","secado":"Not m
   var bar=document.querySelector('.filter-bar'), grid=document.getElementById('grid');
   if(!bar || !grid) return;
   var AIRE=8, shift=0;
+  var contador=document.getElementById('counter');
   function movil(){ return window.matchMedia && matchMedia('(max-width:720px)').matches; }
-  function suelta(){ if(shift){ shift=0; bar.style.transform=''; } }
+  function suelta(){
+    if(shift){ shift=0; bar.style.transform=''; if(contador) contador.style.transform=''; }
+  }
   function pegar(){
     /* Se comprueba en CADA aviso, no una sola vez: la caja de Wix cambia de alto
        (Velo la ajusta al contenido) y con ella cambia quien manda.
@@ -1008,11 +1021,31 @@ var SPECS = {"Ashwagandha":{"descripcion":"Brown colored powder","secado":"Not m
     if(s > tope) s = tope;
     if(Math.abs(s-shift) > 0.5){
       shift = s;
-      bar.style.transform = s ? 'translateY('+s.toFixed(1)+'px)' : '';
+      var t = s ? 'translateY('+s.toFixed(1)+'px)' : '';
+      bar.style.transform = t;
+      if(contador) contador.style.transform = t;   // el contador va con la barra
     }
   }
   TCScroll.on(pegar);
   addEventListener('resize', pegar, {passive:true});
+})();
+</script>
+<script>
+/* `--barra-alto`: el alto real de la barra de busqueda, para que el contador se
+   ancle justo debajo sin numeros a mano. Se remide cuando la barra cambia
+   —los filtros en una fila deslizable pueden cambiar de alto con la tipografia—
+   y al cargar las fuentes, que es cuando mas se mueve. */
+(function(){
+  var bar=document.querySelector('.filter-bar'); if(!bar) return;
+  function medir(){
+    document.documentElement.style.setProperty(
+      '--barra-alto', Math.round(bar.getBoundingClientRect().height)+'px');
+  }
+  medir();
+  addEventListener('resize', medir, {passive:true});
+  addEventListener('load', medir);
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(medir);
+  if(window.ResizeObserver){ try{ new ResizeObserver(medir).observe(bar); }catch(e){} }
 })();
 </script>
 </body>
