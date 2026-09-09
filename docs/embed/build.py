@@ -417,7 +417,7 @@ def build_contact():
     h = sin_costura(h, '.contact-section{padding-top:0}')
     h = rutas(h, 'sub'); h = fuente_externa(h)
     h, _n = enlaces_wix(h); h, _f = enlaces_formularios(h); h = enlaces_externos(h)
-    h = titulo(h, 'Contact — TradeCorp')
+    h = titulo(h, 'Contact — TradeCorp Ingredients')
     return cabecera(h, 'contact')
 
 
@@ -431,7 +431,7 @@ def build_ingredients():
     h = sin_costura(h, '.section{padding-top:0}')
     h = rutas(h, 'sub'); h = fuente_externa(h)
     h, _n = enlaces_wix(h); h, _f = enlaces_formularios(h); h = enlaces_externos(h)
-    h = titulo(h, 'Ingredients — TradeCorp')
+    h = titulo(h, 'Ingredients — TradeCorp Ingredients')
     return cabecera(h, 'ingredients')
 
 
@@ -486,7 +486,7 @@ def build_about():
     h = sin_listeners_muertos(h); h = sin_css_conmutadores(h)
     h = rutas(h, 'about'); h = fuente_externa(h)
     h, _n = enlaces_wix(h); h, _f = enlaces_formularios(h); h = enlaces_externos(h)
-    h = titulo(h, 'Who we are — TradeCorp')
+    h = titulo(h, 'Who we are — TradeCorp Ingredients')
     return cabecera(h, 'about')
 
 
@@ -530,7 +530,7 @@ def build_home_1():
     h = sin_costura(h, '.track{padding-bottom:0}')
     h = rutas(h, 'raiz'); h = fuente_externa(h)
     h, _n = enlaces_wix(h); h, _f = enlaces_formularios(h); h = enlaces_externos(h)
-    h = titulo(h, 'TradeCorp')
+    h = titulo(h, 'TradeCorp Ingredients')
     return cabecera(h, 'home-1')
 
 
@@ -547,7 +547,7 @@ def build_home_2():
     h = autoplay_home2(h)
     h = rutas(h, 'raiz'); h = fuente_externa(h)
     h, _n = enlaces_wix(h); h, _f = enlaces_formularios(h); h = enlaces_externos(h)
-    h = titulo(h, 'Our ingredients — TradeCorp')
+    h = titulo(h, 'Our ingredients — TradeCorp Ingredients')
     return cabecera(h, 'home-2')
 
 
@@ -571,7 +571,7 @@ def build_home_3():
     h = sin_costura(h, '.why{padding-top:0}')
     h = rutas(h, 'raiz'); h = fuente_externa(h)
     h, _n = enlaces_wix(h); h, _f = enlaces_formularios(h); h = enlaces_externos(h)
-    h = titulo(h, 'Trusted partners — TradeCorp')
+    h = titulo(h, 'Trusted partners — TradeCorp Ingredients')
     return cabecera(h, 'home-3')
 
 
@@ -637,7 +637,7 @@ def build_home_entero():
     h = sin_costura(h, 'html{background:var(--salvia)}')
     h, _n = enlaces_wix(h); h, _f = enlaces_formularios(h); h = enlaces_externos(h)
     h = rutas(h, 'raiz'); h = fuente_externa(h)
-    h = titulo(h, 'TradeCorp')
+    h = titulo(h, 'TradeCorp Ingredients')
     return cabecera(h, 'home-entero')
 
 
