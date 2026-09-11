@@ -801,10 +801,10 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
     </div>
 
     <div id="lensSrc" style="position:absolute;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none" aria-hidden="true">
-      <video id="lvOil"   data-src="assets/hero-oil.mp4"   muted loop playsinline preload="none"></video>
+      <video id="lvCocoa" data-src="assets/hero-cocoa-short.mp4" muted loop playsinline preload="none"></video>
+      <video id="lvWhite" data-src="assets/hero-white.mp4" muted loop playsinline preload="none"></video>
+      <video id="lvGreen" data-src="assets/hero-green.mp4" muted loop playsinline preload="none"></video>
       <video id="lvScoop" data-src="assets/hero-scoop.mp4" muted loop playsinline preload="none"></video>
-      <video id="lvAmber" data-src="assets/hero-amber.mp4" muted loop playsinline preload="none"></video>
-      <video id="lvCocoa" data-src="assets/hero-cocoa.mp4" muted loop playsinline preload="none"></video>
     </div>
     <script>
     /* En ESCRITORIO los cuatro videos recuperan su src aqui mismo, durante el
@@ -1099,7 +1099,13 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
   var LENS_BIG=new Path2D("M1293.997,184.284h-.014C1174.751,61.346,988.481,0,734.931,0,483.36,0,297.833,61.349,178.85,184.284,59.617,307.232,0,481.377,0,706.238s59.116,398.756,177.37,521.701c118.24,123.188,304.02,184.537,557.574,184.537,255.536,0,442.296-61.349,560.535-184.537,117.99-122.938,177.117-296.843,177.117-521.701s-59.616-399.006-178.6-521.955Z"), LENS_SMALL=new Path2D("M534.534,504.44c-246.627,246.876-356.206,537.038-244.894,648.605,111.317,111.313,401.729,1.733,648.605-245.143,246.876-246.876,356.206-537.038,244.894-648.355-111.566-111.566-401.729-1.733-648.605,244.893Z");
   var LENS={zb:2.00, zs:0.70, ab:0.23, as:0.44, copyMin:650, greenMax:480, gap:32,
             kb:0.88, ks:1.35, kh:-8, kc:1.12};
-  var XF=1.2, TAIL=0.2;
+  /* XF  cuanto dura el cruce entre dos clips
+     PRE  cuanto antes de verse arranca el que entra (solo para que el
+          decodificador se despierte; ya esta rebobinado desde que salio)
+     TAIL colchon para no rozar el ultimo cuadro del archivo
+     ESPERA_MAX  lo maximo que el lente aguanta a un clip que aun no ha
+          descargado antes de seguir sin el */
+  var XF=0.9, PRE=0.25, TAIL=0.30, ESPERA_MAX=3.0;
 
   /* En movil ningun video del lente se pide antes de que la pagina este pintada.
      Medido: hero-oil.mp4 seguia bajando 1.447 KB a los 1.200 ms y se llevaba por
@@ -1111,19 +1117,47 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
     setTimeout(function(){ window.tcVideoOk=true; }, 4000);   // por si `load` no llega
   }
 
+  /* Solo polvos: TradeCorp no comercializa aceites, y los dos clips de liquido
+     (hero-oil, hero-amber) contaban otra historia.
+
+     DURACION DE CADA ARCHIVO. No es arbitraria. Un clip se ve durante
+     PRE + XF (entra) + hold + XF (sale); si el archivo no da para tanto,
+     `loop` lo rebobina EN PANTALLA y sale un corte seco siempre en el mismo
+     sitio. Le pasaba al ambar (4,5 s para 6,3 de uso) y a la cuchara, que se
+     congelaba 1,8 s por el `endAt`. Por eso los tres clips nuevos se cortaron
+     a una medida que cubre su propio turno: cacao 7 s, blanco y verde 6 s.
+     La cuchara no se puede alargar —son los 4,4 s que hay— asi que su turno es
+     el mas corto de los cuatro: 2,2 s de reposo. Es el clip con mas movimiento
+     (la cuchara se vuelca y vierte), asi que el turno corto le sienta bien, y
+     entre entrada, reposo y salida se ve casi entero. No vale dejarlo dar la
+     vuelta: medido, su ultimo cuadro y el primero se diferencian en 167 sobre
+     255, o sea que el rebobinado seria un corte a plena vista.
+
+     El polvo blanco lleva velo propio (`ab`). Con el velo comun de 0,23 el
+     anillo de la O quedaba en gris 156 y el contraste contra el crema del
+     fondo caia a 2,2 —los otros tres estan entre 3,8 y 9,2—, o sea que la O se
+     desvanecia justo en ese clip. Con velo 0,40 sube a 3,15, dentro del rango
+     del resto, y el `contrast(1.2)` devuelve el grano que el velo se llevaba. */
   var SEQ=[
-    {el:'lvOil',   hold:3.5},
-    {el:'lvOil',   hold:3.5},
-    {el:'lvScoop', endAt:4.2},
-    {el:'lvAmber'},
-    {el:'lvCocoa', grade:true, hold:6.0}
+    {el:'lvCocoa', grade:true},
+    {el:'lvWhite', filter:'brightness(.92) contrast(1.2)', ab:0.40},
+    {el:'lvGreen'},
+    {el:'lvScoop'}
   ];
-  SEQ.forEach(function(q){ q.v=document.getElementById(q.el); });
+  SEQ.forEach(function(q){ q.v=document.getElementById(q.el); if(q.rate) q.v.playbackRate=q.rate; });
 
   function lensAutoHold(q){
     if(q.hold) return;
-    var d=q.endAt || q.v.duration;
-    q.hold=(d&&isFinite(d)) ? Math.max(2.4, d/(q.rate||1) - XF - TAIL) : 4.0;
+    var d=q.v.duration;
+    // Se descuentan LOS DOS cruces. La formula vieja restaba uno solo, asi que
+    // el hold que calculaba era ~XF+PRE mas largo de lo que el archivo aguanta:
+    // de ahi el rebobinado a la vista.
+    /* El suelo es 0,8 y no 2,4. Un suelo alto parecia prudente —«que ningun
+       clip pase volando»— pero PISA la cuenta: a la cuchara, que solo da para
+       2,05, le devolvia 2,4 y con eso se pasaba de largo del final del archivo.
+       Un suelo que obliga a mostrar mas de lo que el archivo tiene no protege
+       nada; solo cambia un defecto pequeno por un corte a la vista. */
+    q.hold=(d&&isFinite(d)) ? Math.max(0.8, d/(q.rate||1) - 2*XF - PRE - TAIL) : 4.0;
   }
   SEQ.forEach(function(q){
     if(q.hold) return;
@@ -1133,7 +1167,7 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
   });
 
   var lensW=0, lensH=0, lensBig=null, lensSmall=null;
-  var lensT=0, lensCur=0, lensWanted={}, lensRun=false, lensLast=0;
+  var lensT=0, lensCur=0, lensWanted={}, lensRun=false, lensLast=0, lensEspera=0;
 
   function lensLayout(){
     if(!lensCv) return;
@@ -1195,29 +1229,43 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
     var s=Math.max(lensW/v.videoWidth, lensH/v.videoHeight)*zoom;
     var dw=v.videoWidth*s, dh=v.videoHeight*s;
     if(alpha!==undefined) lensCtx.globalAlpha=alpha;
-    lensCtx.filter = SEQ[i].grade
+    lensCtx.filter = SEQ[i].filter || (SEQ[i].grade
       ? 'brightness('+LENS.kb+') saturate('+LENS.ks+') hue-rotate('+LENS.kh+'deg) contrast('+LENS.kc+')'
-      : 'none';
+      : 'none');
     lensCtx.drawImage(v,(lensW-dw)/2,(lensH-dh)/2,dw,dh);
     lensCtx.filter='none'; lensCtx.globalAlpha=1;
   }
 
   function lensTick(dt){
-    var hold=SEQ[lensCur].hold, cyc=hold+XF;
     lensT+=dt;
-    if(lensT>=cyc){ lensT-=cyc; lensCur=(lensCur+1)%SEQ.length; }
-    var nxt=(lensCur+1)%SEQ.length;
-    // el salto entre las dos partes del aceite es el mismo reproductor: no hay cruce
-    var same=SEQ[nxt].el===SEQ[lensCur].el;
-    var f=(!same && lensT>hold) ? (lensT-hold)/XF : 0;
+    var hold=SEQ[lensCur].hold, nxt=(lensCur+1)%SEQ.length;
 
-    /* El rebobinado se lleva por REPRODUCTOR, no por posición: el aceite ocupa dos
-       posiciones seguidas y no debe rebobinar entre ellas. Y rebobinar en la entrada
-       —incluida la pre-carga de 0.8 s— evita que el clip asome por su último cuadro. */
+    /* El cruce no empieza hasta que el clip que entra tiene imagen.
+       Antes no se comprobaba: `lensCover` se iba de vacio si el video no estaba
+       listo, o sea que el desvanecido se dibujaba contra nada y el clip aparecia
+       de golpe cuando terminaba. Ese era el tiron del movil, donde los videos se
+       piden tarde a proposito. Se espera como mucho ESPERA_MAX; si el archivo
+       falla de verdad, la secuencia sigue y no se queda clavada. */
+    if(lensT>hold && SEQ[nxt].v.readyState<2 && lensEspera<ESPERA_MAX){
+      lensEspera+=dt; lensT=hold;
+    }
+
+    if(lensT>=hold+XF){
+      lensT-=(hold+XF); lensCur=nxt; lensEspera=0;
+      hold=SEQ[lensCur].hold; nxt=(lensCur+1)%SEQ.length;
+    }
+
+    // mismo reproductor en dos posiciones seguidas: no hay nada que cruzar
+    var same=SEQ[nxt].el===SEQ[lensCur].el;
+    var lin=(!same && lensT>hold) ? Math.min(1,(lensT-hold)/XF) : 0;
+    /* Suavizado del cruce. Con la mezcla lineal los dos videos pasan mucho rato
+       al 50/50, que es donde la imagen se enturbia y se ve el «fantasma» de los
+       dos a la vez. Este atajo entra y sale despacio y cruza rapido por el medio. */
+    var f=lin*lin*(3-2*lin);
+
     var now={};
-    SEQ.forEach(function(q,i){
-      if(i===lensCur || (!same && i===nxt && lensT>hold-0.8)) now[q.el]=q;
-    });
+    now[SEQ[lensCur].el]=SEQ[lensCur];
+    if(!same && lensT>hold-PRE) now[SEQ[nxt].el]=SEQ[nxt];
     Object.keys(now).forEach(function(el){
       var q=now[el];
       /* El src se pone AQUI, no en el HTML.
@@ -1225,15 +1273,23 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
          cuatro srcs en el marcado el navegador los pedia casi a la vez: medido en
          el embed publicado a 393px, 3.411 KB descargados con la pagina sin
          pintar. Son los 5 segundos de crema. Ahora solo el primero viaja con la
-         pagina; los otros tres se piden cuando la secuencia llega a ellos —y ya
-         los pide con 0,8 s de antelacion, ver `nxt` arriba— asi que no se nota. */
+         pagina; a los otros tres les pone el src `precargar()`, en cuanto el
+         primero esta comodo y de uno en uno. Esta linea es la red de seguridad
+         por si la secuencia llega a un clip al que aun no le toco. */
       if(!q.v.src && window.tcVideoOk && q.v.dataset && q.v.dataset.src){ q.v.src=q.v.dataset.src; }
-      if(!lensWanted[el]){ try{ q.v.currentTime=0; }catch(e){} q.v.playbackRate=q.rate||1; }
-      if(q.endAt && q.v.currentTime>=q.endAt+0.2){ if(!q.v.paused) q.v.pause(); }
-      else if(q.v.paused) q.v.play().catch(function(){});
+      if(q.v.paused) q.v.play().catch(function(){});
     });
+    /* Al SALIR se pausa y se rebobina, no al entrar.
+       Rebobinar al entrar obligaba a una busqueda 0,8 s antes del cruce y a
+       reproducir ese trozo a ciegas: el clip llegaba a su turno ya gastado, y si
+       la busqueda tardaba, el primer cuadro del desvanecido era el ULTIMO del
+       clip anterior. Rebobinado al salir, el video espera su turno parado en el
+       primer cuadro y PRE solo tiene que despertar al decodificador. */
     Object.keys(lensWanted).forEach(function(el){
-      if(!now[el] && !lensWanted[el].v.paused) lensWanted[el].v.pause();
+      if(now[el]) return;
+      var v=lensWanted[el].v;
+      if(!v.paused) v.pause();
+      try{ v.currentTime=0; }catch(e){}
     });
     lensWanted=now;
     return {f:f, nxt:nxt};
@@ -1248,7 +1304,10 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
     lensCtx.save(); lensCtx.clip(lensBig);
     lensCover(lensCur, LENS.zb);
     if(st.f>0) lensCover(st.nxt, LENS.zb, st.f);
-    lensCtx.fillStyle='rgba(0,0,0,'+LENS.ab+')'; lensCtx.fillRect(0,0,lensW,lensH);
+    // el velo se mezcla igual que los dos videos: si no, el cambio de clip
+    // daria un salton de luz en mitad del desvanecido
+    var abA=SEQ[lensCur].ab||LENS.ab, abB=SEQ[st.nxt].ab||LENS.ab;
+    lensCtx.fillStyle='rgba(0,0,0,'+(abA+(abB-abA)*st.f)+')'; lensCtx.fillRect(0,0,lensW,lensH);
     lensCtx.restore();
 
     lensCtx.save(); lensCtx.clip(lensSmall);
@@ -1287,14 +1346,41 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
     // ResizeObserver, no 'resize': ese dispara antes de que el layout se asiente y el
     // canvas queda dimensionado para la caja vieja (se ve borroso).
     new ResizeObserver(function(){ lensLayout(); lensBuild(); lensDraw(0); }).observe(lensCv);
+    /* Pestana en segundo plano: requestAnimationFrame se duerme, pero un <video>
+       que esta reproduciendo NO. El reloj del lente se quedaba parado mientras el
+       clip seguia corriendo por dentro, y al volver el video venia adelantado
+       respecto a lo que el lente creia: medido, la cuchara llegaba a 4,39 de sus
+       4,40 cuando la cuenta decia 4,25. Con unas cuantas idas y venidas eso
+       termina en un rebobinado en pantalla. Se pausan al esconderse; como el
+       reloj tampoco avanza, al volver siguen cuadrados. */
+    document.addEventListener('visibilitychange', function(){
+      if(document.hidden) SEQ.forEach(function(q){ if(!q.v.paused) q.v.pause(); });
+      else lensLast=0;
+    });
     SEQ.forEach(function(q){ q.v.addEventListener('loadeddata', function(){ lensDraw(0); }); });
-    // el primero carga completo; el resto espera, para no pedir 8 MB de entrada
+    /* El primero carga completo; el resto va detras, de uno en uno.
+       Esto ANTES no cargaba nada: se limitaba a poner preload='auto' y llamar a
+       load(), y sin `src` las dos cosas son papel mojado. En movil, donde el src
+       se aplaza a proposito, el resultado era que cada clip empezaba a bajar
+       0,25 s antes de que le tocara —2,9 MB en ese hueco— y por eso la O daba el
+       tiron justo al cambiar. Ahora se les pone el src de verdad, escalonados
+       para que no se peleen por el ancho de banda entre ellos ni con el hero. */
     (function(){
       var first=SEQ[0].v;
-      var warm=function(){ SEQ.slice(1).forEach(function(q){
-        if(q.v.preload!=='auto'){ q.v.preload='auto'; q.v.load(); } }); };
-      if(first.readyState>=3) setTimeout(warm,400);
-      else first.addEventListener('canplaythrough',function(){ setTimeout(warm,400); },{once:true});
+      function precargar(){
+        SEQ.slice(1).forEach(function(q,i){
+          setTimeout(function(){
+            if(!window.tcVideoOk || q.v.src) return;
+            if(q.v.dataset && q.v.dataset.src){ q.v.preload='auto'; q.v.src=q.v.dataset.src; }
+          }, i*1200);
+        });
+      }
+      function cuandoToque(){
+        if(window.tcVideoOk) precargar();
+        else addEventListener('load', function(){ setTimeout(precargar, 600); }, {once:true});
+      }
+      if(first.readyState>=3) setTimeout(cuandoToque,400);
+      else first.addEventListener('canplaythrough',function(){ setTimeout(cuandoToque,400); },{once:true});
     })();
     lensStart();
   }
