@@ -801,10 +801,11 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
     </div>
 
     <div id="lensSrc" style="position:absolute;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none" aria-hidden="true">
-      <video id="lvCocoa" data-src="assets/hero-cocoa-short.mp4" muted loop playsinline preload="none"></video>
-      <video id="lvWhite" data-src="assets/hero-white.mp4" muted loop playsinline preload="none"></video>
-      <video id="lvGreen" data-src="assets/hero-green.mp4" muted loop playsinline preload="none"></video>
-      <video id="lvScoop" data-src="assets/hero-scoop.mp4" muted loop playsinline preload="none"></video>
+      <video id="lvCocoa"  data-src="assets/hero-cocoa-short.mp4" muted loop playsinline preload="none"></video>
+      <video id="lvLeaves" data-src="assets/hero-leaves.mp4"      muted loop playsinline preload="none"></video>
+      <video id="lvMatcha" data-src="assets/hero-matcha.mp4"      muted loop playsinline preload="none"></video>
+      <video id="lvGreen"  data-src="assets/hero-green.mp4"       muted loop playsinline preload="none"></video>
+      <video id="lvWhite"  data-src="assets/hero-white-pour.mp4"  muted loop playsinline preload="none"></video>
     </div>
     <script>
     /* En ESCRITORIO los cuatro videos recuperan su src aqui mismo, durante el
@@ -1097,7 +1098,7 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
   var lensCtx=lensCv?lensCv.getContext('2d'):null;
   var LENS_VB_W=1472.597, LENS_VB_H=1412.534, LENS_RATIO=LENS_VB_W/LENS_VB_H;
   var LENS_BIG=new Path2D("M1293.997,184.284h-.014C1174.751,61.346,988.481,0,734.931,0,483.36,0,297.833,61.349,178.85,184.284,59.617,307.232,0,481.377,0,706.238s59.116,398.756,177.37,521.701c118.24,123.188,304.02,184.537,557.574,184.537,255.536,0,442.296-61.349,560.535-184.537,117.99-122.938,177.117-296.843,177.117-521.701s-59.616-399.006-178.6-521.955Z"), LENS_SMALL=new Path2D("M534.534,504.44c-246.627,246.876-356.206,537.038-244.894,648.605,111.317,111.313,401.729,1.733,648.605-245.143,246.876-246.876,356.206-537.038,244.894-648.355-111.566-111.566-401.729-1.733-648.605,244.893Z");
-  var LENS={zb:2.00, zs:0.70, ab:0.23, as:0.44, copyMin:650, greenMax:480, gap:32,
+  var LENS={zb:2.00, zs:0.70, ab:0.16, as:0.34, copyMin:650, greenMax:480, gap:32,
             kb:0.88, ks:1.35, kh:-8, kc:1.12};
   /* XF  cuanto dura el cruce entre dos clips
      PRE  cuanto antes de verse arranca el que entra (solo para que el
@@ -1117,32 +1118,36 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
     setTimeout(function(){ window.tcVideoOk=true; }, 4000);   // por si `load` no llega
   }
 
-  /* Solo polvos: TradeCorp no comercializa aceites, y los dos clips de liquido
-     (hero-oil, hero-amber) contaban otra historia.
+  /* Solo polvos y hoja de te: TradeCorp no comercializa aceites, asi que los
+     dos clips de liquido (hero-oil, hero-amber) salieron, y detras salio el de
+     la cuchara de colageno. La secuencia cuenta una historia: cacao, hoja de
+     te, matcha en polvo, textura de matcha, polvo blanco.
 
      DURACION DE CADA ARCHIVO. No es arbitraria. Un clip se ve durante
      PRE + XF (entra) + hold + XF (sale); si el archivo no da para tanto,
      `loop` lo rebobina EN PANTALLA y sale un corte seco siempre en el mismo
      sitio. Le pasaba al ambar (4,5 s para 6,3 de uso) y a la cuchara, que se
-     congelaba 1,8 s por el `endAt`. Por eso los tres clips nuevos se cortaron
-     a una medida que cubre su propio turno: cacao 7 s, blanco y verde 6 s.
-     La cuchara no se puede alargar —son los 4,4 s que hay— asi que su turno es
-     el mas corto de los cuatro: 2,2 s de reposo. Es el clip con mas movimiento
-     (la cuchara se vuelca y vierte), asi que el turno corto le sienta bien, y
-     entre entrada, reposo y salida se ve casi entero. No vale dejarlo dar la
-     vuelta: medido, su ultimo cuadro y el primero se diferencian en 167 sobre
-     255, o sea que el rebobinado seria un corte a plena vista.
+     congelaba 1,8 s por el `endAt`. Por eso cada clip se corta a una medida que
+     cubre su propio turno: cacao 7 s, textura verde 6 s, los otros tres 5,5 s.
 
-     El polvo blanco lleva velo propio (`ab`). Con el velo comun de 0,23 el
-     anillo de la O quedaba en gris 156 y el contraste contra el crema del
-     fondo caia a 2,2 —los otros tres estan entre 3,8 y 9,2—, o sea que la O se
-     desvanecia justo en ese clip. Con velo 0,40 sube a 3,15, dentro del rango
-     del resto, y el `contrast(1.2)` devuelve el grano que el velo se llevaba. */
+     VELO. Es una multiplicacion de brillo: 0,50 equivale exacto a
+     `brightness(.5)`. Subirlo oscurece; no hay otra perilla.
+
+     Y NO HAY UN SOLO FONDO DETRAS. Medido con elementFromPoint el 2026-09-12:
+     el lente queda a caballo del borde de la tarjeta —izquierda y arriba dan a
+     la tarjeta verde (66,79,37), derecha y abajo al crema del escenario
+     (234,228,209)—. Asi que cada clip tiene DOS contrastes y mejorar uno
+     empeora el otro: el polvo blanco con velo 0,34 daba 2,2 contra el crema
+     pero 3,1 contra el verde; con 0,10 da 1,2 y 5,8. Aqui no existe un numero
+     «correcto», es una eleccion: Michelle los quiere claros, y los dos clips
+     rodados sobre fondo blanco (hoja de te y polvo blanco) van con velo bajo
+     para que se lean como lo que son. */
   var SEQ=[
-    {el:'lvCocoa', grade:true},
-    {el:'lvWhite', filter:'brightness(.92) contrast(1.2)', ab:0.40},
+    {el:'lvCocoa',  grade:true},
+    {el:'lvLeaves', filter:'contrast(1.22) saturate(1.15)', ab:0.20},
+    {el:'lvMatcha'},
     {el:'lvGreen'},
-    {el:'lvScoop'}
+    {el:'lvWhite',  filter:'contrast(1.22)', ab:0.10}
   ];
   SEQ.forEach(function(q){ q.v=document.getElementById(q.el); if(q.rate) q.v.playbackRate=q.rate; });
 
@@ -1277,7 +1282,17 @@ html.intro-armed .band>div{opacity:0}   /* sin esto parpadean antes del primer f
          primero esta comodo y de uno en uno. Esta linea es la red de seguridad
          por si la secuencia llega a un clip al que aun no le toco. */
       if(!q.v.src && window.tcVideoOk && q.v.dataset && q.v.dataset.src){ q.v.src=q.v.dataset.src; }
-      if(q.v.paused) q.v.play().catch(function(){});
+      /* Red de seguridad: ningun clip a la vista llega al final de su archivo.
+         La cuenta de `hold` ya deja TAIL de margen, pero el reloj del lente y el
+         del video se pueden separar y entonces el margen no basta. Pasa cuando
+         la espera de arriba estira el turno del clip actual —el reloj se queda
+         quieto en `hold` y el video no—, y pasaba tambien con la pestana de
+         fondo. Medido: cacao, matcha y blanco llegaban clavados a su ultimo
+         cuadro y `loop` los devolvia al principio EN PANTALLA. Congelar el
+         ultimo pedacito no se nota; el corte si. */
+      var dur=q.v.duration, alFinal=dur && isFinite(dur) && q.v.currentTime >= dur - TAIL;
+      if(alFinal){ if(!q.v.paused) q.v.pause(); }
+      else if(q.v.paused) q.v.play().catch(function(){});
     });
     /* Al SALIR se pausa y se rebobina, no al entrar.
        Rebobinar al entrar obligaba a una busqueda 0,8 s antes del cruce y a
